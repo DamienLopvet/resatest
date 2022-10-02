@@ -1,5 +1,6 @@
 nav li, nav a{
-  all:unset
+  all:unset;
+  cursor:pointer;
 }
 nav ul{
   display: flex;
