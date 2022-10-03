@@ -15,28 +15,34 @@ export default function Ajouter() {
     return (
         <>
             <form>
-                <LocalizationProvider locale={fr} dateAdapter={AdapterDateFns}>
-                    <DateTimePicker
-                        renderInput={(props) => <TextField {...props} />}
-                        label="Date d'arrivée"
-                        value={value}
-                        onChange={(newValue) => {
-                            setValue(newValue);
-                        }}
-                    />
-                </LocalizationProvider>
-                <LocalizationProvider locale={fr} dateAdapter={AdapterDateFns}>
-                    <DateTimePicker
-                        renderInput={(props) => <TextField {...props} />}
-                        label="Date de départ"
-                        value={value}
-                        onChange={(newValue) => {
-                            setValue(newValue);
-                        }}
-                    />
-                </LocalizationProvider>
+                <fieldset>
+                    <legend>Dates</legend>
+                    <LocalizationProvider locale={fr} dateAdapter={AdapterDateFns}>
+                        <DateTimePicker
+                            renderInput={(props) => <TextField {...props} />}
+                            label="Date d'arrivée"
+                            value={value}
+                            onChange={(newValue) => {
+                                setValue(newValue);
+                            }}
+                        />
+                    </LocalizationProvider>
+                    <LocalizationProvider locale={fr} dateAdapter={AdapterDateFns}>
+                        <DateTimePicker
+                            renderInput={(props) => <TextField {...props} />}
+                            label="Date de départ"
+                            value={value}
+                            onChange={(newValue) => {
+                                setValue(newValue);
+                            }}
+                        />
+                    </LocalizationProvider>
+                </fieldset>
                 <label for="NombrePersonne">
-                    <p><span className="nbrPers">{nbrPersons}</span> personne(s)</p>
+                    <p>
+                        <span className="nbrPers">{nbrPersons}</span>{" "}
+                        personne(s)
+                    </p>
                     <input
                         type="range"
                         min="1"
@@ -46,120 +52,130 @@ export default function Ajouter() {
                         value={nbrPersons}
                         onChange={handleChange}
                     />
-                    
-                </label>
-
-                <label for="Nom">
-                    <input type="text" placeholder="Nom" id="Nom" name="Nom" />
-                </label>
-                <label for="Prenom">
-                    <input
-                        type="text"
-                        placeholder="Prenom"
-                        id="Prénom"
-                        name="Prenom"
-                    />
-                </label>
-
-                <label for="Tel">
-                    <input
-                        type="tel"
-                        placeholder="Téléphone"
-                        id="Tel"
-                        name="Tel"
-                    />
-                </label>
-
-                <label for="Email">
-                    
-                    <input
-                        type="email"
-                        placeholder="E-mail"
-                        id="Email"
-                        name="Email"
-                    />
                 </label>
                 <fieldset>
+                    <legend>Client</legend>
+                    <label for="Nom">
+                        <input
+                            type="text"
+                            placeholder="Nom"
+                            id="Nom"
+                            name="Nom"
+                        />
+                    </label>
+                    <label for="Prenom">
+                        <input
+                            type="text"
+                            placeholder="Prenom"
+                            id="Prénom"
+                            name="Prenom"
+                        />
+                    </label>
+
+                    <label for="Tel">
+                        <input
+                            type="tel"
+                            placeholder="Téléphone"
+                            id="Tel"
+                            name="Tel"
+                        />
+                    </label>
+
+                    <label for="Email">
+                        <input
+                            type="email"
+                            placeholder="E-mail"
+                            id="Email"
+                            name="Email"
+                        />
+                    </label>
+                </fieldset>
+                <fieldset>
                     <legend>Chambre(s)</legend>
-                    <div id="Room1">
+                        <label for="Chambre1">
+                    <div id="Room1" class="rooms">
                         <input
                             type="checkbox"
                             id="Chambre1"
                             name="Chambre1"
                             value="Chambre1"
                         />
-                        <label for="Chambre1">Chambre 1</label>
                     </div>
-                    <div id="Room2">
+                    </label>
+                    <label for="Chambre2">
+                    <div id="Room2" class="rooms">
                         <input
                             type="checkbox"
                             id="Chambre2"
                             name="Chambre2"
                             value="Chambre2"
                         />
-                        <label for="Chambre2">Chambre 2</label>
                     </div>
-                    <div id="Room3">
+                    </label>
+                        <label for="Chambre3">
+                    <div id="Room3" class="rooms">
                         <input
                             type="checkbox"
                             id="Chambre3"
                             name="Chambre3"
                             value="Chambre3"
                         />
-                        <label for="Chambre3">Chambre 3</label>
                     </div>
-                    <div id="Room4">
+                    </label>
+                        <label for="Chambre4">
+                    <div id="Room4" class="rooms">
                         <input
                             type="checkbox"
                             id="Chambre4"
                             name="Chambre4"
                             value="Chambre4"
                         />
-                        <label for="Chambre4">Chambre 4</label>
                     </div>
-                    <div id="Room5">
+                    </label>
+                        <label for="Chambre5">
+                    <div id="Room5" class="rooms">
                         <input
                             type="checkbox"
                             id="Chambre5"
                             name="Chambre5"
                             value="Chambre5"
                         />
-                        <label for="Chambre5">Chambre 5</label>
                     </div>
-                    <div id="Room6">
+                    </label>
+                        <label for="Chambre6">
+                    <div id="Room6" class="rooms">
                         <input
                             type="checkbox"
                             id="Chambre6"
                             name="Chambre6"
                             value="Chambre6"
                         />
-                        <label for="Chambre6">Chambre 6</label>
                     </div>
-                    <div id="Room7">
+                    </label>
+                        <label for="Chambre7">
+                    <div id="Room7" class="rooms">
                         <input
                             type="checkbox"
                             id="Chambre7"
                             name="Chambre7"
                             value="Chambre7"
                         />
-                        <label for="Chambre7">Chambre 7</label>
                     </div>
-                    <div id="Room8">
+                    </label>
+                        <label for="Chambre8">
+                    <div id="Room8" class="rooms">
                         <input
                             type="checkbox"
                             id="Chambre8"
                             name="Chambre8"
                             value="Chambre8"
                         />
-                        <label for="Chambre8">Chambre 8</label>
                     </div>
+                    </label>
                 </fieldset>
                 <label for="sendToDB">
-                    <input
-                        type="checkbox"
-                        id="sendToDB"
-                        name="sendToDB"
-                    />Ajouter au fichier client
+                    <input type="checkbox" id="sendToDB" name="sendToDB" />
+                    Ajouter au fichier client
                 </label>
                 <div>
                     <input type="submit" value="Envoyer" />
