@@ -27,7 +27,7 @@ export default function App() {
                     <nav>
                         <ul>
                             <li>
-                                <Link to="/Ajouter">Ajouter</Link>
+                                <Link to="/">Ajouter</Link>
                             </li>
                             <li>
                                 <Link to="/Modifier">Modifier</Link>
@@ -37,7 +37,7 @@ export default function App() {
                     <hr></hr>
                     <Routes>
                         <Route
-                            path="/Ajouter"
+                            path="/"
                             element={<Ajouter />}
                         />
                         <Route path="/Modifier" element={<Modifier />} />

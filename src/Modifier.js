@@ -6,12 +6,14 @@ const apiKey = process.env.REACT_APP_GOOGLE_API_KEY;
 const clientId = process.env.REACT_APP_CLIENT_ID;
 
 export default function Modifier() {
-    const [eventList, setEventList] = useState([]);
+    const [response , setResponse] = useState('')
+    const [error, setError] =useState('')
+   const [eventList, setEventList] = useState([]);
     const loadGapi = () => {
         gapi.load("client", () => {
             gapi.client
                 .init({
-                    apiKey: apiKey,
+                    apiKey:apiKey,
                     discoveryDocs: [
                         "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
                     ],
@@ -40,8 +42,9 @@ export default function Modifier() {
             };
 
             gapi.client.calendar.events.list(request).then((e) => {
-                console.log(e.result.items);
                 setEventList(e.result.items);
+                setResponse(e.status)
+                if(e.error)setError(e.error.message)
             });
         });
     };
@@ -74,6 +77,8 @@ export default function Modifier() {
     return (
         <>
             <button onClick={getEvents}>test</button>
+            {response && <p>{response}</p>}
+            {error && <p>{error}</p>}
             <div>
                 {!eventList.length && <p>Pas d'évenement prévu !</p>}
                 <ul>

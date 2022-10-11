@@ -35,7 +35,6 @@ export default function Ajouter() {
         gapi.load("client", () => {
             gapi.client
                 .init({
-                    apiKey: apiKey,
                     discoveryDocs: [
                         "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
                     ],
