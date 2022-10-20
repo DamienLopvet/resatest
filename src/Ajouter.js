@@ -7,15 +7,16 @@ import { fr } from "date-fns/locale";
 import "./App.css";
 import { gapi } from "gapi-script";
 
-const apiKey = process.env.REACT_APP_GOOGLE_API_KEY;
-const clientId = process.env.REACT_APP_CLIENT_ID;
-
-export default function Ajouter() {
+export default function Ajouter( {eventId, setEventId } ) {
+   
+    if(eventId) getEvent()
+    const [submitValue, setSubmitValue] = useState('Envoyer')
+    const  GoogleAuth = gapi.auth2?.getAuthInstance();
     const [starting, setStarting] = useState(new Date());
-    const [ending, setEnding] = useState('');
+    const [ending, setEnding] = useState("");
     const [Chambres, setChambres] = useState([]);
-    const [response , setResponse] = useState('')
-    const [error, setError] =useState('')
+    const [response, setResponse] = useState("");
+    const [error, setError] = useState("");
     const [inputs, setInputs] = useState({
         start: {
             dateTime: "",
@@ -31,24 +32,7 @@ export default function Ajouter() {
         Tel: "",
         Email: "",
     });
-    const loadGapi = () => {
-        gapi.load("client", () => {
-            gapi.client
-                .init({
-                    discoveryDocs: [
-                        "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
-                    ],
-                    clientId: clientId,
-                    scope: "https://www.googleapis.com/auth/calendar",
-                })
-                .then(() => {
-                    gapi.client.load("calendar", "v3", () => {
-                        console.log("client ready");
-                    });
-                }).catch((err)=>console.log(err));
-        });
-    };
-    loadGapi()
+
     const updateChambres = (event) => {
         if (event.target.checked) {
             if (!Chambres.includes(event.target.value)) {
@@ -66,44 +50,56 @@ export default function Ajouter() {
                 : event.target.value;
         setInputs((values) => ({ ...values, [name]: value }));
     };
-
+   
     const showFormData = () => {
-       
-        console.log(starting);
-        console.log(inputs.start.dateTime);
-        console.log(ending);
-        let dynamicEvent = {
-            start: inputs.start,
-            end: inputs.end,
-            summary: `${inputs.NombrePersonne} ${inputs.NombrePersonne > 1 ? 'personnes' : 'personne'}, ${Chambres.length > 1 ? 'Chambres ' : 'Chambre '}${Chambres.length > 0 ? Chambres : 'Inconnue'}`, 
-             description: `Nom : ${inputs.Nom ? inputs.Nom : 'Inconnu'} , Tel : ${inputs.Tel ? inputs.Tel : 'Inconnu'}`,
-            colorId: Chambres[0],
-            params: {
-                sendNotifications: true,
-            },
-            attendees: [
-                {
-                    email: "xxx",
-                },
-            ],
-        };
-console.log(dynamicEvent);
+   
     };
+    function getEvent() {
+        
+        var request = gapi.client.calendar.events.get({
+            calendarId: "primary",
+            eventId: eventId,
+        });
+        request.execute(function (event) {
+            console.log(event);
+            setInfo(event)
+            if (event.error) setError(event.error.message);
+        });  
+        
+    }
+    function setInfo(data) {
+        setSubmitValue('Modifier')
+        let id = eventId
+        console.log(id);
+        setEnding(data.end.dateTime)
+        setStarting(data.start.dateTime)
+        let quantity =  data.summary.split(' ')[0];
+        inputs.NombrePersonne = quantity;
+        console.log(data.summary.split(':')[1]);
+        let chambreData = data.summary.split(':')[1];
+        if(chambreData.length > 1){
+          let chambres = chambreData.split(',')
+          console.log(chambres);
+          chambres.forEach((chambre)=>{
+            parseInt(chambre)
+          document.getElementById(`Chambre${chambre.trim()}`).checked = true;
+
+          } )
+        }
+        setEventId('')
+    }
     const addEvent = (e) => {
         e.preventDefault();
-        
 
-        gapi.auth2.getAuthInstance().then(() => {
+        GoogleAuth.then(() => {
             let dynamicEvent = {
                 start: inputs.start,
                 end: inputs.end,
-                summary: `${inputs.NombrePersonne} personnes, Chambres : ${Chambres}`,
+                summary: `${inputs.NombrePersonne} personnes, Chambres :${Chambres}`,
                 description: `Nom :  ${inputs.Nom} , Tel : ${inputs.Tel}`,
                 colorId: Chambres[0],
                 location: [...Chambres],
-                params: {
-                    sendNotifications: true,
-                },
+
                 // attendees: [
                 //     {
                 //         email: "",
@@ -131,18 +127,19 @@ console.log(dynamicEvent);
                 calendarId: "primary",
                 resource: event,
                 sendUpdates: "all",
+                // authorization: "bearer" + token
             });
             request.execute(function (event) {
-                setResponse(event.status)
-                if(event.error) setError(event.error.message);
+                setResponse(event.status);
+                if (event.error) setError(event.error.message);
                 console.log(event);
             });
-        })
-
+        });
     };
 
     return (
         <>
+        <div id="divSignin"></div>
             <button onClick={showFormData}>test</button>
             <form onSubmit={addEvent}>
                 <fieldset>
@@ -171,7 +168,7 @@ console.log(dynamicEvent);
                             renderInput={(props) => <TextField {...props} />}
                             label="Date de départ"
                             minDate={starting}
-                            value={ending? ending : starting }
+                            value={ending ? ending : starting}
                             onChange={(newValue) => {
                                 setEnding(newValue);
                                 inputs.end.dateTime = newValue;
@@ -182,7 +179,7 @@ console.log(dynamicEvent);
                 <label htmlFor="NombrePersonne">
                     <p>
                         <span className="nbrPers">{inputs.NombrePersonne}</span>{" "}
-                        {inputs.NombrePersonne > 1 ? 'personnes' : 'personne'}
+                        {inputs.NombrePersonne > 1 ? "personnes" : "personne"}
                     </p>
                     <input
                         type="range"
@@ -240,7 +237,9 @@ console.log(dynamicEvent);
                     </label>
                 </fieldset>
                 <fieldset>
-                    <legend>{Chambres.length > 1 ? 'Chambres ' : 'Chambre '}</legend>
+                    <legend>
+                        {Chambres.length > 1 ? "Chambres " : "Chambre "}
+                    </legend>
                     <label htmlFor="Chambre1">
                         <div id="Room1" className="rooms">
                             <input
@@ -331,7 +330,7 @@ console.log(dynamicEvent);
                     </label>
                 </fieldset>
                 {response && <p>{response}</p>}
-                            {error && <p>{error} </p>}
+                {error && <p>{error} </p>}
                 <label htmlFor="sendToDB">
                     <input
                         type="checkbox"
@@ -344,10 +343,12 @@ console.log(dynamicEvent);
                 </label>
 
                 <div>
-                    <input type="submit" value="Envoyer" />
+                    <input type="submit" value={submitValue} id="submit_button"/>
                 </div>
             </form>
-            
+            <br />
+            <br />
+            <br />
         </>
     );
 }

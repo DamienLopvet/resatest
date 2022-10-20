@@ -1,7 +1,9 @@
 :root{
   --room-number:70px;
   --room-number-top-position: 5px;
+  --box-shadow: 3px 3px 6px 1px #0000003d;
 }
+
 nav{
   padding-right: 10px;
 }
@@ -171,4 +173,20 @@ fieldset label{
   border: 1px solid black;
   border-radius: 5px;
   padding:2px 5px;
+}
+#user_logo img{
+  width :30px;
+  height: 30px;
+  box-shadow: var(--box-shadow);
+  border-radius: 5px;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  cursor: pointer;
+}
+
+#divSignin{
+  position: absolute;
+  top:5px;
+  left:5px;
 }
