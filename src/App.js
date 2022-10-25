@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 
 const clientId = process.env.REACT_APP_CLIENT_ID;
 export default function App() {
+    const [error, setError] = useState("");
     const [eventId, setEventId] = useState('')
     const [userThumbnail, setUserThumbnail] = useState("");
     const [GoogleUser, setGoogleUser] = useState({});
@@ -36,14 +37,17 @@ export default function App() {
                         setUserThumbnail(() => imageUrl);
                     } else {
                         console.log("user is not logged");
-
+                        setError('Utilisateur non connnecté');
+                setTimeout(()=>{ 
+                setError('')}, "3000") 
+            
                         gapi.signin2.render("divSignin", {
-                            width: 30,
-                            height: 30,
+                            width: 40,
+                            height: 40,
                             onsuccess: handleClientLoad,
                         });
                     }
-                });
+                })
         }
 
         handleClientLoad();
@@ -59,6 +63,7 @@ export default function App() {
     return (
         <div className="App">
             {!userThumbnail && <div id="divSignin"></div>}
+            {error && <p className="response">{error}</p>}
 
             {userThumbnail && (
                 <div id="user_logo">

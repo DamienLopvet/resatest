@@ -7,11 +7,11 @@ import { fr } from "date-fns/locale";
 import "./App.css";
 import { gapi } from "gapi-script";
 
-export default function Ajouter( {eventId, setEventId } ) {
-   
-    if(eventId) getEvent()
-    const [submitValue, setSubmitValue] = useState('Envoyer')
-    const  GoogleAuth = gapi.auth2?.getAuthInstance();
+export default function Ajouter({ eventId, setEventId }) {
+    const [loading, setLoading] = useState(false)
+    const [eventToModify, setEventToModify] = useState('')
+    const [submitValue, setSubmitValue] = useState("Envoyer");
+    const GoogleAuth = gapi.auth2?.getAuthInstance();
     const [starting, setStarting] = useState(new Date());
     const [ending, setEnding] = useState("");
     const [Chambres, setChambres] = useState([]);
@@ -50,55 +50,87 @@ export default function Ajouter( {eventId, setEventId } ) {
                 : event.target.value;
         setInputs((values) => ({ ...values, [name]: value }));
     };
+
+
+function handleSubmit(e) {
+    setLoading(true)
+    e.preventDefault();
+    if(submitValue === "Envoyer") addEvent()
+    else updateEvent()
+}
+    // TEST BUTTON
+    const showFormData = () => {};
+
+    // SET EVENT FOR MODIFICATION PURPOSE
    
-    const showFormData = () => {
-   
-    };
+    if (eventId) getEvent();
+
     function getEvent() {
-        
         var request = gapi.client.calendar.events.get({
             calendarId: "primary",
             eventId: eventId,
         });
         request.execute(function (event) {
-            console.log(event);
-            setInfo(event)
+            setInfos(event);
             if (event.error) setError(event.error.message);
-        });  
-        
+        });
     }
-    function setInfo(data) {
-        setSubmitValue('Modifier')
-        let id = eventId
-        console.log(id);
-        setEnding(data.end.dateTime)
-        setStarting(data.start.dateTime)
-        let quantity =  data.summary.split(' ')[0];
+
+    function setInfos(data) {
+        setSubmitValue("Modifier");
+        setEventToModify(eventId)
+
+        //SET DATES
+        let end = data.end.dateTime;
+        setEnding(end);
+        inputs.end.dateTime = end;
+
+        let start = data.start.dateTime;
+        setStarting(start);
+        inputs.start.dateTime = start;
+        let quantity = data.summary.split(" ")[0];
+
+        //SET NUMBER OF PERSONS
         inputs.NombrePersonne = quantity;
-        console.log(data.summary.split(':')[1]);
-        let chambreData = data.summary.split(':')[1];
-        if(chambreData.length > 1){
-          let chambres = chambreData.split(',')
-          console.log(chambres);
-          chambres.forEach((chambre)=>{
-            parseInt(chambre)
-          document.getElementById(`Chambre${chambre.trim()}`).checked = true;
+        
+        //SET CHAMBRE INFO
 
-          } )
+        let chambreData = data.summary.split(":")[1];
+        if (chambreData.length > 1) {
+            let chambres = chambreData.split(",");
+            console.log(chambres);
+            chambres.forEach((chambre) => {
+                parseInt(chambre);
+                document.getElementById(
+                    `Chambre${chambre.trim()}`
+                ).checked = true;
+                setChambres((arr) => [...arr, chambre]);
+            });
+        } else if(chambreData.length === 1) {
+            let chambre = data.summary.split(":")[1];
+            document.getElementById(`Chambre${chambre.trim()}`).checked = true;
+            setChambres(chambre);
         }
-        setEventId('')
+           
+        //SET CONTACT INFO
+        let description = data.description
+        let parseDescription = JSON.parse(description)
+        inputs.Nom = parseDescription.Nom;
+        inputs.Prenom = parseDescription.Prenom;
+        inputs.Tel = parseDescription.Tel;
+        inputs.Email = parseDescription.Email;
+        setEventId("");
     }
-    const addEvent = (e) => {
-        e.preventDefault();
 
+    const updateEvent = () =>{
+        console.log(eventToModify);
         GoogleAuth.then(() => {
-            let dynamicEvent = {
+            let event = {
                 start: inputs.start,
                 end: inputs.end,
                 summary: `${inputs.NombrePersonne} personnes, Chambres :${Chambres}`,
-                description: `Nom :  ${inputs.Nom} , Tel : ${inputs.Tel}`,
+                description: `{"Nom" : "${inputs.Nom}", "Prenom" : "${inputs.Prenom}", "Tel" : "${inputs.Tel}", "Email" : "${inputs.Email}"}`,
                 colorId: Chambres[0],
-                location: [...Chambres],
 
                 // attendees: [
                 //     {
@@ -106,23 +138,48 @@ export default function Ajouter( {eventId, setEventId } ) {
                 //     },
                 // ],
             };
-            let event = {
-                ...dynamicEvent,
-                // summary: "Google I/O 2015",
-                // location: "800 Howard St., San Francisco, CA 94103",
-                // description:
-                //     "A chance to hear more about Google's developer products.",
-                // colorId: "3",
-                // start: {
-                //     dateTime: "2022-10-28T11:00:00-07:00",
-                //     timeZone: "America/Los_Angeles",
-                // },
-                // end: {
-                //     dateTime: "2022-11-28T12:00:00-07:00",
-                //     timeZone: "America/Los_Angeles",
-                // },
-            };
+            var request = gapi.client.calendar.events.patch({
+                calendarId: "primary",
+                resource: event,
+                eventId : eventToModify,
+                sendUpdates: "all",
+                // authorization: "bearer" + token
+            });
+            request.execute(function (event) {
+                if (event.error){
+                    setError('Une Erreur est survenue');
+               setTimeout(()=>{ 
+               setError('')}, "3000")
+               setLoading(false)
+           }
+           else{
+               setResponse("La réservation a bien été modifiée");
+               setTimeout(()=>{ 
+               setResponse('');
+               window.location.reload()
+           }, "3000")
+           }
+            });
+        });
+    }
 
+    // SET EVENT FOR CREATION PURPOSE
+    const addEvent = () => {
+
+        GoogleAuth.then(() => {
+            let event = {
+                start: inputs.start,
+                end: inputs.end,
+                summary: `${inputs.NombrePersonne} personnes, Chambres :${Chambres}`,
+                description: `{"Nom" : "${inputs.Nom}", "Prenom" : "${inputs.Prenom}", "Tel" : "${inputs.Tel}", "Email" : "${inputs.Email}"}`,
+                colorId: Chambres[0],
+
+                // attendees: [
+                //     {
+                //         email: "",
+                //     },
+                // ],
+            };
             var request = gapi.client.calendar.events.insert({
                 calendarId: "primary",
                 resource: event,
@@ -130,18 +187,30 @@ export default function Ajouter( {eventId, setEventId } ) {
                 // authorization: "bearer" + token
             });
             request.execute(function (event) {
-                setResponse(event.status);
-                if (event.error) setError(event.error.message);
-                console.log(event);
-            });
+                if (event.error){
+                     setError('Une Erreur est survenue');
+                setTimeout(()=>{ 
+                setError('')}, "3000")
+                setLoading(false)
+            }
+            else{
+                setResponse("La réservation a bien été enregistrée");
+                setTimeout(()=>{ 
+                setResponse('');
+                window.location.reload()
+            }, "3000")
+            }
+                     console.log(event);
+            })
         });
     };
+    // RENDERING
 
     return (
         <>
-        <div id="divSignin"></div>
+            <div id="divSignin"></div>
             <button onClick={showFormData}>test</button>
-            <form onSubmit={addEvent}>
+            <form onSubmit={handleSubmit}>
                 <fieldset>
                     <legend>Dates</legend>
                     <LocalizationProvider
@@ -329,9 +398,9 @@ export default function Ajouter( {eventId, setEventId } ) {
                         </div>
                     </label>
                 </fieldset>
-                {response && <p>{response}</p>}
-                {error && <p>{error} </p>}
-                <label htmlFor="sendToDB">
+                {response && <p className="response">{response} </p>}
+                {error && <p className="error">{error} </p>}
+                {/* <label htmlFor="sendToDB">
                     <input
                         type="checkbox"
                         id="sendToDB"
@@ -340,11 +409,17 @@ export default function Ajouter( {eventId, setEventId } ) {
                         onChange={handleChange}
                     />
                     Ajouter au fichier client
-                </label>
+                </label> */}
 
                 <div>
-                    <input type="submit" value={submitValue} id="submit_button"/>
+                    <input
+                        type="submit"
+                        value={loading ? 'loading...' : submitValue}
+                        id="submit_button"
+                        disabled = {loading}
+                    />
                 </div>
+                {submitValue === "Modifier" && <button onClick={()=>window.location.reload()}> Annuler les modifications</button>} 
             </form>
             <br />
             <br />
