@@ -11,79 +11,7 @@ export default function Modifier({ setEventId }) {
     const GoogleAuth = gapi.auth2?.getAuthInstance();
     const [response, setResponse] = useState("");
     const [error, setError] = useState("");
-    const [eventList, setEventList] = useState([
-        {
-            kind: "calendar#event",
-            etag: '"3332945159122000"',
-            id: "74sb58j7oucbrkrtlvjdhhrn9c",
-            status: "confirmed",
-            htmlLink:
-                "https://www.google.com/calendar/event?eid=NzRzYjU4ajdvdWNicmtydGx2amRoaHJuOWMgbGFtYWRlc3Jlc2FAbQ",
-            created: "2022-10-22T21:02:28.000Z",
-            updated: "2022-10-22T21:02:59.561Z",
-            summary: "7 personnes, Chambres :8,1,2",
-            description:
-                '{"Nom" : "Damien ", "Prenom" : "lôp", "Tel" : "123456", "Email" : "ghrr@rtt.iu"}',
-            colorId: "8",
-            creator: {
-                email: "lamadesresa@gmail.com",
-                self: true,
-            },
-            organizer: {
-                email: "lamadesresa@gmail.com",
-                self: true,
-            },
-            start: {
-                dateTime: "2022-10-23T12:01:40+02:00",
-                timeZone: "Europe/Paris",
-            },
-            end: {
-                dateTime: "2022-10-27T12:01:40+02:00",
-                timeZone: "Europe/Paris",
-            },
-            iCalUID: "74sb58j7oucbrkrtlvjdhhrn9c@google.com",
-            sequence: 0,
-            reminders: {
-                useDefault: true,
-            },
-            eventType: "default",
-        },
-        {
-            kind: "calendar#event",
-            etag: '"3332892273320000"',
-            id: "sj4orr3on5po2snh1iui89sn7c",
-            status: "confirmed",
-            htmlLink:
-                "https://www.google.com/calendar/event?eid=c2o0b3JyM29uNXBvMnNuaDFpdWk4OXNuN2MgbGFtYWRlc3Jlc2FAbQ",
-            created: "2022-10-22T13:42:16.000Z",
-            updated: "2022-10-22T13:42:16.660Z",
-            summary: "1 personnes, Chambres :",
-            description:
-                '{"Nom" : "", "Prenom" : "", "Tel" : "", "Email" : ""}',
-            creator: {
-                email: "lamadesresa@gmail.com",
-                self: true,
-            },
-            organizer: {
-                email: "lamadesresa@gmail.com",
-                self: true,
-            },
-            start: {
-                dateTime: "2022-10-23T15:42:00+02:00",
-                timeZone: "Europe/Paris",
-            },
-            end: {
-                dateTime: "2022-10-25T15:42:00+02:00",
-                timeZone: "Europe/Paris",
-            },
-            iCalUID: "sj4orr3on5po2snh1iui89sn7c@google.com",
-            sequence: 0,
-            reminders: {
-                useDefault: true,
-            },
-            eventType: "default",
-        },
-    ]);
+    const [eventList, setEventList] = useState([]);
 
     function getEvents() {
         setLoading(true);
@@ -96,31 +24,31 @@ export default function Modifier({ setEventId }) {
                 maxResults: 50,
                 orderBy: "startTime",
             };
-
+            
             gapi.client.calendar.events
-                .list(request)
-                .then((e) => {
-                    if (e.result.items.length === 0)
-                        setResponse("pas d'évenements prévus");
-                    console.log(e.result.items);
-                    setEventList(e.result.items);
-                    setLoading(false);
-                })
-                .catch(() => {
-                    setError("Une Erreur est survenue");
-                    setTimeout(() => {
-                        setError("");
-                    }, "3000");
-                    setLoading(false);
-                });
+            .list(request)
+            .then((e) => {
+                if (e.result.items.length === 0)
+                setResponse("pas d'évenements prévus");
+                console.log(e.result.items);
+                setEventList(e.result.items);
+                setLoading(false);
+            })
+            .catch(() => {
+                setError("Une Erreur est survenue");
+                setTimeout(() => {
+                    setError("");
+                }, "3000");
+                setLoading(false);
+            });
         });
     }
-
+    
     function deleteEvent(event) {
         setLoading(true);
         setResponse("Loading ...");
         GoogleAuth.then(() => {
-            let eventId = event.target.value;
+            let eventId = event.target.id;
 
             var params = {
                 calendarId: "primary",
@@ -145,11 +73,11 @@ export default function Modifier({ setEventId }) {
     }
     function modify(e) {
         setLoading(true);
-        let itemId = e.target.value;
+        let itemId = e.target.id;
+        console.log(itemId);
         setEventId(itemId);
         navigate("/resatest/");
     }
-
     return (
         <>
             <button onClick={getEvents} disabled={loading}>
@@ -157,70 +85,79 @@ export default function Modifier({ setEventId }) {
             </button>
             {error && <p className="error">{error}</p>}
             {response && <p className="response">{response}</p>}
-            <div>
-                {eventList.length === 1 && <p>{eventList.length} évenement </p>}
+            <div className="eventQuantity">
+                {eventList.length === 1 && <p><span className="eventQuantity-number">{eventList.length}</span> Réservation </p>}
 
-                {eventList.length > 1 && <p>{eventList.length} évenements </p>}
-
-                <ul>
+                {eventList.length > 1 && <p><span className="eventQuantity-number">{eventList.length}</span> Réservations </p>}
+            </div>
+                <ul className="eventsList">
                     {eventList.map((item, i) => (
                         <li key={item.id} className="eventCard">
                             <div id="eventCardCorner"></div>
-                            <div
-                                className="eventCard-start"
-                                title={
-                                    format(
-                                        new Date(item.start.dateTime),
-                                        "EEEE à H",
-                                        { locale: fr }
-                                    ) + "h"
-                                }
-                            >
-                                Du{" "}
-                                {format(new Date(item.start.dateTime), "dd", {
-                                    locale: fr,
-                                })}
-                                <span className="eventCard-month">
-                                    {format(
-                                        new Date(item.start.dateTime),
-                                        " MMMM ",
-                                        { locale: fr }
-                                    )}
-                                </span>
-                                <span>
-                                    {format(
-                                        new Date(item.start.dateTime),
-                                        "yyyy",
-                                        { locale: fr }
-                                    )}
-                                </span>
-                            </div>
-                            <div
-                                className="eventCard-end"
-                                title={
-                                    format(
-                                        new Date(item.end.dateTime),
-                                        "EEEE à H",
-                                        { locale: fr }
-                                    ) + "h"
-                                }
-                            >
-                                <span>
-                                    Au &nbsp;
-                                    {format(
-                                        new Date(item.end.dateTime),
-                                        "dd MMMM yyyy",
-                                        { locale: fr }
-                                    )}
-                                </span>
-                            </div>
-                            <div className="eventCard-clientInfo">
-                                {JSON.parse(item.description).Nom ||
-                                    "pas de nom,"}
+                           <div className="eventCard-clientInfo">
+                                <h2 className="eventCard-clientInfo-nom">
+                                    {JSON.parse(item.description).Nom ||
+                                        "pas de nom,"}
+                                </h2>
                                 &nbsp;
-                                {JSON.parse(item.description).Prenom ||
-                                    "pas de prénom"}
+                                <h2 className="eventCard-clientInfo-prenom">
+                                    {JSON.parse(item.description).Prenom ||
+                                        "pas de prénom"}
+                                </h2>
                             </div>
+                            <div className="eventCard-date">
+                                <div
+                                    className="eventCard-date-start"
+                                    title={
+                                        format(
+                                            new Date(item.start.dateTime),
+                                            "EEEE",
+                                            { locale: fr }
+                                        )
+                                    }
+                                >
+                                    Du{" "}
+                                    {format(new Date(item.start.dateTime), "dd", {
+                                        locale: fr,
+                                    })}
+                                    <span className="eventCard-date-start-month"><strong>
+                                        
+                                            {format(
+                                                new Date(item.start.dateTime),
+                                                " MMM ",
+                                                { locale: fr }
+                                            )}
+                                    </strong>
+                                    </span>
+                                    <span>
+                                        {format(
+                                            new Date(item.start.dateTime),
+                                            "yyyy à H",
+                                            { locale: fr }
+                                        )}h
+                                    </span>
+                                </div>
+                                <div
+                                    className="eventCard-date-end"
+                                    title={
+                                        format(
+                                            new Date(item.end.dateTime),
+                                            "EEEE",
+                                            { locale: fr }
+                                        )
+                                    }
+                                >
+                                    <span>
+                                        Au &nbsp;
+                                        {format(
+                                            new Date(item.end.dateTime),
+                                            "dd MMM yyyy à H",
+                                            { locale: fr }
+                                        )}h
+                                    </span>
+                                </div>
+                            </div>
+                            
                             <div className="eventCard-tel">
                                 {JSON.parse(item.description).Tel ? (
                                     <a href="tel:{JSON.parse(item.description).Tel}">
@@ -258,7 +195,7 @@ export default function Modifier({ setEventId }) {
                                             height="12"
                                         />
                                         &nbsp;
-                                        {JSON.parse(item.description).Email}
+                                        <span>{JSON.parse(item.description).Email}</span>
                                     </a>
                                 ) : (
                                     <>
@@ -301,13 +238,13 @@ export default function Modifier({ setEventId }) {
 
                             <div className="eventCard-nav">
                                 <img
-                                    value={item.id}
+                                    id={item.id}
                                     src="modification.svg"
                                     onClick={modify}
                                     alt="modification icon"
                                     title="modifer"
-                                    width="30"
-                                    height="30"
+                                    width="25"
+                                    height="25"
                                 />
                                 <a
                                     href={item.htmlLink}
@@ -327,15 +264,14 @@ export default function Modifier({ setEventId }) {
                                     alt="delete button icon"
                                     title="Supprimer"
                                     onClick={deleteEvent}
-                                    value={item.id}
-                                    width="25"
-                                    height="25"
+                                    id={item.id}
+                                    width="20"
+                                    height="20"
                                 />
                             </div>
                         </li>
                     ))}
                 </ul>
-            </div>
         </>
     );
 }

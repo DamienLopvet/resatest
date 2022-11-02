@@ -8,8 +8,8 @@ import "./App.css";
 import { gapi } from "gapi-script";
 
 export default function Ajouter({ eventId, setEventId }) {
-    const [loading, setLoading] = useState(false)
-    const [eventToModify, setEventToModify] = useState('')
+    const [loading, setLoading] = useState(false);
+    const [eventToModify, setEventToModify] = useState("");
     const [submitValue, setSubmitValue] = useState("Envoyer");
     const GoogleAuth = gapi.auth2?.getAuthInstance();
     const [starting, setStarting] = useState(new Date());
@@ -51,18 +51,17 @@ export default function Ajouter({ eventId, setEventId }) {
         setInputs((values) => ({ ...values, [name]: value }));
     };
 
-
-function handleSubmit(e) {
-    setLoading(true)
-    e.preventDefault();
-    if(submitValue === "Envoyer") addEvent()
-    else updateEvent()
-}
+    function handleSubmit(e) {
+        setLoading(true);
+        e.preventDefault();
+        if (submitValue === "Envoyer") addEvent();
+        else updateEvent();
+    }
     // TEST BUTTON
     const showFormData = () => {};
 
     // SET EVENT FOR MODIFICATION PURPOSE
-   
+
     if (eventId) getEvent();
 
     function getEvent() {
@@ -78,7 +77,7 @@ function handleSubmit(e) {
 
     function setInfos(data) {
         setSubmitValue("Modifier");
-        setEventToModify(eventId)
+        setEventToModify(eventId);
 
         //SET DATES
         let end = data.end.dateTime;
@@ -92,7 +91,7 @@ function handleSubmit(e) {
 
         //SET NUMBER OF PERSONS
         inputs.NombrePersonne = quantity;
-        
+
         //SET CHAMBRE INFO
 
         let chambreData = data.summary.split(":")[1];
@@ -106,15 +105,15 @@ function handleSubmit(e) {
                 ).checked = true;
                 setChambres((arr) => [...arr, chambre]);
             });
-        } else if(chambreData.length === 1) {
+        } else if (chambreData.length === 1) {
             let chambre = data.summary.split(":")[1];
             document.getElementById(`Chambre${chambre.trim()}`).checked = true;
             setChambres(chambre);
         }
-           
+
         //SET CONTACT INFO
-        let description = data.description
-        let parseDescription = JSON.parse(description)
+        let description = data.description;
+        let parseDescription = JSON.parse(description);
         inputs.Nom = parseDescription.Nom;
         inputs.Prenom = parseDescription.Prenom;
         inputs.Tel = parseDescription.Tel;
@@ -122,7 +121,7 @@ function handleSubmit(e) {
         setEventId("");
     }
 
-    const updateEvent = () =>{
+    const updateEvent = () => {
         console.log(eventToModify);
         GoogleAuth.then(() => {
             let event = {
@@ -141,31 +140,30 @@ function handleSubmit(e) {
             var request = gapi.client.calendar.events.patch({
                 calendarId: "primary",
                 resource: event,
-                eventId : eventToModify,
+                eventId: eventToModify,
                 sendUpdates: "all",
                 // authorization: "bearer" + token
             });
             request.execute(function (event) {
-                if (event.error){
-                    setError('Une Erreur est survenue');
-               setTimeout(()=>{ 
-               setError('')}, "3000")
-               setLoading(false)
-           }
-           else{
-               setResponse("La réservation a bien été modifiée");
-               setTimeout(()=>{ 
-               setResponse('');
-               window.location.reload()
-           }, "3000")
-           }
+                if (event.error) {
+                    setError("Une Erreur est survenue");
+                    setTimeout(() => {
+                        setError("");
+                    }, "3000");
+                    setLoading(false);
+                } else {
+                    setResponse("La réservation a bien été modifiée");
+                    setTimeout(() => {
+                        setResponse("");
+                        window.location.reload();
+                    }, "3000");
+                }
             });
         });
-    }
+    };
 
     // SET EVENT FOR CREATION PURPOSE
     const addEvent = () => {
-
         GoogleAuth.then(() => {
             let event = {
                 start: inputs.start,
@@ -187,21 +185,21 @@ function handleSubmit(e) {
                 // authorization: "bearer" + token
             });
             request.execute(function (event) {
-                if (event.error){
-                     setError('Une Erreur est survenue');
-                setTimeout(()=>{ 
-                setError('')}, "3000")
-                setLoading(false)
-            }
-            else{
-                setResponse("La réservation a bien été enregistrée");
-                setTimeout(()=>{ 
-                setResponse('');
-                window.location.reload()
-            }, "3000")
-            }
-                     console.log(event);
-            })
+                if (event.error) {
+                    setError("Une Erreur est survenue");
+                    setTimeout(() => {
+                        setError("");
+                    }, "3000");
+                    setLoading(false);
+                } else {
+                    setResponse("La réservation a bien été enregistrée");
+                    setTimeout(() => {
+                        setResponse("");
+                        window.location.reload();
+                    }, "3000");
+                }
+                console.log(event);
+            });
         });
     };
     // RENDERING
@@ -237,6 +235,7 @@ function handleSubmit(e) {
                             renderInput={(props) => <TextField {...props} />}
                             label="Date de départ"
                             minDate={starting}
+                            showDaysOutsideCurrentMonth
                             value={ending ? ending : starting}
                             onChange={(newValue) => {
                                 setEnding(newValue);
@@ -264,6 +263,8 @@ function handleSubmit(e) {
                     <legend>References client</legend>
                     <label htmlFor="Nom">
                         <input
+                            min="5"
+                            max="55"
                             type="text"
                             placeholder="Nom"
                             id="Nom"
@@ -274,6 +275,8 @@ function handleSubmit(e) {
                     </label>
                     <label htmlFor="Prenom">
                         <input
+                            min="5"
+                            max="55"
                             type="text"
                             placeholder="Prenom"
                             id="Prénom"
@@ -296,6 +299,8 @@ function handleSubmit(e) {
 
                     <label htmlFor="Email">
                         <input
+                            min="5"
+                            max="55"
                             type="email"
                             placeholder="E-mail"
                             id="Email"
@@ -414,12 +419,17 @@ function handleSubmit(e) {
                 <div>
                     <input
                         type="submit"
-                        value={loading ? 'loading...' : submitValue}
+                        value={loading ? "loading..." : submitValue}
                         id="submit_button"
-                        disabled = {loading}
+                        disabled={loading}
                     />
                 </div>
-                {submitValue === "Modifier" && <button onClick={()=>window.location.reload()}> Annuler les modifications</button>} 
+                {submitValue === "Modifier" && (
+                    <button onClick={() => window.location.reload()}>
+                        {" "}
+                        Annuler les modifications
+                    </button>
+                )}
             </form>
             <br />
             <br />

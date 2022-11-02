@@ -15,7 +15,7 @@ export default function App() {
         var GoogleAuth;
 
         function handleClientLoad() {
-            gapi.load("client:auth2", initClient);
+          gapi.load("client:auth2", initClient)
         }
         function initClient() {
             gapi.client
