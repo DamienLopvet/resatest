@@ -207,7 +207,6 @@ export default function Ajouter({ eventId, setEventId }) {
     return (
         <>
             <div id="divSignin"></div>
-            <button onClick={showFormData}>test</button>
             <form onSubmit={handleSubmit}>
                 <fieldset>
                     <legend>Dates</legend>

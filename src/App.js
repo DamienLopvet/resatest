@@ -62,7 +62,6 @@ export default function App() {
     }
     return (
         <div className="App">
-            {!userThumbnail && <div id="divSignin"></div>}
             {error && <p className="response">{error}</p>}
 
             {userThumbnail && (
@@ -73,6 +72,7 @@ export default function App() {
             <Router>
                 <div>
                     <nav>
+            {!userThumbnail && <div id="divSignin"></div>}
                         <ul>
                             <li>
                                 <Link to="/resatest/">Ajouter</Link>
@@ -81,8 +81,8 @@ export default function App() {
                                 <Link to="/resatest/Modifier">Modifier</Link>
                             </li>
                         </ul>
-                    </nav>
                     <hr></hr>
+                    </nav>
                     <Routes>
                         <Route path="/resatest/" element={<Ajouter eventId={eventId} setEventId={setEventId} />} />
                         <Route

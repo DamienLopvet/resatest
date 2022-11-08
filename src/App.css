@@ -6,9 +6,34 @@
   --label-shadow : 3px 3px 6px -2px #0000003d;
   --grey : #8c8989
 }
+body{
+  background-color: #eaeaea;
+}
+#user_logo img{
+  width :40px;
+  height: 40px;
+  box-shadow: var(--box-shadow);
+  border-radius: 5px;
+  position: fixed;
+  top: 5px;
+  left: 5px;
+  cursor: pointer;
+  z-index: 100;
+}
 
+#divSignin{
+  position: fixed;
+  top:5px;
+  left:5px;
+  z-index: 100;
+}
 nav{
   padding-right: 10px;
+  position: fixed;
+  background-color:  #eaeaead0;
+  width: 100%;
+  z-index: 50;
+  top:0;
 }
 nav li, nav a{
   all:unset;
@@ -18,14 +43,16 @@ nav ul{
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  gap:0.5rem
+  gap:0.5rem;
+  
 }
 input{
   padding: 5px;
   
 }
 input[type="range"]{
-  width:15rem
+  width:15rem;
+  background-color: white;
 }
 .rooms input[type="checkbox"]{
   width:20px;
@@ -55,7 +82,8 @@ fieldset{
 }
 /**DATE pickers*/
 form fieldset:first-child{
-  gap:1.5rem 
+  gap:1.5rem ;
+  margin-top:75px
 }
 fieldset div{
   padding:8px;
@@ -154,23 +182,9 @@ fieldset label{
   border: 1px solid black;
   border-radius: 5px;
   padding:2px 5px;
-}
-#user_logo img{
-  width :40px;
-  height: 40px;
-  box-shadow: var(--box-shadow);
-  border-radius: 5px;
-  position: absolute;
-  top: 5px;
-  left: 5px;
-  cursor: pointer;
+  background-color: white;
 }
 
-#divSignin{
-  position: absolute;
-  top:5px;
-  left:5px;
-}
 .response, .error {
   background-color: white;
   padding:20px 15px;
@@ -195,6 +209,8 @@ fieldset label{
 }
 .eventQuantity{
 text-align: center;
+margin-top:75px;
+
 }
 .eventQuantity-number{
 padding:5px;
@@ -262,7 +278,7 @@ font-size: 18px;
     border-right: 5px solid #1967d2;
     border-top: 5px solid #1967d2;
     border-top-right-radius: 10px;
-    z-index: 50;
+    z-index: 5;
 }
 .eventCard:hover{
   translate: 0 -2px;
