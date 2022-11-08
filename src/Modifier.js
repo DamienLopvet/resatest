@@ -102,7 +102,7 @@ export default function Modifier({ setEventId }) {
                                 &nbsp;
                                 <h2 className="eventCard-clientInfo-prenom">
                                     {JSON.parse(item.description).Prenom ||
-                                        "pas de prénom"}
+                                        ", '?'"}
                                 </h2>
                             </div>
                             <div className="eventCard-date">
