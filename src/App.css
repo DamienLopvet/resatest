@@ -292,7 +292,7 @@ font-size: 18px;
 .eventCard-date{
   z-index: 100;
   padding:5px;
-  text-align: center;
+  text-align: left  ;
 
   
 }
