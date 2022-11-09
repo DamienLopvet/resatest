@@ -302,6 +302,9 @@ font-size: 18px;
     font-weight: 500;
   font-size: 20px;
   margin-block:0px;
+  overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 .eventCard-clientInfo-nom::first-letter, .eventCard-clientInfo-prenom::first-letter{
   text-transform: capitalize;
