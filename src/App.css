@@ -124,9 +124,6 @@ fieldset label{
   cursor: pointer;
   
 }
-.rooms:active{
-  box-shadow: none;
-}
 .rooms{
   width: 70px;
   height: 70px;
