@@ -4,10 +4,12 @@
   --box-shadow: 3px 3px 6px 1px #0000003d;
   --box-shadow-hover : 3px 3px 6px 3px #0000003d;
   --label-shadow : 3px 3px 6px -2px #0000003d;
-  --grey : #8c8989
+  --grey : #8c8989;
+  --primary-color:rgb(247, 199, 65);
+  --background-color:#eaeaea;
 }
 body{
-  background-color: #eaeaea;
+  background-color: var(--background-color);
 }
 #user_logo img{
   width :40px;
@@ -50,14 +52,29 @@ nav ul{
   gap:0.5rem;
   
 }
-input{
+input, button{
   padding: 5px;
-  
+  background-color: var(--primary-color) ;
+  padding:10px;
+  border-radius: 5px;
+
 }
 input[type="range"]{
   width:15rem;
   background-color: white;
 }
+input[type="submit"]:hover, button:hover{
+  opacity: 1;
+  box-shadow: var(--box-shadow-hover);
+
+}
+input[type="submit"], button{
+  opacity: 0.9;
+  box-shadow: var(--box-shadow);
+  transition: 200ms;
+}
+
+  
 .rooms input[type="checkbox"]{
   width:20px;
   accent-color: rgb(69, 62, 132);
@@ -74,7 +91,12 @@ form{
 padding: 0 10px;
 align-items: center;
 }
-fieldset{
+form fieldset:first-child{
+  gap:1.5rem ;
+  margin-top:75px;
+
+}
+form  > fieldset{
   display: flex;
   flex-flow: row wrap;
   max-width: 235px;
@@ -82,27 +104,35 @@ fieldset{
   justify-content: center;
   border-radius: 5px;
   padding-block:15px 20px;
+  background-color: white;
+  box-shadow: var(--box-shadow);
   
 }
 /**DATE pickers*/
-form fieldset:first-child{
-  gap:1.5rem ;
-  margin-top:75px
-}
+
 fieldset div{
   padding:8px;
 
 }
-fieldset label{
- 
-  user-select: none;
-  cursor: pointer;
+fieldset legend{
+ translate: 0 -5px;
+
 }
 
+fieldset label{
+  user-select: none;
+  cursor: pointer;
+  
+}
+.rooms:active{
+  box-shadow: none;
+}
 .rooms{
   width: 70px;
   height: 70px;
   text-align: center;
+  box-shadow: var(--box-shadow);
+  transition: 200ms;
 }
 .rooms:after{
   position: absolute;
