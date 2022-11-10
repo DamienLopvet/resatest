@@ -69,7 +69,7 @@ input[type="submit"]:hover, button:hover{
   box-shadow: var(--box-shadow-hover);
 
 }
-input[type="submit"], button{
+input[type="submit"], button:not(.MuiButtonBase-root){
   opacity: 0.9;
   box-shadow: var(--box-shadow);
   transition: 200ms;
