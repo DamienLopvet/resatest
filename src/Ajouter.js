@@ -6,6 +6,8 @@ import { MobileDateTimePicker } from "@mui/x-date-pickers/MobileDateTimePicker";
 import { fr } from "date-fns/locale";
 import "./App.css";
 import { gapi } from "gapi-script";
+import Modifier from "./Modifier";
+
 
 export default function Ajouter({ eventId, setEventId }) {
     const [loading, setLoading] = useState(false);
@@ -206,6 +208,7 @@ export default function Ajouter({ eventId, setEventId }) {
 
     return (
         <>
+       
             <div id="divSignin"></div>
             <form onSubmit={handleSubmit}>
                 <fieldset>
@@ -243,21 +246,25 @@ export default function Ajouter({ eventId, setEventId }) {
                         />
                     </LocalizationProvider>
                 </fieldset>
-                <label htmlFor="NombrePersonne">
-                    <p>
-                        <span className="nbrPers">{inputs.NombrePersonne}</span>{" "}
-                        {inputs.NombrePersonne > 1 ? "personnes" : "personne"}
-                    </p>
-                    <input
-                        type="range"
-                        min="1"
-                        max="20"
-                        id="NombrePersonne"
-                        name="NombrePersonne"
-                        value={inputs.NombrePersonne || ""}
-                        onChange={handleChange}
-                    />
-                </label>
+                <fieldset>
+                    <legend>Nombre de personne</legend>
+                    <label htmlFor="NombrePersonne">
+                        <p>
+                            <span className="nbrPers">{inputs.NombrePersonne}</span>{" "}
+                            {inputs.NombrePersonne > 1 ? "personnes" : "personne"}
+                        </p>
+                        <input
+                            type="range"
+                            min="1"
+                            max="20"
+                            id="NombrePersonne"
+                            name="NombrePersonne"
+                            value={inputs.NombrePersonne || ""}
+                            onChange={handleChange}
+                        />
+                    </label>
+                </fieldset>
+
                 <fieldset>
                     <legend>References client</legend>
                     <label htmlFor="Nom">

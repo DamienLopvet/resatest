@@ -88,9 +88,7 @@ export default function Modifier({ setEventId }) {
     }
     return (
         <>
-        {/* <button onClick={getEvents} disabled={loading}>
-                {loading ? "loading..." : " Voir les évenements"}
-            </button> */}
+       
             {error && <p className="error">{error}</p>}
             {response && <p className="response">{response}</p>}
             <div className="eventQuantity">
