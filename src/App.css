@@ -5,10 +5,7 @@
   --box-shadow-hover : 3px 3px 6px 3px #0000003d;
   --label-shadow : 3px 3px 6px -2px #0000003d;
   --grey : #8c8989;
-  --primary-color:padding: 10px;
-    background: white;
-    border-radius: 5px;
-    box-shadow: var(--box-shadow);;
+  --primary-color:padding: 10px; 
   --background-color:#eaeaea;
 }
 body{
@@ -57,11 +54,11 @@ nav ul{
 }
 input, button{
   padding: 5px;
-  background-color: var(--primary-color) ;
+  background-color: var(--primary-color);
   padding:5px 10px;
   font-size: 16px;
   border-radius: 5px;
-  border:1px solid var(--grey)
+  border:1px solid var(--grey);
 
 }
 input[type="range"]{
@@ -153,7 +150,7 @@ fieldset label{
 }
 #Room1:after{
   content: "1";
-  color:hsl(358deg 73% 42%);
+  color:#b91d22;
 }
 #Room2{
   background:#FF887C;
