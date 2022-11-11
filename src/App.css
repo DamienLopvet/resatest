@@ -5,7 +5,10 @@
   --box-shadow-hover : 3px 3px 6px 3px #0000003d;
   --label-shadow : 3px 3px 6px -2px #0000003d;
   --grey : #8c8989;
-  --primary-color:rgb(247, 199, 65);
+  --primary-color:padding: 10px;
+    background: white;
+    border-radius: 5px;
+    box-shadow: var(--box-shadow);;
   --background-color:#eaeaea;
 }
 body{
@@ -58,6 +61,7 @@ input, button{
   padding:5px 10px;
   font-size: 16px;
   border-radius: 5px;
+  border:1px solid var(--grey)
 
 }
 input[type="range"]{
@@ -77,12 +81,14 @@ input[type="submit"], button:not(.MuiButtonBase-root){
 
   
 .rooms input[type="checkbox"]{
-  width:20px;
+  width: 20px;
   accent-color: rgb(69, 62, 132);
-  height:20px;
+  height: 20px;
   position: absolute;
-  top:0;
-  left: 0;
+  top: 0px;
+  left: 0px;
+  box-shadow: 10px 10px 5px #0000008a;
+  z-index: 1;
 }
 
 form{
@@ -130,7 +136,7 @@ fieldset label{
   width: 70px;
   height: 70px;
   text-align: center;
-  box-shadow: var(--box-shadow);
+  box-shadow:inset var(--box-shadow-hover);
   transition: 200ms;
 }
 .rooms:after{
@@ -147,7 +153,7 @@ fieldset label{
 }
 #Room1:after{
   content: "1";
-  color:hsl(358, 74%, 60%)
+  color:hsl(358deg 73% 42%);
 }
 #Room2{
   background:#FF887C;
