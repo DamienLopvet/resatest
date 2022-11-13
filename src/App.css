@@ -144,13 +144,13 @@ fieldset label{
   font-weight: 900;
 }
 #Room1{
-  background: #DC2127;
+  background: hsl(358, 74%, 50%);
   position: relative;
 
 }
 #Room1:after{
   content: "1";
-  color:#b91d22;
+  color:hsl(358, 74%, 45%);
 }
 #Room2{
   background:#FF887C;
