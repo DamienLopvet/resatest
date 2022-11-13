@@ -3,9 +3,10 @@
   --room-number-top-position: 0px;
   --box-shadow: 3px 3px 6px 1px #0000003d;
   --box-shadow-hover : 3px 3px 6px 3px #0000003d;
+  --rooms-box-shadow : 3px 3px 6px 3px #0000003d;
   --label-shadow : 3px 3px 6px -2px #0000003d;
   --grey : #8c8989;
-  --primary-color:10px; 
+  --primary-color:rgb(249, 231, 99); 
   --background-color:#eaeaea;
 }
 body{
@@ -76,17 +77,7 @@ input[type="submit"], button:not(.MuiButtonBase-root){
   transition: 200ms;
 }
 
-  
-.rooms input[type="checkbox"]{
-  width: 20px;
-  accent-color: rgb(69, 62, 132);
-  height: 20px;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  box-shadow: 10px 10px 5px #0000008a;
-  z-index: 1;
-}
+
 
 form{
   display: flex;
@@ -134,8 +125,29 @@ fieldset label{
   height: 70px;
   text-align: center;
   box-shadow:inset var(--box-shadow-hover);
-  transition: 200ms;
 }
+  
+.rooms input[type="checkbox"]{
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  box-shadow: inset 3px 3px 5px #0000008a;
+  z-index: 1;
+  border-radius: 50%;
+  appearance: none;
+  background-color: var(--background-color);
+  cursor: pointer;
+}
+.rooms input[type="checkbox"]:checked{
+  background-color: var(--primary-color);
+  box-shadow: 10px 10px 5px #0000008a;
+
+}
+
+
+
 .rooms:after{
   position: absolute;
   inset:var(--room-number-top-position) 0;
