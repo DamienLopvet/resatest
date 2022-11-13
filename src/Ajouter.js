@@ -316,12 +316,11 @@ export default function Ajouter({ eventId, setEventId }) {
                         />
                     </label>
                 </fieldset>
-                <fieldset>
+                <fieldset className="rooms-fieldset">
                     <legend>
                         {Chambres.length > 1 ? "Chambres " : "Chambre "}
                     </legend>
                     <label htmlFor="Chambre1">
-                        <div id="Room1" className="rooms">
                             <input
                                 type="checkbox"
                                 id="Chambre1"
@@ -329,10 +328,10 @@ export default function Ajouter({ eventId, setEventId }) {
                                 value={1 || ""}
                                 onChange={updateChambres}
                             />
+                        <div id="Room1" className="rooms">
                         </div>
                     </label>
                     <label htmlFor="Chambre2">
-                        <div id="Room2" className="rooms">
                             <input
                                 type="checkbox"
                                 id="Chambre2"
@@ -340,10 +339,10 @@ export default function Ajouter({ eventId, setEventId }) {
                                 value={2 || ""}
                                 onChange={updateChambres}
                             />
+                        <div id="Room2" className="rooms">
                         </div>
                     </label>
                     <label htmlFor="Chambre3">
-                        <div id="Room3" className="rooms">
                             <input
                                 type="checkbox"
                                 id="Chambre3"
@@ -351,10 +350,10 @@ export default function Ajouter({ eventId, setEventId }) {
                                 value={3 || ""}
                                 onChange={updateChambres}
                             />
+                        <div id="Room3" className="rooms">
                         </div>
                     </label>
                     <label htmlFor="Chambre4">
-                        <div id="Room4" className="rooms">
                             <input
                                 type="checkbox"
                                 id="Chambre4"
@@ -362,10 +361,10 @@ export default function Ajouter({ eventId, setEventId }) {
                                 value={4 || ""}
                                 onChange={updateChambres}
                             />
+                        <div id="Room4" className="rooms">
                         </div>
                     </label>
                     <label htmlFor="Chambre5">
-                        <div id="Room5" className="rooms">
                             <input
                                 type="checkbox"
                                 id="Chambre5"
@@ -373,10 +372,10 @@ export default function Ajouter({ eventId, setEventId }) {
                                 value={5 || ""}
                                 onChange={updateChambres}
                             />
+                        <div id="Room5" className="rooms">
                         </div>
                     </label>
                     <label htmlFor="Chambre6">
-                        <div id="Room6" className="rooms">
                             <input
                                 type="checkbox"
                                 id="Chambre6"
@@ -384,10 +383,10 @@ export default function Ajouter({ eventId, setEventId }) {
                                 value={6 || ""}
                                 onChange={updateChambres}
                             />
+                        <div id="Room6" className="rooms">
                         </div>
                     </label>
                     <label htmlFor="Chambre7">
-                        <div id="Room7" className="rooms">
                             <input
                                 type="checkbox"
                                 id="Chambre7"
@@ -395,10 +394,10 @@ export default function Ajouter({ eventId, setEventId }) {
                                 value={7 || ""}
                                 onChange={updateChambres}
                             />
+                        <div id="Room7" className="rooms">
                         </div>
                     </label>
                     <label htmlFor="Chambre8">
-                        <div id="Room8" className="rooms">
                             <input
                                 type="checkbox"
                                 id="Chambre8"
@@ -406,6 +405,7 @@ export default function Ajouter({ eventId, setEventId }) {
                                 value={8 || ""}
                                 onChange={updateChambres}
                             />
+                        <div id="Room8" className="rooms">
                         </div>
                     </label>
                 </fieldset>

@@ -1,6 +1,6 @@
 :root{
   --room-number-font-size:70px;
-  --room-number-top-position: 0px;
+  --room-number-top-position: -6px;
   --box-shadow: 3px 3px 6px 1px #0000003d;
   --box-shadow-hover : 3px 3px 6px 3px #0000003d;
   --rooms-box-shadow : 3px 3px 6px 3px #0000003d;
@@ -8,6 +8,7 @@
   --grey : #8c8989;
   --primary-color:rgb(249, 231, 99); 
   --background-color:#eaeaea;
+  --accent-color:#0060df
 }
 body{
   background-color: var(--background-color);
@@ -119,32 +120,48 @@ fieldset label{
   cursor: pointer;
   
 }
-
+.rooms-fieldset label{
+  position: relative;
+ 
+}
 .rooms{
   width: 70px;
   height: 70px;
   text-align: center;
   box-shadow:inset var(--box-shadow-hover);
+  border-top:2px solid;
+  border-left:2px solid;
+  border-bottom-right-radius: 5px;
+
 }
   
-.rooms input[type="checkbox"]{
+.rooms-fieldset input[type="checkbox"]{
   width: 20px;
   height: 20px;
   position: absolute;
+  background-color:var(--accent-color);
+  transition:  200ms;
+  transform-origin:top ;
+  border:none;
+  border-radius: 2px;
+  appearance: none;
+  transform:rotateX(-90deg)
+}
+.rooms-fieldset input[type="checkbox"]:checked + .rooms{
+  box-shadow: var(--box-shadow-hover);
+}
+.rooms-fieldset input[type="checkbox"]:checked{
+  box-shadow: 10px 10px 5px #0000008a;
+  appearance: auto;
   top: 0px;
   left: 0px;
-  box-shadow: inset 3px 3px 5px #0000008a;
-  z-index: 1;
-  border-radius: 50%;
-  appearance: none;
-  background-color: var(--background-color);
-  cursor: pointer;
-}
-.rooms input[type="checkbox"]:checked{
-  background-color: var(--primary-color);
-  box-shadow: 10px 10px 5px #0000008a;
+  transform:rotateX(0deg)
 
+
+
+  
 }
+
 
 
 
@@ -156,7 +173,7 @@ fieldset label{
   font-weight: 900;
 }
 #Room1{
-  background: hsl(358, 74%, 50%);
+  border-color: hsl(358, 74%, 50%);
   position: relative;
 
 }
@@ -165,7 +182,7 @@ fieldset label{
   color:hsl(358, 74%, 45%);
 }
 #Room2{
-  background:#FF887C;
+  border-color:#FF887C;
   position: relative;
 }
 #Room2:after{
@@ -173,7 +190,7 @@ fieldset label{
   color:hsl(5, 100%, 84%)
 }
 #Room3{
-  background:#FFB878;
+  border-color:#FFB878;
   position: relative;
 
 }
@@ -182,7 +199,7 @@ fieldset label{
   color:hsl(28, 100%, 64%)
 }
 #Room4{
-  background:#FBD75B;
+  border-color:#FBD75B;
   position: relative;
 
 }
@@ -191,7 +208,7 @@ fieldset label{
   color:hsl(47, 95%, 57%)
 }
 #Room5{
-  background:#7AE7BF;
+  border-color:#7AE7BF;
   position: relative;
 
 }
@@ -200,7 +217,7 @@ fieldset label{
   color:hsl(158, 69%, 59%)
 }
 #Room6{
-  background:#51B749;
+  border-color:#51B749;
   position: relative;
 
 }
@@ -209,7 +226,7 @@ fieldset label{
   color:hsl(116, 43%, 60%)
 }
 #Room7{
-  background:#5484ED;
+  border-color:#5484ED;
   position: relative;
 
 }
@@ -218,7 +235,7 @@ fieldset label{
   color:hsl(221, 81%, 73%)
 }
 #Room8{
-  background:#DBADFF;
+  border-color:#DBADFF;
   position: relative;
 
 }
