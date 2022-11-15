@@ -1,12 +1,12 @@
 :root{
   --room-number-font-size:70px;
   --room-number-top-position: -6px;
-  --box-shadow: 3px 3px 6px 1px #0000003d;
+  --box-shadow: 0 0 25px 0 rgb(50 50 50 / 3%) inset;;
   --box-shadow-hover : 3px 3px 6px 3px #0000003d;
   --rooms-box-shadow : 3px 3px 6px 3px #0000003d;
   --label-shadow : 3px 3px 6px -2px #0000003d;
   --grey : #8c8989;
-  --primary-color:rgb(249, 231, 99); 
+  --primary-color:rgb(227, 227, 227); 
   --background-color:#eaeaea;
   --accent-color:#0060df
 }
@@ -103,6 +103,19 @@ form  > fieldset{
   background-color: white;
   box-shadow: var(--box-shadow);
   border:none;
+  position: relative;
+
+}
+form fieldset:after{
+  content: "";
+    position: absolute;
+    top: 0;
+    left: 10px;
+    right: 10px;
+    bottom: 0;
+    box-shadow: 0 0px 10px 7px rgb(100 100 100 / 50%);
+    border-radius: 200px / 20px;
+    z-index: -2;
 }
 /**DATE pickers*/
 
