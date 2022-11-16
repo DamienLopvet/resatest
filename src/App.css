@@ -144,7 +144,17 @@ fieldset label{
   box-shadow:inset var(--box-shadow-hover);
   border-top:2px solid;
   border-left:2px solid;
-  border-bottom-right-radius: 5px;
+  border-top-left-radius: 5px;
+
+}
+
+fieldset.rooms-fieldset label:nth-child(even) .rooms{
+  box-shadow: inset -3px 3px 6px 3px #0000003d;
+  border-left:none;
+  border-right:2px solid;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 0px;
+
 
 }
   
@@ -162,6 +172,9 @@ fieldset label{
 }
 .rooms-fieldset input[type="checkbox"]:checked + .rooms{
   box-shadow: var(--box-shadow-hover);
+}
+.rooms-fieldset label:nth-child(even) input[type="checkbox"]:checked + .rooms{
+  box-shadow: -3px 3px 6px 3px #0000003d;;
 }
 .rooms-fieldset input[type="checkbox"]:checked{
   box-shadow: 10px 10px 5px #0000008a;

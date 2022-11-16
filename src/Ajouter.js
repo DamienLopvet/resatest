@@ -328,7 +328,7 @@ export default function Ajouter({ eventId, setEventId }) {
                                 value={1 || ""}
                                 onChange={updateChambres}
                             />
-                        <div id="Room1" className="rooms">
+                        <div id="Room1" className="rooms rooms-odd">
                         </div>
                     </label>
                     <label htmlFor="Chambre2">
@@ -350,7 +350,7 @@ export default function Ajouter({ eventId, setEventId }) {
                                 value={3 || ""}
                                 onChange={updateChambres}
                             />
-                        <div id="Room3" className="rooms">
+                        <div id="Room3" className="rooms rooms-odd">
                         </div>
                     </label>
                     <label htmlFor="Chambre4">
@@ -372,7 +372,7 @@ export default function Ajouter({ eventId, setEventId }) {
                                 value={5 || ""}
                                 onChange={updateChambres}
                             />
-                        <div id="Room5" className="rooms">
+                        <div id="Room5" className="rooms rooms-odd">
                         </div>
                     </label>
                     <label htmlFor="Chambre6">
@@ -394,7 +394,7 @@ export default function Ajouter({ eventId, setEventId }) {
                                 value={7 || ""}
                                 onChange={updateChambres}
                             />
-                        <div id="Room7" className="rooms">
+                        <div id="Room7" className="rooms rooms-odd">
                         </div>
                     </label>
                     <label htmlFor="Chambre8">
