@@ -4,9 +4,8 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { MobileDateTimePicker } from "@mui/x-date-pickers/MobileDateTimePicker";
 import { fr } from "date-fns/locale";
-import "./App.css";
+import "./styles/App.css";
 import { gapi } from "gapi-script";
-import Modifier from "./Modifier";
 
 
 export default function Ajouter({ eventId, setEventId }) {

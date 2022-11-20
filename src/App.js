@@ -1,9 +1,10 @@
-import "./App.css";
+import "./styles/App.css";
 import { BrowserRouter as Router, Link, Route, Routes } from "react-router-dom";
 import Ajouter from "./Ajouter";
 import Modifier from "./Modifier";
 import { gapi } from "gapi-script";
 import { useEffect, useState } from "react";
+import Home from "./Home";
 
 const clientId = process.env.REACT_APP_CLIENT_ID;
 export default function App() {
@@ -75,7 +76,7 @@ export default function App() {
             {!userThumbnail && <div id="divSignin"></div>}
                         <ul>
                             <li>
-                                <Link to="/resatest/">Ajouter</Link>
+                                <Link to="/resatest/">Home</Link>
                             </li>
                             <li>
                                 <Link to="/resatest/Modifier">Modifier</Link>
@@ -84,7 +85,7 @@ export default function App() {
                     <hr></hr>
                     </nav>
                     <Routes>
-                        <Route path="/resatest/" element={<Ajouter eventId={eventId} setEventId={setEventId} />} />
+                        <Route path="/resatest/" element={<Home eventId={eventId} setEventId={setEventId} />} />
                         <Route
                             path="/resatest/Modifier"
                             element={<Modifier setEventId={setEventId}/>}
