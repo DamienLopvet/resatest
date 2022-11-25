@@ -1,0 +1,6 @@
+.active{
+    border-left:3px solid #3e5c8c;
+    background-color:#3e5c8c1c;
+    color:#3e5c8c;
+    font-weight:500;
+}

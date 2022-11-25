@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./styles/App.css";
 import { gapi } from "gapi-script";
 import { useNavigate } from "react-router-dom";
@@ -8,50 +8,48 @@ import { fr } from "date-fns/locale";
 export default function Modifier({ setEventId }) {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
-    const GoogleAuth = gapi.auth2?.getAuthInstance();
+    const GoogleAuth = gapi.auth2.getAuthInstance()
     const [response, setResponse] = useState("");
     const [error, setError] = useState("");
     const [eventList, setEventList] = useState([]);
-
     useEffect(() => {
-       
-            setLoading(true);
-            if(!GoogleAuth){
-               window.confirm("Une erreure est survenue la page doit etre rechargée ")
-                navigate("/resatest/"); 
-                window.location.reload()
-                    
-            }
-            GoogleAuth.then(() => {
-                const request = {
-                    calendarId: "primary",
-                    timeMin: new Date().toISOString(),
-                    showDeleted: false,
-                    singleEvents: true,
-                    maxResults: 50,
-                    orderBy: "startTime",
-                };
-
-                gapi.client.calendar.events
-                    .list(request)
-                    .then((e) => {
-                        if (e.result.items.length === 0)
-                            setResponse("pas d'évenements prévus");
-                        console.log(e.result.items);
-                        setEventList(e.result.items);
-                        setLoading(false);
-                    })
-                    .catch(() => {
-                        setError("Une Erreur est survenue");
-                        setTimeout(() => {
-                            setError("");
-                        }, "3000");
-                        setLoading(false);
-                    });
-            });
+        setLoading(true);
+        if (!GoogleAuth) {
+            window.confirm(
+                "Une erreure est survenue la page doit etre rechargée "
+            );
+            navigate("/resatest/");
+            window.location.reload();
         }
-    , []);
-   
+        GoogleAuth.then(() => {
+            const request = {
+                calendarId: "primary",
+                timeMin: new Date().toISOString(),
+                showDeleted: false,
+                singleEvents: true,
+                maxResults: 50,
+                orderBy: "startTime",
+            };
+
+            gapi.client.calendar.events
+                .list(request)
+                .then((e) => {
+                    if (e.result.items.length === 0)
+                        setResponse("pas d'évenements prévus");
+                    console.log(e.result.items);
+                    setEventList(e.result.items);
+                    setLoading(false);
+                })
+                .catch(() => {
+                    setError("Une Erreur est survenue");
+                    setTimeout(() => {
+                        setError("");
+                    }, "3000");
+                    setLoading(false);
+                });
+        });
+    }, []);
+
     function deleteEvent(event) {
         setLoading(true);
         setResponse("Loading ...");
@@ -88,7 +86,6 @@ export default function Modifier({ setEventId }) {
     }
     return (
         <>
-       
             {error && <p className="error">{error}</p>}
             {response && <p className="response">{response}</p>}
             <div className="eventQuantity">

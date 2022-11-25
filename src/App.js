@@ -6,14 +6,18 @@ import { gapi } from "gapi-script";
 import { useEffect, useState } from "react";
 import Home from "./Home";
 
+
+
 const clientId = process.env.REACT_APP_CLIENT_ID;
 export default function App() {
     const [error, setError] = useState("");
     const [eventId, setEventId] = useState('')
     const [userThumbnail, setUserThumbnail] = useState("");
     const [GoogleUser, setGoogleUser] = useState({});
+    const[GoogleAuth, setGoogleAuth] = useState({});
+    var GoogleAuthInstance;
+    var userIsLoggedIn = false
     useEffect(() => {
-        var GoogleAuth;
 
         function handleClientLoad() {
           gapi.load("client:auth2", initClient)
@@ -28,14 +32,15 @@ export default function App() {
                     scope: "https://www.googleapis.com/auth/calendar",
                 })
                 .then(() => {
-                    GoogleAuth = gapi.auth2.getAuthInstance();
-                    let userIsLoggedIn = GoogleAuth.isSignedIn.get();
+                    GoogleAuthInstance = gapi.auth2.getAuthInstance()
+                    userIsLoggedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
                     if (userIsLoggedIn) {
                         console.log("user is logged");
-                        let User = GoogleAuth.currentUser.get();
+                        let User = GoogleAuthInstance.currentUser.get();
                         if (User) setGoogleUser(User);
                         let imageUrl = User.getBasicProfile().getImageUrl();
                         setUserThumbnail(() => imageUrl);
+                        setGoogleAuth(()=>GoogleAuthInstance)
                     } else {
                         console.log("user is not logged");
                         setError('Utilisateur non connnecté');
@@ -53,7 +58,6 @@ export default function App() {
 
         handleClientLoad();
     }, [userThumbnail]);
-
     function logOut() {
         if (window.confirm("Se déconnecter ?")) {
             setGoogleUser({});
@@ -62,37 +66,36 @@ export default function App() {
         }
     }
     return (
-        <div className="App">
-            {error && <p className="response">{error}</p>}
-
-            {userThumbnail && (
-                <div id="user_logo">
-                    <img src={userThumbnail} onClick={logOut} alt="lamades" />
-                </div>
-            )}
-            <Router>
-                <div>
-                    <nav>
-            {!userThumbnail && <div id="divSignin"></div>}
-                        <ul>
-                            <li>
-                                <Link to="/resatest/">Home</Link>
-                            </li>
-                            <li>
-                                <Link to="/resatest/Modifier">Modifier</Link>
-                            </li>
-                        </ul>
-                    <hr></hr>
-                    </nav>
-                    <Routes>
-                        <Route path="/resatest/" element={<Home eventId={eventId} setEventId={setEventId} />} />
-                        <Route
-                            path="/resatest/Modifier"
-                            element={<Modifier setEventId={setEventId}/>}
-                        />
-                    </Routes>
-                </div>
-            </Router>
-        </div>
+            <div className="App">
+                {error && <p className="response">{error}</p>}
+                {userThumbnail && (
+                    <div id="user_logo">
+                        <img src={userThumbnail} onClick={logOut} alt="lamades" />
+                    </div>
+                )}
+                <Router>
+                    <div>
+                        <nav>
+                {!userThumbnail && <div id="divSignin"></div>}
+                            <ul>
+                                <li>
+                                    <Link to="/resatest/">Home</Link>
+                                </li>
+                                <li>
+                                    <Link to="/resatest/Modifier">Modifier</Link>
+                                </li>
+                            </ul>
+                        <hr></hr>
+                        </nav>
+                        <Routes>
+                            <Route path="/resatest/" element={<Home eventId={eventId} setEventId={setEventId} />} />
+                            <Route
+                                path="/resatest/Modifier"
+                                element={<Modifier setEventId={setEventId}/>}
+                            />
+                        </Routes>
+                    </div>
+                </Router>
+            </div>
     );
 }
