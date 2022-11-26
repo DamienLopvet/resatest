@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { gapi } from "gapi-script";
 const clientId = process.env.REACT_APP_CLIENT_ID;
 
 
 export default function GetEvents(){
-    
-    var [eventList, setEventList] = useState([]);
-    const [error, setError] = useState("");
+    const [eventList, setEventList] = useState([]);
 
     useEffect(() => {
         gapi.load("client:auth2", () => {
@@ -32,15 +30,11 @@ export default function GetEvents(){
                 gapi.client.calendar.events
                     .list(request)
                     .then((e) => {
-                        if (e.result.items.length === 0)
-                        console.log(e.result.items);
                         setEventList(e.result.items);
+                       
                     })
-                    .catch(() => {
-                        setError("Une Erreur est survenue");
-                        setTimeout(() => {
-                            setError("");
-                        }, "3000");
+                    .catch((err) => {
+                        console.log(err);
                     });
             });
         });

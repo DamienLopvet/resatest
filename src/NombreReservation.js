@@ -1,55 +1,65 @@
 import React, { useState, useEffect } from "react";
 import "./styles/App.css";
-import { useNavigate } from "react-router-dom";
-import { format, setDate } from "date-fns";
+import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 
 export default function NombreReservation({ eventList }) {
-    const navigate = useNavigate();
-    const [response, setResponse] = useState("");
-    const [error, setError] = useState("");
     const [currentDate, setCurrentDate] = useState(new Date());
     const [reservationByMonth, setReservationByMonth] = useState([]);
 
-    console.log(currentDate.toISOString().slice(0, 7));
 
     function handleDate(e) {
-        if (e.target.value == "+") {
+        if (e.target.value === "+") {
+
             let newDate = currentDate.setMonth(currentDate.getMonth() + 1);
             setCurrentDate(() => new Date(newDate));
             getNumberofReservation();
-        }else if(e.target.value == "-") {
+        } else if (e.target.value === "-") {
             let newDate = currentDate.setMonth(currentDate.getMonth() - 1);
             setCurrentDate(() => new Date(newDate));
             getNumberofReservation();
         }
+
+
     }
     useEffect(() => {
         getNumberofReservation();
     }, [eventList]);
 
     function getNumberofReservation() {
-        console.log(eventList);
         let data = eventList.filter(
             (event) =>
-                event.start.dateTime?.slice(0, 7) ==
+                event.start.dateTime?.slice(0, 7) ===
                 currentDate.toISOString().slice(0, 7)
         );
         setReservationByMonth(() => data);
-        console.log(" resaByMonth", reservationByMonth.length);
     }
 
     return (
         <>
-            <p>{format(new Date(currentDate), " MMMM yyy", { locale: fr })}</p>
-            <button onClick={handleDate} value="-">
-                -
-            </button>
-
-            {reservationByMonth.length}
-            <button onClick={handleDate} value="+">
-                +
-            </button>
+            <div
+                id="nombre_reservation_card"
+                className="min-w-[250px] w-60 bg-white text-center pt-3"
+            >
+                <div className="flex justify-around align-bottom">
+                    <button onClick={handleDate} value="-" className="text-slate-400 font-bold border-none hover:!shadow-none scale-y-150 hover:!text-slate-600">
+                        &lt;
+                    </button>
+                    <h3  className="font-bold text-xl text-slate-600 capitalize">
+                        {format(new Date(currentDate), " MMMM yyy", {
+                            locale: fr,
+                        })}
+                    </h3>
+                    <button onClick={handleDate} value="+" className="text-slate-400 font-bold border-none hover:!shadow-none scale-y-150 hover:!text-slate-600">
+                        &gt;
+                    </button>
+                </div>
+                <div id="nombre_de_reservation" className="text-9xl font-bold text-blue-500 ">
+                    {reservationByMonth.length}
+                </div>
+                <div className="text-blue-500 my-3">RESERVATION {reservationByMonth.length >1 && <span className="-ml-1">S</span>} </div>
+                <button className="rounded-none py-1 px-3 w-[85%] mb-3 bg-blue-500 text-white">VOIR CALENDRIER</button>
+            </div>
         </>
     );
 }
