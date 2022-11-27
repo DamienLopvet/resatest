@@ -20,7 +20,7 @@ export default function Home() {
                 <NouvelleReservation />
                  <NombreReservation eventList={eventList} />
                  <NonPayes eventList={eventList} />
-                 <Hotes />
+                 <Hotes eventList={eventList}/>
                 </div>
                 
 
