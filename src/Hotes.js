@@ -3,16 +3,18 @@ import React, { useEffect, useState } from "react";
 export default function Hotes({ eventList }) {
     const [nombreHote, setNombreHote] = useState(0);
     useEffect(() => {
+        let sumHost = 0;
         for (const event of eventList) {
             try {
-                var nombreHoteInEvent = parseInt(event.summary.slice(0, 2));
-                if (isNaN(nombreHoteInEvent)) continue;
-                setNombreHote(nombreHote + nombreHoteInEvent);
+                let hostInEvent = parseInt(event.summary.slice(0,2));
+                if (isNaN(hostInEvent)) continue;
+                sumHost += hostInEvent
             } catch (e) {
                 console.log(e);
             }
         }
-        console.log("stop");
+        setNombreHote(sumHost);
+
     }, [eventList]);
 
     return (

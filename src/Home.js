@@ -7,23 +7,20 @@ import NouvelleReservation from "./NouvelleReservation";
 import NonPayes from "./NonPayes";
 import Hotes from "./Hotes";
 
-
 export default function Home() {
- const eventList = GetEvents()
+    const eventList = GetEvents();
     return (
         <>
-        <Header />
+            <Header />
             <section className="xl:ml-[20rem]">
                 <h1 className="text-2xl font-semibold ml-5">Bienvenue</h1>
                 {/* <h2>{GoogleAuth}</h2>*/}
-                <div className="flex gap-3 flex-row flex-wrap"> 
-                <NouvelleReservation />
-                 <NombreReservation eventList={eventList} />
-                 <NonPayes eventList={eventList} />
-                 <Hotes eventList={eventList}/>
+                <div className="flex gap-3 flex-row flex-wrap ml-5">
+                    <NouvelleReservation />
+                    <NombreReservation eventList={eventList} />
+                    <NonPayes eventList={eventList} />
+                    <Hotes eventList={eventList} />
                 </div>
-                
-
             </section>
         </>
     );
