@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from "react";
-import "./styles/App.css";
 import { gapi } from "gapi-script";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
@@ -86,6 +85,7 @@ export default function Modifier({ setEventId }) {
     }
     return (
         <>
+
             {error && <p className="error">{error}</p>}
             {response && <p className="response">{response}</p>}
             <div className="eventQuantity">
@@ -113,7 +113,7 @@ export default function Modifier({ setEventId }) {
                         <div id="eventCardCorner"></div>
                         <div className="eventCard-clientInfo">
                             <h2 className="eventCard-clientInfo-nom">
-                                {JSON.parse(item.description).Nom ||
+                                {JSON.parse(item?.description).Nom ||
                                     "pas de nom,"}
                             </h2>
                             &nbsp;

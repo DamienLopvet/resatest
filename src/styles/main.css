@@ -3,7 +3,41 @@
 @tailwind utilities;
 @layer base {
     :root {
-      --xl-sidebar-w: 20rem;
-      --sidebar-w: 15rem;
+        --xl-sidebar-w: 20rem;
+        --sidebar-w: 15rem;
     }
-  }
+    body {
+        background-color: #f1f1f1;
+    }
+}
+@layer components {
+    .rooms-after {
+        @apply 
+        after:w-3
+        after:h-3
+        after:text-4xl
+        after:absolute
+        after:top-1
+        after:left-3
+        after:font-extrabold
+        after:text-slate-400
+        checked:after:text-red-800
+        checked:after:text-5xl
+        checked:after:-top-1
+        checked:after:left-2
+        checked:after:opacity-90
+
+        transition-all
+        duration-300
+    }
+    .input{
+    @apply
+   border 
+   border-slate-400
+   rounded
+   px-2 
+   py-3 
+   w-[100%]
+     }
+
+}

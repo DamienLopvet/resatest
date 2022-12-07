@@ -1,9 +1,14 @@
 import React, { useState } from "react";
-import damien from "./assets/user/profile-2.png";
+import { BrowserRouter as Router, Link, Route, Routes, useNavigate } from "react-router-dom";
+import LoadUser from "./data/LoadUser";
 import "./styles/header.css";
+import roomIcon from './images/icons/room.svg'
 
 export default function Header() {
     const [isActiveTab, setIsActiveTab] = useState("1");
+    const loadUser = LoadUser();
+    const navigate = useNavigate();
+    
 
     function handleActiveTab(e) {
         let tabTodisable = document.querySelector(
@@ -13,19 +18,18 @@ export default function Header() {
         tabTodisable.classList.remove("active");
         setIsActiveTab(tabToActivate.dataset.index);
         tabToActivate.classList.add("active");
-        handleSidebar('hideSidebar')
+        handleSidebar("hideSidebar");
     }
     function handleSidebar(e) {
         let sidebar = document.getElementById("sidebar");
         let curtain = document.getElementById("curtain");
         let closeButton = document.getElementById("curtain_close_button");
         if (
-            e.target?.id == "curtain" ||
-            e.target?.id == "curtain_close_button" ||
-            e.keyCode == 27 ||
-            e.keyCode == 8 ||
-            e == 'hideSidebar'
-
+            e.target?.id === "curtain" ||
+            e.target?.id === "curtain_close_button" ||
+            e.keyCode === 27 ||
+            e.keyCode === 8 ||
+            e === "hideSidebar"
         ) {
             sidebar.style.transform = "translateX(-20rem)";
             curtain.style.display = "none";
@@ -42,26 +46,38 @@ export default function Header() {
             document.addEventListener("keydown", handleSidebar);
         }
     }
+   
+
     return (
         <>
             <div className="">
-                <div id="curtain" className="h-screen w-screen bg-slate-600 absolute z-20 opacity-30 hidden"></div>
-                <span id="curtain_close_button" aria-label="close" className="fixed top-10 left-[calc(var(--sidebar-w))] z-30 text-white text-6xl rotate-45 cursor-pointer hidden">
+                <div
+                    id="curtain"
+                    className="h-[96vh] w-screen bg-slate-600 absolute z-20 opacity-30 hidden top-0"
+                ></div>
+                <span
+                    id="curtain_close_button"
+                    aria-label="close"
+                    className="left-[calc(var(--sidebar-w)+1rem)] z-30 text-white text-6xl rotate-45 cursor-pointer absolute top-0 hidden"
+                >
                     +
                 </span>
                 <div
                     id="sidebar"
-                    className="z-30 overflow-auto transition duration-300 xl:!translate-x-0  xs:-translate-x-80 flex  xs:w-[var(--sidebar-w)] xl:!w-[var(--xl-sidebar-w)] bg-white fixed h-screen flex-col justify-between border-r-2 border-slate-400 shadow-xl"
+                    className="top-0 z-30 overflow-auto transition duration-300 xl:!translate-x-0  xs:-translate-x-80 flex  xs:w-[var(--sidebar-w)] xl:!w-[var(--xl-sidebar-w)] bg-white fixed h-screen flex-col justify-between border-r-2 border-slate-400 shadow-xl"
                 >
-                    <div id="sidebar_main">
-                        <h2 className="text-3xl font-bold mb-10 mt-5">
+                    <div id="sidebar_main " className="">
+                        <h2 className="text-3xl font-bold mb-10 mt-5 ml-2">
                             Le pont du Lit
                         </h2>
                         <ul
                             className="app-menu list-unstyled accordion"
                             id="menu-accordion"
                         >
-                            <li id="sidenav_vue_d_ensemble" className="nav-item">
+                            <li
+                                id="sidenav_vue_d_ensemble"
+                                className="nav-item"
+                            >
                                 <a
                                     data-index="1"
                                     onClick={handleActiveTab}
@@ -87,12 +103,14 @@ export default function Header() {
                                             ></path>
                                         </svg>
                                     </span>
-                                    <span className="nav-link-text text-sm">
-                                        Vue d'ensemble
+                                    <span className="text-sm">
+                                        <Link to="/resatest/">
+                                            Vue d'ensemble
+                                        </Link>
                                     </span>
                                 </a>
                             </li>
-                            <li id="sidenav_reservation" className="nav-item">
+                            <li id="sidenav_reservation" className="nav-item" >
                                 <a
                                     data-index="2"
                                     onClick={handleActiveTab}
@@ -133,7 +151,9 @@ export default function Header() {
                                         </svg>
                                     </span>
                                     <span className="nav-link-text text-sm">
+                                    <Link to="/resatest/reservations">
                                         Reservations
+                                        </Link>
                                     </span>
                                 </a>
                             </li>
@@ -171,17 +191,14 @@ export default function Header() {
                                     onClick={handleActiveTab}
                                 >
                                     <span className="nav-icon">
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="1.5rem"
-                                            height="1.5rem"
-                                            fill="currentColor"
-                                            className="bi bi-door-open"
-                                            viewBox="0 0 16 16"
-                                        >
-                                            <path d="M8.5 10c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1z"></path>
-                                            <path d="M10.828.122A.5.5 0 0 1 11 .5V1h.5A1.5 1.5 0 0 1 13 2.5V15h1.5a.5.5 0 0 1 0 1h-13a.5.5 0 0 1 0-1H3V1.5a.5.5 0 0 1 .43-.495l7-1a.5.5 0 0 1 .398.117zM11.5 2H11v13h1V2.5a.5.5 0 0 0-.5-.5zM4 1.934V15h6V1.077l-6 .857z"></path>
-                                        </svg>
+                                    <img
+                                      src={roomIcon}
+                                      alt="people icon"
+                                      title="chambre et nombre de personnes"
+                                      width="15"
+                                      height="15"
+                                      className="w-6"
+                                  />
                                     </span>
                                     <a href="#" className="text-sm">
                                         Chambres
@@ -278,7 +295,10 @@ export default function Header() {
                                             ></path>
                                         </svg>
                                     </span>
-                                    <a className="submenu-link text-sm" href="#">
+                                    <a
+                                        className="submenu-link text-sm"
+                                        href="#"
+                                    >
                                         Transactions
                                     </a>
                                 </div>
@@ -417,9 +437,9 @@ export default function Header() {
                 </div>
                 <div
                     id="top-navbar"
-                    className="top-nav mt-10 py-2 bg-white flex justify-between gap-[10px] items-center sm:col-span-5 xl:ml-[20rem] shadow"
+                    className="z-10 py-2 bg-white flex justify-between gap-[10px] items-center sm:col-span-5 xl:ml-[20rem] shadow fixed top-0 right-0 left-0"
                 >
-                    <div
+                    <div id="burger_menu"
                         className="mr-auto ml-3 cursor-pointer xl:hidden"
                         onClick={handleSidebar}
                     >
@@ -440,10 +460,10 @@ export default function Header() {
                             ></path>
                         </svg>
                     </div>
-                    <div id="search-bar" className="relative w-3/4 group ">
+                    <div id="search-bar" className="relative w-3/4 group">
                         <input
                             type="text"
-                            className="lg:ml-6 w-full py-2 px-3 mr-3 outline-none bg-white focus:border-2 text-sm focus:border-blue-500 placeholder-slate-600 border-slate-300"
+                            className="lg:ml-6 w-full py-2 px-3 mr-3 outline-none bg-white focus:border-2 text-sm focus:border-blue-500 placeholder-slate-600 border-slate-300 border"
                             placeholder="rechercher par noms, prénoms, dates..."
                         />
                         <svg
@@ -493,7 +513,7 @@ export default function Header() {
                             3
                         </span>
                     </div>
-                    <div className="app-utility-item mx-5">
+                    <div className="ml-5 mr-16">
                         <a
                             href="settings.html"
                             title="Settings"
@@ -518,52 +538,19 @@ export default function Header() {
                             </svg>
                         </a>
                     </div>
-                    <div className="">
-                        <a
-                            className="dropdown-toggle"
-                            id="user-dropdown-toggle"
-                            data-bs-toggle="dropdown"
-                            href="#.com"
-                            role="button"
-                            aria-expanded="false"
-                        >
+                    <div className="relative">
+                        <div id="divSignin" className="absolute -bottom-5  right-3"></div>
+
+                        {loadUser.userThumbnail && (
                             <img
-                                src={damien}
-                                alt="user profile"
+                                src={loadUser.userThumbnail}
+                                alt="user thumbnail"
                                 width="40"
                                 height="40"
-                                className="mr-2"
+                                className="absolute -bottom-5  right-3 cursor-pointer max-w-none rounded-lg"
+                                onClick={loadUser.logOut}
                             />
-                        </a>
-                        <ul
-                            className="dropdown-menu hidden"
-                            aria-labelledby="user-dropdown-toggle"
-                        >
-                            <li>
-                                <a
-                                    className="dropdown-item"
-                                    href="account.html"
-                                >
-                                    Compte
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    className="dropdown-item"
-                                    href="settings.html"
-                                >
-                                    Parametres
-                                </a>
-                            </li>
-                            <li>
-                                <hr className="dropdown-divider" />
-                            </li>
-                            <li>
-                                <a className="dropdown-item" href="login.html">
-                                    Se deconnecter
-                                </a>
-                            </li>
-                        </ul>
+                        )}
                     </div>
                 </div>
             </div>
