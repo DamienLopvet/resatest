@@ -1,23 +1,24 @@
 {
   "files": {
-    "main.css": "/resatest/static/css/main.4162eafa.css",
-    "main.js": "/resatest/static/js/main.ff028ab5.js",
+    "main.css": "/resatest/static/css/main.a02855f2.css",
+    "main.js": "/resatest/static/js/main.0956c722.js",
     "static/media/identity.svg": "/resatest/static/media/identity.1fbc13fb300aaf8bc56000bd1e84b84e.svg",
     "static/media/calendarIcon.svg": "/resatest/static/media/calendarIcon.2ccc59d3ceea7fd14c0dfd4d3304402b.svg",
     "static/media/calendar-line-icon.svg": "/resatest/static/media/calendar-line-icon.e57e4a437ba8b5ff4b5c821018e234aa.svg",
     "static/media/people.svg": "/resatest/static/media/people.d9c00a847e66f98ea89e9ee744f3c348.svg",
+    "static/media/emailNotificationIcon.svg": "/resatest/static/media/emailNotificationIcon.af5ee0203d5a8345fefe26f5459f87ce.svg",
     "static/media/phone.svg": "/resatest/static/media/phone.9d149af90343d4531896fb0ab73068f9.svg",
     "static/media/Delete-button.svg": "/resatest/static/media/Delete-button.f91483546dfd6612c8c1a446f6bc136a.svg",
     "static/media/mail.svg": "/resatest/static/media/mail.4b04c40a070c82171eb3c06d2c91c580.svg",
     "static/media/room.svg": "/resatest/static/media/room.9b7bbb4dcf941563fe5681cb1b9d709e.svg",
     "index.html": "/resatest/index.html",
-    "static/media/+.svg": "/resatest/static/media/+.4bc946076cc91e7691ad4f2b3eaafea5.svg",
+    "static/media/+.svg": "/resatest/static/media/+.c2c583e8fb198d2393b18b8d1032ad8a.svg",
     "static/media/modification.svg": "/resatest/static/media/modification.4cdbdb2a88df5b5fe3179c5d2e3fd2b6.svg",
-    "main.4162eafa.css.map": "/resatest/static/css/main.4162eafa.css.map",
-    "main.ff028ab5.js.map": "/resatest/static/js/main.ff028ab5.js.map"
+    "main.a02855f2.css.map": "/resatest/static/css/main.a02855f2.css.map",
+    "main.0956c722.js.map": "/resatest/static/js/main.0956c722.js.map"
   },
   "entrypoints": [
-    "static/css/main.4162eafa.css",
-    "static/js/main.ff028ab5.js"
+    "static/css/main.a02855f2.css",
+    "static/js/main.0956c722.js"
   ]
 }
