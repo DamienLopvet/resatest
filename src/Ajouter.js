@@ -27,11 +27,12 @@ export default function Ajouter({ eventId, setEventId }) {
             timeZone: "Europe/Paris",
         },
         NombrePersonne: 1,
-        PaymentInfo: "Non renseigné",
+        paymentInfo: "Non_payé",
         Nom: "",
         Prenom: "",
         Tel: "",
         Email: "",
+        sendInvitationToClient: false,
     });
 
     const updateChambres = (event) => {
@@ -46,9 +47,6 @@ export default function Ajouter({ eventId, setEventId }) {
     const handleReservationInfo = (event) => {
         const name = event.target.name;
         const value = event.target.value;
-        // event.target.type === "checkbox"
-        //     ? event.target.checked
-        //     :
         setInputs((values) => ({ ...values, [name]: value }));
     };
 
@@ -58,12 +56,32 @@ export default function Ajouter({ eventId, setEventId }) {
         if (submitValue === "ENVOYER") addEvent();
         else updateEvent();
     }
-    function handlePaymentInfoCheckbox(e) {
-        let checkboxes = document.getElementsByName("paymentInfo");
-        console.log(checkboxes);
-        checkboxes.forEach((box) => {
-            if (box !== e.target) box.checked = false;
-        });
+    function handleCheckbox(e) {
+        let paymentCheckboxes = document.querySelectorAll(
+            "[name='paymentInfo']"
+        );
+        if (e.target.name === "paymentInfo") {
+            paymentCheckboxes.forEach((box) => {
+                if (box !== e.target) box.checked = false;
+                else box.checked = true;
+            });
+            handleReservationInfo(e);
+        } else if ((e.target.name = "sendInvitation")) {
+            let EmailField = document.getElementById("Email");
+            if (e.target.checked) {
+                setInputs((values) => ({
+                    ...values,
+                    sendInvitationToClient: true,
+                }));
+                EmailField.setAttribute("required", "required");
+            } else {
+                EmailField.removeAttribute("required");
+                setInputs((values) => ({
+                    ...values,
+                    sendInvitationToClient: false,
+                }));
+            }
+        }
     }
 
     // SET EVENT FOR MODIFICATION PURPOSE
@@ -84,6 +102,28 @@ export default function Ajouter({ eventId, setEventId }) {
         });
     }
     function clearForm() {
+        // handle Invitaion Check Box
+        let InvitationCheckBox = document.querySelector(
+            '[name="sendInvitation"]'
+        );
+        InvitationCheckBox.checked = false;
+        let EmailField = document.getElementById("Email");
+        EmailField.removeAttribute("required");
+
+        //hhandle payment Check box
+        let noPaidCheckBox = document.querySelector('[value = "Non_payé"]');
+        let paymentCheckboxes = document.querySelectorAll(
+            "[name='paymentInfo']"
+        );
+        paymentCheckboxes.forEach((box) => {
+            if (box !== noPaidCheckBox) box.checked = false;
+            else box.checked = true;
+        });
+        //handle rooms checkboxes
+        let rooms = document.querySelectorAll('.rooms-after')
+        rooms.forEach(room => room.checked =false)
+
+
         setStarting(new Date());
         setEnding(new Date());
         setChambres(() => []);
@@ -97,10 +137,12 @@ export default function Ajouter({ eventId, setEventId }) {
                 timeZone: "Europe/Paris",
             },
             NombrePersonne: 1,
+            paymentInfo: "Non payé",
             Nom: "",
             Prenom: "",
             Tel: "",
             Email: "",
+            sendInvitationToClient: false,
         });
     }
     function setForm(data) {
@@ -199,7 +241,8 @@ export default function Ajouter({ eventId, setEventId }) {
             start: inputs.start,
             end: inputs.end,
             summary: `${inputs.NombrePersonne} personnes, Chambres :${Chambres}`,
-            description: `{"Nom" : "${inputs.Nom}", "Prenom" : "${inputs.Prenom}", "Tel" : "${inputs.Tel}", "Email" : "${inputs.Email}"}`,
+            description:  JSON.stringify(inputs)
+            //`{"Nom" : "${inputs.Nom}", "Prenom" : "${inputs.Prenom}", "Tel" : "${inputs.Tel}", "Email" : "${inputs.Email}" }`,
 
             // attendees: [
             //     {
@@ -228,7 +271,7 @@ export default function Ajouter({ eventId, setEventId }) {
             console.log(error);
         }
         setLoading(false);
-        clearForm();
+       clearForm();
     }
 
     return (
@@ -325,7 +368,7 @@ export default function Ajouter({ eventId, setEventId }) {
 
                         <label htmlFor="Email">
                             <input
-                                className="input"
+                                className="input required:border-red-300 required:border-2 invalid:outline-red-300 valid:!outline-green-300 valid:border valid:border-slate-400"
                                 min="5"
                                 max="55"
                                 type="email"
@@ -491,9 +534,10 @@ export default function Ajouter({ eventId, setEventId }) {
                                 <input
                                     type="checkbox"
                                     id="NotPaid"
-                                    onClick={handlePaymentInfoCheckbox}
+                                    onClick={handleCheckbox}
                                     name="paymentInfo"
-                                    value="Non payé"
+                                    value="Non_payé"
+                                    defaultChecked="checked"
                                     className="accent-red-500 w-10 h-10 border 
                                  before:content-['Rien']
                                  before:absolute
@@ -504,10 +548,10 @@ export default function Ajouter({ eventId, setEventId }) {
                                 <input
                                     type="checkbox"
                                     id="PartialyPaid"
-                                    onClick={handlePaymentInfoCheckbox}
+                                    onClick={handleCheckbox}
                                     name="paymentInfo"
-                                    value="Paiement partiel"
-                                    className="accent-orange-500 w-10 h-10 
+                                    value="Paiement_partiel"
+                                    className="accent-orange-400 w-10 h-10 
                                  before:content-['Arrhes']
                                  before:absolute
                                  before:-top-5
@@ -517,9 +561,9 @@ export default function Ajouter({ eventId, setEventId }) {
                                 <input
                                     type="checkbox"
                                     id="paid"
-                                    onClick={handlePaymentInfoCheckbox}
+                                    onClick={handleCheckbox}
                                     name="paymentInfo"
-                                    value="Paiement complet "
+                                    value="Paiement_complet"
                                     className="accent-green-300 w-10 h-10 border 
                                  before:content-['Tout']
                                  before:absolute
@@ -539,7 +583,12 @@ export default function Ajouter({ eventId, setEventId }) {
                             >
                                 Envoyer une invitation au client
                             </label>
-                            <input type="checkbox" className="w-10 h-10" />
+                            <input
+                                type="checkbox"
+                                name="sendInvitation"
+                                className="w-10 h-10"
+                                onClick={handleCheckbox}
+                            />
                         </fieldset>
                     </div>
                     {response && (

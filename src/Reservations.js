@@ -3,7 +3,7 @@ import GetEvents from "./data/GetEvents";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import DeleteEvent from "./data/DeleteEvent";
-import NouvelleReservationButton from "./utiles/NouvelleReservationButton.js"
+import NouvelleReservationButton from "./utiles/NouvelleReservationButton.js";
 
 //ICONS
 import deleteIcon from "./images/icons/Delete-button.svg";
@@ -15,10 +15,17 @@ import calendarIcon from "./images/icons/calendar-line-icon.svg";
 import mailIcon from "./images/icons/mail.svg";
 import phoneIcon from "./images/icons/phone.svg";
 import roomIcon from "./images/icons/room.svg";
-
+import emailNotificationIcon from "./images/icons/emailNotificationIcon.svg";
 
 export default function Reservations() {
-    const eventList = GetEvents("all");
+    var eventList = GetEvents("all");
+    console.log(eventList);
+function handleDeleteEvent(e){
+   // DeleteEvent(e.target.id);
+   eventList = GetEvents("all")
+   
+        
+}
 
     function ParsedClientInfo(info) {
         try {
@@ -39,21 +46,39 @@ export default function Reservations() {
             return error;
         }
     }
+    function setBackGroundColor(e) {
+        let paymentState = ParsedClientInfo(e.description).paymentInfo;
+        switch (paymentState) {
+            case "Paiement_complet":
+                return "#b2f3b2";
+                break;
+            case "Paiement_partiel":
+                return "#ffdb9a";
+                break;
+            case "Non_payé":
+                return "#f3abab";
+                break;
+
+            default:return "blue"
+                break;
+        }
+    }
 
     return (
         <>
             <div className="xl:ml-[var(--xl-sidebar-w)] lg:ml-1 mt-32 w-auto">
-        <div className="mb-5 flex xs:justify-center md:!justify-end">
-          
-          <NouvelleReservationButton/>
-        </div>
+                <div className="mb-5 flex xs:justify-center md:!justify-end">
+                    <NouvelleReservationButton />
+                </div>
                 <ul>
                     <li className="py-1 flex-row md:!flex justify-between gap-3 bg-white px-5 xs:hidden">
                         <p className="font-bold xs:hidden md:!block  basis-[11%]">
                             Nom Prénom
                         </p>
 
-                        <p className="font-bold  xs:hidden md:!block  basis-[11%]">Date</p>
+                        <p className="font-bold  xs:hidden md:!block  basis-[11%]">
+                            Date
+                        </p>
 
                         <p className="font-bold xs:hidden md:!block  basis-[11%]">
                             Chambres
@@ -69,10 +94,15 @@ export default function Reservations() {
                             Email
                         </p>
 
-                        <p className="font-bold xs:hidden md:!block  basis-[11%]">Edit</p>
+                        <p className="font-bold xs:hidden md:!block  basis-[11%]">
+                            Edit
+                        </p>
                     </li>
                     {eventList.map((event, index) => (
                         <li
+                            style={{
+                                backgroundColor: setBackGroundColor(event)
+                            }}
                             id={index}
                             className="flex px-5  justify-between border-slate-400
                         md:!flex-row
@@ -95,7 +125,10 @@ export default function Reservations() {
                         xs:gap-3
                         "
                         >
-                            <div id="client_info" className="flex gap-2 basis-[11%]">
+                            <div
+                                id="client_info"
+                                className="flex gap-2 basis-[11%]"
+                            >
                                 <img
                                     src={identityIcon}
                                     alt="identity icon"
@@ -115,7 +148,10 @@ export default function Reservations() {
                                     </p>
                                 </div>
                             </div>
-                            <div id="date_info" className="flex gap-2  flex-row basis-[11%]">
+                            <div
+                                id="date_info"
+                                className="flex gap-2  flex-row basis-[11%]"
+                            >
                                 <img
                                     src={calendarIcon}
                                     alt="calendar icon"
@@ -138,7 +174,10 @@ export default function Reservations() {
                                     </p>
                                 </div>
                             </div>
-                            <div id="chambre_info" className="flex-row gap-2  flex basis-[11%]">
+                            <div
+                                id="chambre_info"
+                                className="flex-row gap-2  flex basis-[11%]"
+                            >
                                 <div>
                                     <img
                                         src={roomIcon}
@@ -149,11 +188,16 @@ export default function Reservations() {
                                         className="md:hidden  w-10 h-6 mr-2 pr-2  border-r-2 border-slate-400"
                                     />
                                 </div>
-                                <div >
-                                    <p className=" text-center">{event.summary.split(":")[1] || "Ø"}</p>
+                                <div>
+                                    <p className=" text-center">
+                                        {event.summary.split(":")[1] || "Ø"}
+                                    </p>
                                 </div>
                             </div>
-                            <div id="personnes_info" className="flex-row gap-2  flex basis-[11%]">
+                            <div
+                                id="personnes_info"
+                                className="flex-row gap-2  flex basis-[11%]"
+                            >
                                 <div>
                                     <img
                                         src={peopleIcon}
@@ -170,7 +214,10 @@ export default function Reservations() {
                                     </p>
                                 </div>
                             </div>
-                            <div id="phone_info" className="overflow-ellipsis overflow-hidden whitespace-nowrap flex flex-row gap-2  basis-[11%]">
+                            <div
+                                id="phone_info"
+                                className="overflow-ellipsis overflow-hidden whitespace-nowrap flex flex-row gap-2  basis-[11%]"
+                            >
                                 <div>
                                     <img
                                         src={phoneIcon}
@@ -198,7 +245,10 @@ export default function Reservations() {
                                     )}
                                 </div>
                             </div>
-                            <div id="email_info" className="overflow-ellipsis overflow-hidden whitespace-nowrap flex flex-row gap-2  basis-[11%]">
+                            <div
+                                id="email_info"
+                                className="overflow-ellipsis overflow-hidden whitespace-nowrap flex flex-row gap-2  basis-[11%]"
+                            >
                                 <div>
                                     <img
                                         src={mailIcon}
@@ -210,7 +260,12 @@ export default function Reservations() {
                                     />
                                 </div>
 
-                                <div className="overflow-ellipsis overflow-hidden whitespace-nowrap max-w-xs">
+                                <div className="overflow-ellipsis overflow-hidden whitespace-nowrap max-w-xs flex flex-row justify-start items-center gap-2">
+                                    {ParsedClientInfo(event.description).sendInvitationToClient &&
+                                     <img src={emailNotificationIcon}
+                                     width="17"
+                                     height="12"
+                                     />}
                                     {ParsedClientInfo(event.description)
                                         .Email ? (
                                         <a href="mailto:{ParsedClientInfo(event.description).Email}">
@@ -227,7 +282,9 @@ export default function Reservations() {
                                     )}
                                 </div>
                             </div>
-                            <div id="edit-info" className="flex flex-row gap-3 justify-center min-w-[100px] basis-[11%] 
+                            <div
+                                id="edit-info"
+                                className="flex flex-row gap-3 justify-center min-w-[100px] basis-[11%] 
                             md:border-none
                             md:!pt-0
                             xs:pt-3
@@ -261,9 +318,7 @@ export default function Reservations() {
                                         src={deleteIcon}
                                         alt="delete button icon"
                                         title="Supprimer"
-                                        onClick={() => {
-                                            DeleteEvent(event.id);
-                                        }}
+                                        onClick={handleDeleteEvent}
                                         id={event.id}
                                         width="13"
                                         height="13"
