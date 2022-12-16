@@ -42,7 +42,6 @@ export default function GetEvents(minTime, maxTime){
                     .list(request)
                     .then((e) => {
                         setEventList(e.result.items);
-                       console.log(e.result.items);
                     })
                     .catch((err) => {
                         console.log(err);

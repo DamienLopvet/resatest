@@ -63,7 +63,7 @@ export default function NombreReservation({ eventList }) {
                     id="nombre_de_reservation"
                     className="text-9xl font-bold text-blue-500 "
                 >
-                    {reservationByMonth.length}
+                    {reservationByMonth.length > 0 ?reservationByMonth.length : "Ø"}
                 </div>
                 <div className="text-blue-500 my-3">
                     RESERVATION{" "}

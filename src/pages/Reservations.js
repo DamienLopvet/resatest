@@ -1,31 +1,49 @@
-import React from "react";
-import GetEvents from "./data/GetEvents";
+import React, { useEffect, useState } from "react";
+import GetEvents from "../data/GetEvents";
+import { useNavigate } from "react-router-dom";
+
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
-import DeleteEvent from "./data/DeleteEvent";
-import NouvelleReservationButton from "./utiles/NouvelleReservationButton.js";
+import DeleteEvent from "../data/DeleteEvent";
+import NouvelleReservationButton from "../utiles/NouvelleReservationButton.js";
 
 //ICONS
-import deleteIcon from "./images/icons/Delete-button.svg";
-import modifyIcon from "./images/icons/modification.svg";
-import googlecalendarIcon from "./images/icons/calendarIcon.svg";
-import peopleIcon from "./images/icons/people.svg";
-import identityIcon from "./images/icons/identity.svg";
-import calendarIcon from "./images/icons/calendar-line-icon.svg";
-import mailIcon from "./images/icons/mail.svg";
-import phoneIcon from "./images/icons/phone.svg";
-import roomIcon from "./images/icons/room.svg";
-import emailNotificationIcon from "./images/icons/emailNotificationIcon.svg";
+import deleteIcon from "../images/icons/Delete-button.svg";
+import modifyIcon from "../images/icons/modification.svg";
+import googlecalendarIcon from "../images/icons/calendarIcon.svg";
+import peopleIcon from "../images/icons/people.svg";
+import identityIcon from "../images/icons/identity.svg";
+import calendarIcon from "../images/icons/calendar-line-icon.svg";
+import mailIcon from "../images/icons/mail.svg";
+import phoneIcon from "../images/icons/phone.svg";
+import roomIcon from "../images/icons/room.svg";
+import emailNotificationIcon from "../images/icons/emailNotificationIcon.svg";
 
 export default function Reservations() {
-    var eventList = GetEvents("all");
-    console.log(eventList);
-function handleDeleteEvent(e){
-   // DeleteEvent(e.target.id);
-   eventList = GetEvents("all")
-   
-        
-}
+    const navigate = useNavigate();
+
+    const [eventList, setEventList] = useState([]);
+    var events = GetEvents("all");
+
+    useEffect(() => {
+        setEventList(() => events);
+    }, [events]);
+
+    function handleUpdateEvent(e) {
+        navigate("/resatest/nouvelle-reservation?id=" + e.target.id);
+    }
+    function handleDeleteEvent(id) {
+        let card = document.getElementById(id);
+        console.log(card, id);
+        card.style.height = "0px";
+        card.style.padding = "0";
+        card.style.border = "none";
+        setTimeout(() => {
+            card.style.display = "none";
+            DeleteEvent(id);
+            setEventList((prev) => prev.filter((el) => el.id !== id));
+        }, "300");
+    }
 
     function ParsedClientInfo(info) {
         try {
@@ -51,16 +69,15 @@ function handleDeleteEvent(e){
         switch (paymentState) {
             case "Paiement_complet":
                 return "#b2f3b2";
-                break;
+
             case "Paiement_partiel":
                 return "#ffdb9a";
-                break;
+
             case "Non_payé":
                 return "#f3abab";
-                break;
 
-            default:return "blue"
-                break;
+            default:
+                return "blue";
         }
     }
 
@@ -71,7 +88,7 @@ function handleDeleteEvent(e){
                     <NouvelleReservationButton />
                 </div>
                 <ul>
-                    <li className="py-1 flex-row md:!flex justify-between gap-3 bg-white px-5 xs:hidden">
+                    <li className="py-1 flex-row md:!flex justify-between gap-3 bg-white px-5 xs:hidden items-center">
                         <p className="font-bold xs:hidden md:!block  basis-[11%]">
                             Nom Prénom
                         </p>
@@ -101,14 +118,15 @@ function handleDeleteEvent(e){
                     {eventList.map((event, index) => (
                         <li
                             style={{
-                                backgroundColor: setBackGroundColor(event)
+                                backgroundColor: setBackGroundColor(event),
                             }}
-                            id={index}
-                            className="flex px-5  justify-between border-slate-400
+                            key={index}
+                            id={event.id}
+                            className="flex px-5 md:h-[60px] overflow-hidden justify-between border-white transition-all duration-400
                         md:!flex-row
                         md:!py-1 
                         md:!w-[100%] 
-                        md:!border-none
+                        md:!border-b-[1px]
                         md:!rounded-none
                         md:!m-0
                         md:!max-w-none
@@ -176,7 +194,7 @@ function handleDeleteEvent(e){
                             </div>
                             <div
                                 id="chambre_info"
-                                className="flex-row gap-2  flex basis-[11%]"
+                                className="flex-row gap-2  flex basis-[11%] items-center"
                             >
                                 <div>
                                     <img
@@ -196,7 +214,7 @@ function handleDeleteEvent(e){
                             </div>
                             <div
                                 id="personnes_info"
-                                className="flex-row gap-2  flex basis-[11%]"
+                                className="flex-row gap-2  flex basis-[11%] items-center"
                             >
                                 <div>
                                     <img
@@ -216,7 +234,7 @@ function handleDeleteEvent(e){
                             </div>
                             <div
                                 id="phone_info"
-                                className="overflow-ellipsis overflow-hidden whitespace-nowrap flex flex-row gap-2  basis-[11%]"
+                                className="overflow-ellipsis overflow-hidden whitespace-nowrap flex flex-row gap-2 basis-[11%] items-center"
                             >
                                 <div>
                                     <img
@@ -261,11 +279,15 @@ function handleDeleteEvent(e){
                                 </div>
 
                                 <div className="overflow-ellipsis overflow-hidden whitespace-nowrap max-w-xs flex flex-row justify-start items-center gap-2">
-                                    {ParsedClientInfo(event.description).sendInvitationToClient &&
-                                     <img src={emailNotificationIcon}
-                                     width="17"
-                                     height="12"
-                                     />}
+                                    {ParsedClientInfo(event.description)
+                                        .sendInvitationToClient && (
+                                        <img
+                                            src={emailNotificationIcon}
+                                            alt="email icon"
+                                            width="17"
+                                            height="12"
+                                        />
+                                    )}
                                     {ParsedClientInfo(event.description)
                                         .Email ? (
                                         <a href="mailto:{ParsedClientInfo(event.description).Email}">
@@ -284,14 +306,17 @@ function handleDeleteEvent(e){
                             </div>
                             <div
                                 id="edit-info"
-                                className="flex flex-row gap-3 justify-center min-w-[100px] basis-[11%] 
+                                className="flex flex-row gap-3 justify-center min-w-[100px] basis-[11%] border-slate-400
+                                border-t 
                             md:border-none
                             md:!pt-0
                             xs:pt-3
-                            border-slate-400
-                            border-t"
+                            "
                             >
-                                <div id="modify_event">
+                                <div
+                                    id="modify_event"
+                                    onClick={handleUpdateEvent}
+                                >
                                     <img
                                         src={modifyIcon}
                                         alt="modify icon"
@@ -299,7 +324,7 @@ function handleDeleteEvent(e){
                                         id={event.id}
                                         width="13"
                                         height="13"
-                                        className="bg-white md:translate-y-3 cursor-pointer py-[2px] h-7 xs:w-16 md:!w-9 px-1 border rounded shadow hover:opacity-90"
+                                        className=" md:translate-y-3 cursor-pointer py-[2px] h-7 xs:w-16 md:!w-9 px-1 rounded hover:opacity-90"
                                     />
                                 </div>
                                 <div id="delet_event">
@@ -310,7 +335,7 @@ function handleDeleteEvent(e){
                                         id={event.id}
                                         width="13"
                                         height="13"
-                                        className="bg-white md:translate-y-3 cursor-pointer py-0 h-7 xs:w-16 md:!w-9 shadow hover:opacity-90"
+                                        className=" md:translate-y-3 cursor-pointer py-0 h-7 xs:w-16 md:!w-9 hover:opacity-90"
                                     />
                                 </div>
                                 <div id="event_in_calendar">
@@ -318,11 +343,12 @@ function handleDeleteEvent(e){
                                         src={deleteIcon}
                                         alt="delete button icon"
                                         title="Supprimer"
-                                        onClick={handleDeleteEvent}
-                                        id={event.id}
+                                        onClick={() =>
+                                            handleDeleteEvent(event.id)
+                                        }
                                         width="13"
                                         height="13"
-                                        className="bg-white md:translate-y-3 cursor-pointer py-1 h-7 xs:w-16 md:!w-9 px-1 border rounded shadow hover:opacity-90"
+                                        className=" md:translate-y-3 cursor-pointer py-1 h-7 xs:w-16 md:!w-9 px-1 rounded hover:opacity-90"
                                     />
                                 </div>
                             </div>

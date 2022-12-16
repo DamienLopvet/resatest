@@ -22,7 +22,7 @@ export default function Hotes({ eventList }) {
             <h3 className="font-bold text-xl text-slate-600 capitalize">
                 Hôtes
             </h3>
-            <p className="text-9xl font-bold text-yellow-500">{nombreHote} </p>
+            <p className="text-9xl font-bold text-yellow-500">{nombreHote || "Ø"} </p>
             <p className="text-yellow-500 my-3">PERSONNES</p>
             <button className="rounded-none py-1 px-3 w-[85%] mb-3 bg-yellow-500 text-white">
                 CARNET D'ADRESSE

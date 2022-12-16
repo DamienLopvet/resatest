@@ -1,17 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { MobileDateTimePicker } from "@mui/x-date-pickers/MobileDateTimePicker";
 import { fr } from "date-fns/locale";
-import SendEvent from "./data/SendEvent";
+import SendEvent from "../data/SendEvent";
 import { gapi } from "gapi-script";
+import { Navigate, useSearchParams } from "react-router-dom";
+import getSingleEvent from "../data/getSingleEvent";
+import updateEvent from "../data/updateEvent";
 
-export default function Ajouter({ eventId, setEventId }) {
+
+export default function Ajouter() {
     const [loading, setLoading] = useState(false);
-    const [eventToModify, setEventToModify] = useState("");
     const [submitValue, setSubmitValue] = useState("ENVOYER");
-    const GoogleAuth = gapi.auth2?.getAuthInstance();
     const [starting, setStarting] = useState(new Date());
     const [ending, setEnding] = useState("");
     const [Chambres, setChambres] = useState([]);
@@ -34,6 +36,8 @@ export default function Ajouter({ eventId, setEventId }) {
         Email: "",
         sendInvitationToClient: false,
     });
+    const [searchParams, setSearchParams] = useSearchParams();
+    const eventId = searchParams.get("id");
 
     const updateChambres = (event) => {
         if (event.target.checked) {
@@ -49,12 +53,16 @@ export default function Ajouter({ eventId, setEventId }) {
         const value = event.target.value;
         setInputs((values) => ({ ...values, [name]: value }));
     };
-
+    const handleExitUpdateEvent=()=>{
+        setSubmitValue('ENVOYER')
+        setSearchParams('')
+        clearForm()
+    }
     function handleSubmit(e) {
         setLoading(true);
         e.preventDefault();
         if (submitValue === "ENVOYER") addEvent();
-        else updateEvent();
+        else updateSingleEvent();
     }
     function handleCheckbox(e) {
         let paymentCheckboxes = document.querySelectorAll(
@@ -85,24 +93,92 @@ export default function Ajouter({ eventId, setEventId }) {
     }
 
     // SET EVENT FOR MODIFICATION PURPOSE
+    useEffect(() => {
+        if (eventId) getEvent();
+    }, [eventId]);
+    async function getEvent() {
+        try {
+            let response = await getSingleEvent(eventId);
+            if (response.error) {
+                setError(
+                    "Impossible de traiter cette demande, une Erreur est survenue"
+                );
+                setTimeout(() => {
+                    setError("");
+                }, "3000");
+            } else {
+                setForm(response);
+                setResponse("Modifiez votre évenement");
+                setTimeout(() => {
+                    setResponse("");
+                }, "3000");
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    function setForm(data) {
+        setSubmitValue("MODIFIER");
 
-    if (eventId) getEvent();
+        //SET DATES
+        let end = data.end.dateTime;
+        setEnding(end);
+        inputs.end.dateTime = end;
 
-    function getEvent() {
-        var request = gapi.client.calendar.events.get({
-            calendarId: "primary",
-            eventId: eventId,
+        let start = data.start.dateTime;
+        setStarting(start);
+        inputs.start.dateTime = start;
+
+        //SET NUMBER OF PERSONS
+        let quantity = data.summary.split(" ")[0];
+        inputs.NombrePersonne = quantity;
+
+        //SET CHAMBRE INFO
+        let chambreData = data.summary.split(":")[1];
+        if (chambreData.length > 1) {
+            let chambres = chambreData.split(",");
+            chambres.forEach((chambre) => {
+                parseInt(chambre);
+                document.getElementById(
+                    `Chambre${chambre.trim()}`
+                ).checked = true;
+                setChambres((arr) => [...arr, chambre]);
+            });
+        } else if (chambreData.length === 1) {
+            let chambre = data.summary.split(":")[1];
+            document.getElementById(`Chambre${chambre.trim()}`).checked = true;
+            setChambres(chambre);
+        }
+
+        //SET CONTACT INFO
+        let description = data.description;
+        let parseDescription = JSON.parse(description);
+        inputs.Nom = parseDescription.Nom;
+        inputs.Prenom = parseDescription.Prenom;
+        inputs.Tel = parseDescription.Tel;
+        inputs.Email = parseDescription.Email;
+
+        //SET PAYMENT STATE
+        let PaidCheckBox = document.querySelector(
+            "[value =" + parseDescription.paymentInfo + "]"
+        );
+        let paymentCheckboxes = document.querySelectorAll(
+            "[name='paymentInfo']"
+        );
+        paymentCheckboxes.forEach((box) => {
+            if (box !== PaidCheckBox) box.checked = false;
+            else box.checked = true;
         });
-        request.execute(function (event) {
-            setForm(event);
-            if (event.error) setError(event.error.message);
-            setTimeout(() => {
-                setError("");
-            }, "3000");
-        });
+        inputs.paymentInfo = parseDescription.paymentInfo;
+
+        //SET ATENDEE INVITATION STATE
+        let invitationBox = document.querySelector('[name ="sendInvitation"');
+        invitationBox.checked = parseDescription.sendInvitationToClient;
+        inputs.sendInvitationToClient = parseDescription.sendInvitationToClient;
     }
     function clearForm() {
-        // handle Invitaion Check Box
+
+        // HANDLE INVITAION CHECK BOX
         let InvitationCheckBox = document.querySelector(
             '[name="sendInvitation"]'
         );
@@ -110,7 +186,7 @@ export default function Ajouter({ eventId, setEventId }) {
         let EmailField = document.getElementById("Email");
         EmailField.removeAttribute("required");
 
-        //hhandle payment Check box
+        //HHANDLE PAYMENT CHECK BOX
         let noPaidCheckBox = document.querySelector('[value = "Non_payé"]');
         let paymentCheckboxes = document.querySelectorAll(
             "[name='paymentInfo']"
@@ -119,10 +195,9 @@ export default function Ajouter({ eventId, setEventId }) {
             if (box !== noPaidCheckBox) box.checked = false;
             else box.checked = true;
         });
-        //handle rooms checkboxes
-        let rooms = document.querySelectorAll('.rooms-after')
-        rooms.forEach(room => room.checked =false)
-
+        //HANDLE ROOMS CHECKBOXES
+        let rooms = document.querySelectorAll(".rooms-after");
+        rooms.forEach((room) => (room.checked = false));
 
         setStarting(new Date());
         setEnding(new Date());
@@ -145,113 +220,20 @@ export default function Ajouter({ eventId, setEventId }) {
             sendInvitationToClient: false,
         });
     }
-    function setForm(data) {
-        setSubmitValue("MODIFIER");
-        setEventToModify(eventId);
 
-        //SET DATES
-        let end = data.end.dateTime;
-        setEnding(end);
-        inputs.end.dateTime = end;
-
-        let start = data.start.dateTime;
-        setStarting(start);
-        inputs.start.dateTime = start;
-        let quantity = data.summary.split(" ")[0];
-
-        //SET NUMBER OF PERSONS
-        inputs.NombrePersonne = quantity;
-
-        //SET CHAMBRE INFO
-
-        let chambreData = data.summary.split(":")[1];
-        if (chambreData.length > 1) {
-            let chambres = chambreData.split(",");
-            console.log(chambres);
-            chambres.forEach((chambre) => {
-                parseInt(chambre);
-                document.getElementById(
-                    `Chambre${chambre.trim()}`
-                ).checked = true;
-                setChambres((arr) => [...arr, chambre]);
-            });
-        } else if (chambreData.length === 1) {
-            let chambre = data.summary.split(":")[1];
-            document.getElementById(`Chambre${chambre.trim()}`).checked = true;
-            setChambres(chambre);
+    async function updateSingleEvent() {
+        if (inputs.sendInvitationToClient) {
+            var setAttendee = [{ email: inputs.Email }];
         }
-
-        //SET CONTACT INFO
-        let description = data.description;
-        let parseDescription = JSON.parse(description);
-        inputs.Nom = parseDescription.Nom;
-        inputs.Prenom = parseDescription.Prenom;
-        inputs.Tel = parseDescription.Tel;
-        inputs.Email = parseDescription.Email;
-        setEventId("");
-    }
-
-    const updateEvent = () => {
-        console.log(eventToModify);
-        GoogleAuth.then(() => {
-            let event = {
-                start: inputs.start,
-                end: inputs.end,
-                summary: `${inputs.NombrePersonne} personnes, Chambres :${Chambres}`,
-                description: `{"Nom" : "${inputs.Nom}", "Prenom" : "${inputs.Prenom}", "Tel" : "${inputs.Tel}", "Email" : "${inputs.Email}"}`,
-                colorId: Chambres[0],
-
-                // attendees: [
-                //     {
-                //         email: "",
-                //     },
-                // ],
-            };
-            var request = gapi.client.calendar.events.patch({
-                calendarId: "primary",
-                resource: event,
-                eventId: eventToModify,
-                sendUpdates: "all",
-                // authorization: "bearer" + token
-            });
-            request.execute(function (event) {
-                if (event.error) {
-                    setError(
-                        "Impossible de traiter cette demande, une Erreur est survenue"
-                    );
-                    setTimeout(() => {
-                        setError("");
-                    }, "3000");
-                    setLoading(false);
-                } else {
-                    setResponse("La réservation a bien été modifiée");
-                    setTimeout(() => {
-                        setResponse("");
-                        window.location.reload();
-                    }, "3000");
-                }
-            });
-        });
-    };
-
-    // SET EVENT FOR CREATION PURPOSE
-    async function addEvent() {
-        console.log(inputs);
         let payload = {
             start: inputs.start,
             end: inputs.end,
             summary: `${inputs.NombrePersonne} personnes, Chambres :${Chambres}`,
-            description:  JSON.stringify(inputs)
-            //`{"Nom" : "${inputs.Nom}", "Prenom" : "${inputs.Prenom}", "Tel" : "${inputs.Tel}", "Email" : "${inputs.Email}" }`,
-
-            // attendees: [
-            //     {
-            //         email: "",
-            //     },
-            // ],
+            description: JSON.stringify(inputs),
+            attendees: setAttendee,
         };
         try {
-            const response = await SendEvent(payload);
+            let response = await updateEvent(payload, eventId);
             if (response.error) {
                 setError(
                     "Impossible de traiter cette demande, une Erreur est survenue"
@@ -264,14 +246,49 @@ export default function Ajouter({ eventId, setEventId }) {
                 setResponse("La réservation a bien été modifiée");
                 setTimeout(() => {
                     setResponse("");
-                    window.location.reload();
                 }, "3000");
             }
         } catch (error) {
             console.log(error);
         }
         setLoading(false);
-       clearForm();
+        handleExitUpdateEvent();
+    }
+
+    // SET EVENT FOR CREATION PURPOSE
+    async function addEvent() {
+        if (inputs.sendInvitationToClient) {
+            var setAttendee = [{ email: inputs.Email }];
+        }
+        let payload = {
+            start: inputs.start,
+            end: inputs.end,
+            summary: `${inputs.NombrePersonne} personnes, Chambres :${Chambres}`,
+            description: JSON.stringify(inputs),
+            attendees: setAttendee,
+        };
+        console.log(payload);
+        try {
+            let response = await SendEvent(payload);
+            if (response.error) {
+                setError(
+                    "Impossible de traiter cette demande, une Erreur est survenue"
+                );
+                setTimeout(() => {
+                    setError("");
+                }, "3000");
+                setLoading(false);
+            } else {
+                setResponse("La réservation a bien été enregistée");
+                setTimeout(() => {
+                    setResponse("");
+                }, "3000");
+            }
+        } catch (error) {
+            console.log(error);
+        }
+        setLoading(false);
+        clearForm();
     }
 
     return (
@@ -592,12 +609,12 @@ export default function Ajouter({ eventId, setEventId }) {
                         </fieldset>
                     </div>
                     {response && (
-                        <p className="response absolute p-5 bg-white border-2 rounded-lg font-bold text-green-400 animate-bounce ">
-                            {response}{" "}
+                        <p className="response fixed top-1/3 p-5 bg-white border-2 rounded-lg font-bold text-green-400 animate-bounce ">
+                            {response}{""}
                         </p>
                     )}
                     {error && (
-                        <p className="error absolute p-5 bg-white border-2 rounded-lg font-bold animate-bounce text-red-400">
+                        <p className="error absolute top-1/3 p-5 bg-white border-2 rounded-lg font-bold animate-bounce text-red-400">
                             {error}{" "}
                         </p>
                     )}
@@ -622,7 +639,7 @@ export default function Ajouter({ eventId, setEventId }) {
                         />
                     </div>
                     {submitValue === "MODIFIER" && (
-                        <button onClick={() => window.location.reload()}>
+                        <button onClick={handleExitUpdateEvent}>
                             {" "}
                             Annuler les modifications
                         </button>

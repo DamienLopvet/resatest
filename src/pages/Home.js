@@ -1,10 +1,10 @@
 import React from "react";
-import "./styles/main.css";
-import NombreReservation from "./NombreReservation";
-import GetEvents from "./data/GetEvents";
-import NouvelleReservationButton from "./utiles/NouvelleReservationButton";
-import NonPayes from "./NonPayes";
-import Hotes from "./Hotes";
+import "../styles/main.css";
+import NombreReservation from "../utiles/NombreReservation";
+import GetEvents from "../data/GetEvents";
+import NouvelleReservationButton from "../utiles/NouvelleReservationButton";
+import NonPayes from "../utiles/NonPayes";
+import Hotes from "../Hotes";
 
 export default function Home() {
     const eventList = GetEvents("all");

@@ -1,9 +1,9 @@
 import { BrowserRouter as Router, Link, Route, Routes } from "react-router-dom";
-import Ajouter from "./Ajouter";
+import Ajouter from "./pages/Ajouter";
 import Modifier from "./Modifier";
 import { useState } from "react";
-import Home from "./Home";
-import Reservations from "./Reservations";
+import Home from "./pages/Home";
+import Reservations from "./pages/Reservations";
 import Header from "./Header";
 
 
