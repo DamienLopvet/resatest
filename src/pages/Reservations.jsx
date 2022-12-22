@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import GetEvents from "../data/GetEvents";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
@@ -18,31 +18,107 @@ import mailIcon from "../images/icons/mail.svg";
 import phoneIcon from "../images/icons/phone.svg";
 import roomIcon from "../images/icons/room.svg";
 import emailNotificationIcon from "../images/icons/emailNotificationIcon.svg";
+import transactionFilter from "../images/icons/transaction-filter.svg";
 
 export default function Reservations() {
+    const sortOptions = ["unpaid", "partially paid", "paid", "recent first","recent last", "name first", "name last"];
     const navigate = useNavigate();
-
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [sortState, setSortState] = useState("recent first");
     const [eventList, setEventList] = useState([]);
-    var events = GetEvents("all");
-
+    
+    
+    
+    
     useEffect(() => {
-        setEventList(() => events);
-    }, [events]);
+        const sortEvents = searchParams.get("sort");
+        GetEvents("all").then((el)=>{
+            var eventList_ = el.map((e, idx) => ({...e, idx: idx}));
+
+            const unpaid = eventList_.filter((e) => ParsedClientInfo(e.description).paymentInfo === "Non_payé");
+            const partiallyPaid = eventList_.filter((e) => ParsedClientInfo(e.description).paymentInfo === "Paiement_partiel");
+            const paid = eventList_.filter((e) => ParsedClientInfo(e.description).paymentInfo === "Paiement_complet");
+            if (sortEvents === 'unpaid') {
+                setEventList([...unpaid, ...partiallyPaid, ...paid]);
+                setSortState(sortEvents);
+                setSearchParams('')
+            }
+            else if (sortEvents === 'name first') {
+                setEventList([...eventList_].sort((a,b) => ParsedClientInfo(a.description).Nom.toLowerCase() > ParsedClientInfo(b.description).Nom.toLowerCase() ? 1 : -1 ));
+
+                setSortState('name first');
+                setSearchParams('')
+            }
+            else {
+                setEventList(eventList_);
+            }
+            console.log(eventList_);
+        });
+    }, []);
+    
+    
+    useEffect(() => {
+        
+        const unpaid = eventList.filter((e) => ParsedClientInfo(e.description).paymentInfo === "Non_payé");
+        const partiallyPaid = eventList.filter((e) => ParsedClientInfo(e.description).paymentInfo === "Paiement_partiel");
+        const paid = eventList.filter((e) => ParsedClientInfo(e.description).paymentInfo === "Paiement_complet");
+        
+
+        switch (sortState) {
+            case "unpaid":
+                setEventList([...unpaid, ...partiallyPaid, ...paid]);
+                break;
+                case "partially paid":
+                    setEventList([...partiallyPaid, ...paid, ...unpaid]);
+                    break;
+                case "paid":
+                    setEventList([...paid, ...unpaid, ...partiallyPaid]);
+                    break;
+                case "recent first":
+                    setEventList([...eventList].sort((a,b) => (a.idx - b.idx)));
+                    break;
+                case "recent last":
+                    setEventList([...eventList].sort((a,b) => (b.idx - a.idx)));
+                    break;    
+                case "name first":
+                    setEventList([...eventList].sort((a,b) => ParsedClientInfo(a.description).Nom.toLowerCase() > ParsedClientInfo(b.description).Nom.toLowerCase() ? 1 : -1 ));
+                    break;  
+                case "name last":
+                    setEventList([...eventList].sort((a,b) => ParsedClientInfo(b.description).Nom.toLowerCase() > ParsedClientInfo(a.description).Nom.toLowerCase() ? 1 : -1));
+                    break;  
+                        default:
+                break;
+        }
+    }, [sortState]);
+    
+    
+    
+    function sortEventByDates() {
+        sortState === sortOptions[3] ? setSortState(sortOptions[4]) : setSortState(sortOptions[3])
+    }
+    function sortEventByPeople() {
+        sortState === sortOptions[5] ? setSortState(sortOptions[6]) : setSortState(sortOptions[5])
+    }
+    
+    function sortEventByPaymentState() {
+        let i = sortOptions.findIndex(e => (e === sortState));
+        console.log(i);
+        if (i >= sortOptions.length - 4) {
+            setSortState(()=> {return sortOptions[0]});
+        }
+        else {
+            setSortState(()=> {return sortOptions[i+1]});
+        }
+    }
 
     function handleUpdateEvent(e) {
         navigate("/resatest/nouvelle-reservation?id=" + e.target.id);
     }
     function handleDeleteEvent(id) {
-        let card = document.getElementById(id);
-        console.log(card, id);
-        card.style.height = "0px";
-        card.style.padding = "0";
-        card.style.border = "none";
-        setTimeout(() => {
-            card.style.display = "none";
+       
             DeleteEvent(id);
             setEventList((prev) => prev.filter((el) => el.id !== id));
-        }, "300");
+      
     }
 
     function ParsedClientInfo(info) {
@@ -84,36 +160,38 @@ export default function Reservations() {
     return (
         <>
             <div className="xl:ml-[var(--xl-sidebar-w)] lg:ml-1 mt-32 w-auto">
-                <div className="mb-5 flex xs:justify-center md:!justify-end">
+                <div className="mb-5 flex xs:justify-center md:!justify-between px-3">
+                    <div className="relative flex flex-row gap-2">
+                        <button className="px-0 w-10 text-xs" onClick={sortEventByPaymentState}>
+                            <img src={transactionFilter} height="30" width="30" alt="transaction icon" className="mx-auto"/>
+                        
+                        </button>
+                        <button className="px-0 w-10 text-xs" onClick={sortEventByPeople}>
+                            <img src={peopleIcon} height="30" width="30" alt="transaction icon" className="mx-auto"/>
+                        
+                        </button>
+                        <button className="w-10 px-0" onClick={sortEventByDates}>
+                            <img src={calendarIcon} height="30" width="30" alt="transaction icon" />
+                        </button>
+                <span className="absolute left-0 -bottom-5 px-2 w-fit whitespace-nowrap text-xs bg-white">{sortState}</span>
+                    </div>
+
                     <NouvelleReservationButton />
+
                 </div>
                 <ul>
-                    <li className="py-1 flex-row md:!flex justify-between gap-3 bg-white px-5 xs:hidden items-center">
-                        <p className="font-bold xs:hidden md:!block  basis-[11%]">
-                            Nom Prénom
-                        </p>
+                    <li className=" leading-4 py-1 flex-row md:!flex justify-between gap-3 bg-white px-5 xs:hidden items-center">
+                        <p className="font-bold xs:hidden md:!block  basis-[11%]">Nom Prénom</p>
 
-                        <p className="font-bold  xs:hidden md:!block  basis-[11%]">
-                            Date
-                        </p>
+                        <p className="font-bold  xs:hidden md:!block  basis-[11%]">Date</p>
 
-                        <p className="font-bold xs:hidden md:!block  basis-[11%]">
-                            Chambres
-                        </p>
-                        <p className="font-bold xs:hidden md:!block  basis-[11%]">
-                            Nombre de personnes
-                        </p>
-                        <p className="font-bold xs:hidden md:!block  basis-[11%]">
-                            Téléphone
-                        </p>
+                        <p className="font-bold xs:hidden md:!block  basis-[11%]">Chambres</p>
+                        <p className="font-bold xs:hidden md:!block  basis-[11%]">Nombre de personnes</p>
+                        <p className="font-bold xs:hidden md:!block  basis-[11%]">Téléphone</p>
 
-                        <p className="font-bold  xs:hidden md:!block  basis-[11%]">
-                            Email
-                        </p>
+                        <p className="font-bold  xs:hidden md:!block  basis-[11%]">Email</p>
 
-                        <p className="font-bold xs:hidden md:!block  basis-[11%]">
-                            Edit
-                        </p>
+                        <p className="font-bold xs:hidden md:!block  basis-[11%]">Edit</p>
                     </li>
                     {eventList.map((event, index) => (
                         <li
@@ -143,10 +221,7 @@ export default function Reservations() {
                         xs:gap-3
                         "
                         >
-                            <div
-                                id="client_info"
-                                className="flex gap-2 basis-[11%]"
-                            >
+                            <div id="client_info" className="flex gap-2 basis-[11%]">
                                 <img
                                     src={identityIcon}
                                     alt="identity icon"
@@ -157,19 +232,14 @@ export default function Reservations() {
                                 />
                                 <div className="capitalize min-w-[110px]">
                                     <p className="overflow-ellipsis overflow-hidden whitespace-nowrap ">
-                                        {ParsedClientInfo(event.description)
-                                            .Nom || "pas de nom"}
+                                        {ParsedClientInfo(event.description).Nom || "pas de nom"}
                                     </p>
                                     <p className="overflow-ellipsis overflow-hidden whitespace-nowrap">
-                                        {ParsedClientInfo(event.description)
-                                            .Prenom || "pas de Prenom"}
+                                        {ParsedClientInfo(event.description).Prenom || "pas de Prenom"}
                                     </p>
                                 </div>
                             </div>
-                            <div
-                                id="date_info"
-                                className="flex gap-2  flex-row basis-[11%]"
-                            >
+                            <div id="date_info" className="flex gap-2  flex-row basis-[11%]">
                                 <img
                                     src={calendarIcon}
                                     alt="calendar icon"
@@ -181,21 +251,14 @@ export default function Reservations() {
 
                                 <div id="dates" className="">
                                     <p className="overflow-ellipsis overflow-hidden whitespace-nowrap">
-                                        {formatDate(
-                                            event.start.dateTime
-                                        ).toString()}
+                                        {formatDate(event.start.dateTime).toString()}
                                     </p>
                                     <p className="overflow-ellipsis overflow-hidden whitespace-nowrap">
-                                        {formatDate(
-                                            event.end.dateTime
-                                        ).toString()}
+                                        {formatDate(event.end.dateTime).toString()}
                                     </p>
                                 </div>
                             </div>
-                            <div
-                                id="chambre_info"
-                                className="flex-row gap-2  flex basis-[11%] items-center"
-                            >
+                            <div id="chambre_info" className="flex-row gap-2  flex basis-[11%] items-center">
                                 <div>
                                     <img
                                         src={roomIcon}
@@ -207,15 +270,10 @@ export default function Reservations() {
                                     />
                                 </div>
                                 <div>
-                                    <p className=" text-center">
-                                        {event.summary.split(":")[1] || "Ø"}
-                                    </p>
+                                    <p className=" text-center">{event.summary.split(":")[1] || "Ø"}</p>
                                 </div>
                             </div>
-                            <div
-                                id="personnes_info"
-                                className="flex-row gap-2  flex basis-[11%] items-center"
-                            >
+                            <div id="personnes_info" className="flex-row gap-2  flex basis-[11%] items-center">
                                 <div>
                                     <img
                                         src={peopleIcon}
@@ -227,9 +285,7 @@ export default function Reservations() {
                                     />
                                 </div>
                                 <div className="overflow-ellipsis overflow-hidden whitespace-nowrap">
-                                    <p>
-                                        {event.summary.split(" ")[0]} personnes
-                                    </p>
+                                    <p>{event.summary.split(" ")[0]} personnes</p>
                                 </div>
                             </div>
                             <div
@@ -250,16 +306,10 @@ export default function Reservations() {
                                 <div>
                                     {ParsedClientInfo(event.description).Tel ? (
                                         <a href="tel:{ParsedClientInfo(event.description).Tel}">
-                                            {
-                                                ParsedClientInfo(
-                                                    event.description
-                                                ).Tel
-                                            }
+                                            {ParsedClientInfo(event.description).Tel}
                                         </a>
                                     ) : (
-                                        <span className="line-through">
-                                            Téléphone
-                                        </span>
+                                        <span className="line-through">Téléphone</span>
                                     )}
                                 </div>
                             </div>
@@ -279,28 +329,15 @@ export default function Reservations() {
                                 </div>
 
                                 <div className="overflow-ellipsis overflow-hidden whitespace-nowrap max-w-xs flex flex-row justify-start items-center gap-2">
-                                    {ParsedClientInfo(event.description)
-                                        .sendInvitationToClient && (
-                                        <img
-                                            src={emailNotificationIcon}
-                                            alt="email icon"
-                                            width="17"
-                                            height="12"
-                                        />
+                                    {ParsedClientInfo(event.description).sendInvitationToClient && (
+                                        <img src={emailNotificationIcon} alt="email icon" width="17" height="12" />
                                     )}
-                                    {ParsedClientInfo(event.description)
-                                        .Email ? (
+                                    {ParsedClientInfo(event.description).Email ? (
                                         <a href="mailto:{ParsedClientInfo(event.description).Email}">
-                                            {
-                                                ParsedClientInfo(
-                                                    event.description
-                                                ).Email
-                                            }
+                                            {ParsedClientInfo(event.description).Email}
                                         </a>
                                     ) : (
-                                        <span className="line-through">
-                                            Email
-                                        </span>
+                                        <span className="line-through">Email</span>
                                     )}
                                 </div>
                             </div>
@@ -313,10 +350,7 @@ export default function Reservations() {
                             xs:pt-3
                             "
                             >
-                                <div
-                                    id="modify_event"
-                                    onClick={handleUpdateEvent}
-                                >
+                                <div id="modify_event" onClick={handleUpdateEvent}>
                                     <img
                                         src={modifyIcon}
                                         alt="modify icon"
@@ -343,9 +377,7 @@ export default function Reservations() {
                                         src={deleteIcon}
                                         alt="delete button icon"
                                         title="Supprimer"
-                                        onClick={() =>
-                                            handleDeleteEvent(event.id)
-                                        }
+                                        onClick={() => handleDeleteEvent(event.id)}
                                         width="13"
                                         height="13"
                                         className=" md:translate-y-3 cursor-pointer py-1 h-7 xs:w-16 md:!w-9 px-1 rounded hover:opacity-90"

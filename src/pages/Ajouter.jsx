@@ -5,20 +5,22 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { MobileDateTimePicker } from "@mui/x-date-pickers/MobileDateTimePicker";
 import { fr } from "date-fns/locale";
 import SendEvent from "../data/SendEvent";
-import { gapi } from "gapi-script";
-import { Navigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import getSingleEvent from "../data/getSingleEvent";
 import updateEvent from "../data/updateEvent";
-
+import NouvelleReservatinBoutton from "../utiles/NouvelleReservationButton"
 
 export default function Ajouter() {
+    const navigate = useNavigate()
     const [loading, setLoading] = useState(false);
     const [submitValue, setSubmitValue] = useState("ENVOYER");
     const [starting, setStarting] = useState(new Date());
     const [ending, setEnding] = useState("");
     const [Chambres, setChambres] = useState([]);
+    const [message, setMessage] = useState("")
     const [response, setResponse] = useState("");
     const [error, setError] = useState("");
+    const [searchParams, setSearchParams] = useSearchParams();
     const [inputs, setInputs] = useState({
         start: {
             dateTime: "",
@@ -36,7 +38,6 @@ export default function Ajouter() {
         Email: "",
         sendInvitationToClient: false,
     });
-    const [searchParams, setSearchParams] = useSearchParams();
     const eventId = searchParams.get("id");
 
     const updateChambres = (event) => {
@@ -108,10 +109,10 @@ export default function Ajouter() {
                 }, "3000");
             } else {
                 setForm(response);
-                setResponse("Modifiez votre évenement");
+                setMessage("Modifiez votre évenement");
                 setTimeout(() => {
-                    setResponse("");
-                }, "3000");
+                    setMessage("");
+                }, "4000");
             }
         } catch (error) {
             console.log(error);
@@ -244,9 +245,7 @@ export default function Ajouter() {
                 setLoading(false);
             } else {
                 setResponse("La réservation a bien été modifiée");
-                setTimeout(() => {
-                    setResponse("");
-                }, "3000");
+                
             }
         } catch (error) {
             console.log(error);
@@ -267,7 +266,6 @@ export default function Ajouter() {
             description: JSON.stringify(inputs),
             attendees: setAttendee,
         };
-        console.log(payload);
         try {
             let response = await SendEvent(payload);
             if (response.error) {
@@ -280,9 +278,7 @@ export default function Ajouter() {
                 setLoading(false);
             } else {
                 setResponse("La réservation a bien été enregistée");
-                setTimeout(() => {
-                    setResponse("");
-                }, "3000");
+                
             }
         } catch (error) {
             console.log(error);
@@ -609,8 +605,25 @@ export default function Ajouter() {
                         </fieldset>
                     </div>
                     {response && (
+                        <div className="response fixed top-1/3 p-5 bg-white border-2 rounded-lg font-bold text-green-400 ">
+                            <p >
+                                {response}{""}
+                            </p>
+                            <div className="flex flex-row gap-2 flex-wrap">
+                          <button onClick={()=> {setResponse(''); navigate('/resatest/reservations') }}
+                          className="cursor-pointer border py-1 w-36 h-14 border-slate-400  rounded shadow text-white bg-blue-500 disabled:bg-blue-300">
+                            Voir les <br/> réservations</button>
+                                <div onClick={()=>setResponse('') }>
+                                    
+                                    <NouvelleReservatinBoutton />
+                                </div>
+
+                            </div>
+                        </div>
+                    )}
+                    {message && (
                         <p className="response fixed top-1/3 p-5 bg-white border-2 rounded-lg font-bold text-green-400 animate-bounce ">
-                            {response}{""}
+                            {message}{""}
                         </p>
                     )}
                     {error && (

@@ -15,12 +15,12 @@ export default function DeleteEvent(prop) {
     })
         .then(gapi.auth2.getAuthInstance()).then(() => {
         let eventId = prop;
+        console.log(eventId)
 
         var params = {
             calendarId: "primary",
             eventId: eventId,
         };
-
         let request = gapi.client.calendar.events.delete(params);
         request.execute();
         

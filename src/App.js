@@ -1,11 +1,12 @@
-import { BrowserRouter as Router, Link, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Ajouter from "./pages/Ajouter";
 import Modifier from "./Modifier";
 import { useState } from "react";
 import Home from "./pages/Home";
 import Reservations from "./pages/Reservations";
 import Header from "./Header";
-
+import Calendrier from "./pages/Calendrier";
+import Transactions from "./pages/Transactions";
 
 
 export default function App() {
@@ -20,19 +21,7 @@ export default function App() {
             <Router>
             <Header />
                 <div>
-                    {/* <nav>
-                        {!userThumbnail && <div id="divSignin"></div>}
-                        <ul>
-                            <li>
-                                <Link to="/resatest/">Home</Link>
-                            </li>
-                            <li>
-                                <Link to="/resatest/modifier">Modifier</Link>
-                            </li>
-                        </ul>
-                        <hr></hr>
-                    </nav> */}
-                    <Routes>
+                   <Routes>
                         <Route
                             path="/resatest/nouvelle-reservation"
                             element={
@@ -53,6 +42,12 @@ export default function App() {
                             }
                         />
                         <Route
+                            path="/resatest/calendrier"
+                            element={
+                                <Calendrier/>
+                            }
+                        />
+                        <Route
                             path="/resatest/modifier"
                             element={<Modifier setEventId={setEventId} />}
                         />
@@ -60,7 +55,14 @@ export default function App() {
                             path="/resatest/reservations"
                             element={<Reservations />}
                         />
+                         <Route
+                            path="/resatest/transactions"
+                            element={
+                                <Transactions />
+                            }
+                        />
                     </Routes>
+                       
                 </div>
             </Router>
         </div>

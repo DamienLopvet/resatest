@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { BrowserRouter as Router, Link, Route, Routes, useNavigate } from "react-router-dom";
 import LoadUser from "./data/LoadUser";
 import "./styles/header.css";
-import roomIcon from './images/icons/room.svg'
 
 export default function Header() {
     const [isActiveTab, setIsActiveTab] = useState("1");
@@ -74,15 +73,16 @@ export default function Header() {
                             className="app-menu list-unstyled accordion"
                             id="menu-accordion"
                         >
+                            <Link to="/resatest/">
+
                             <li
                                 id="sidenav_vue_d_ensemble"
                                 className="nav-item"
                             >
-                                <a
+                                <div
                                     data-index="1"
                                     onClick={handleActiveTab}
                                     className="nav-link nav-link hover:text-[#3e5c8c] flex flex-row gap-5 justify-start items-end p-3 active"
-                                    href="#"
                                 >
                                     <span className="nav-icon">
                                         <svg
@@ -104,18 +104,18 @@ export default function Header() {
                                         </svg>
                                     </span>
                                     <span className="text-sm">
-                                        <Link to="/resatest/">
                                             Vue d'ensemble
-                                        </Link>
                                     </span>
-                                </a>
+                                </div>
                             </li>
+                                        </Link>
+                        <Link to="/resatest/reservations">
+
                             <li id="sidenav_reservation" className="nav-item" >
-                                <a
+                                <div
                                     data-index="2"
                                     onClick={handleActiveTab}
                                     className="nav-link hover:text-[#3e5c8c] flex flex-row gap-5 justify-start items-end p-3"
-                                    href="#"
                                 >
                                     <span className="nav-icon">
                                         <svg
@@ -151,18 +151,17 @@ export default function Header() {
                                         </svg>
                                     </span>
                                     <span className="nav-link-text text-sm">
-                                    <Link to="/resatest/reservations">
                                         Reservations
-                                        </Link>
                                     </span>
-                                </a>
+                                </div>
                             </li>
+                        </Link>
+                                        <Link to="/resatest/calendrier">
                             <li id="sidenav_calendrier" className="nav-item">
-                                <a
+                                <div
                                     data-index="3"
                                     onClick={handleActiveTab}
                                     className="nav-link hover:text-[#3e5c8c] flex flex-row gap-5 justify-start items-end p-3"
-                                    href="#"
                                 >
                                     <span className="nav-icon">
                                         <svg
@@ -179,101 +178,13 @@ export default function Header() {
                                     <span className="nav-link-text text-sm">
                                         Calendrier
                                     </span>
-                                </a>
-                            </li>
-                            <li
-                                id="sidenav_chambres"
-                                className="nav-item hover:text-[#3e5c8c] h-[45px] hover:h-[300px] duration-500 overflow-hidden"
-                            >
-                                <div
-                                    className="nav-item-title flex flex-row gap-5 justify-start items-end p-3"
-                                    data-index="4"
-                                    onClick={handleActiveTab}
-                                >
-                                    <span className="nav-icon">
-                                    <img
-                                      src={roomIcon}
-                                      alt="people icon"
-                                      title="chambre et nombre de personnes"
-                                      width="15"
-                                      height="15"
-                                      className="w-6"
-                                  />
-                                    </span>
-                                    <a href="#" className="text-sm">
-                                        Chambres
-                                    </a>
-                                </div>
-                                <div className="nav-item-options [&>a]:text-sm [&>a]:py-2 flex flex-col ">
-                                    <a
-                                        data-index="4.1"
-                                        onClick={handleActiveTab}
-                                        className="pl-5 ml-10 border-l-2 submenu-link"
-                                        href="#"
-                                    >
-                                        Chambre 01
-                                    </a>
-                                    <a
-                                        data-index="4.2"
-                                        onClick={handleActiveTab}
-                                        className="pl-5 ml-10 border-l-2 submenu-link"
-                                        href="#"
-                                    >
-                                        Chambre 02
-                                    </a>
-                                    <a
-                                        data-index="4.3"
-                                        onClick={handleActiveTab}
-                                        className="pl-5 ml-10 border-l-2 submenu-link"
-                                        href="#"
-                                    >
-                                        Chambre 03
-                                    </a>
-                                    <a
-                                        data-index="4.4"
-                                        onClick={handleActiveTab}
-                                        className="pl-5 ml-10 border-l-2 submenu-link"
-                                        href="#"
-                                    >
-                                        Chambre 04
-                                    </a>
-                                    <a
-                                        data-index="4.5"
-                                        onClick={handleActiveTab}
-                                        className="pl-5 ml-10 border-l-2 submenu-link"
-                                        href="#"
-                                    >
-                                        Chambre 05
-                                    </a>
-                                    <a
-                                        data-index="4.6"
-                                        onClick={handleActiveTab}
-                                        className="pl-5 ml-10 border-l-2 submenu-link"
-                                        href="#"
-                                    >
-                                        Chambre 06
-                                    </a>
-                                    <a
-                                        data-index="4.7"
-                                        onClick={handleActiveTab}
-                                        className="pl-5 ml-10 border-l-2 submenu-link"
-                                        href="#"
-                                    >
-                                        Chambre 07
-                                    </a>
-                                    <a
-                                        data-index="4.8"
-                                        onClick={handleActiveTab}
-                                        className="pl-5 ml-10 border-l-2 submenu-link"
-                                        href="#"
-                                    >
-                                        Chambre 08
-                                    </a>
                                 </div>
                             </li>
+                            </Link>
+                            <Link to="/resatest/transactions">
                             <li
                                 id="sidenav_transactions"
-                                className="nav-item   hover:text-[#3e5c8c] h-[45px] hover:h-[120px] duration-500 overflow-hidden"
+                                className="nav-item   hover:text-[#3e5c8c] h-[45px] duration-500 overflow-hidden"
                             >
                                 <div
                                     className="sidenav-item-title flex flex-row gap-5 justify-start items-end p-3"
@@ -295,41 +206,22 @@ export default function Header() {
                                             ></path>
                                         </svg>
                                     </span>
-                                    <a
+                                    <div
                                         className="submenu-link text-sm"
-                                        href="#"
                                     >
                                         Transactions
-                                    </a>
-                                </div>
-                                <div className="nav-item-options [&>a]:text-sm [&>a]:py-2 flex flex-col ">
-                                    <a
-                                        className="pl-5 ml-10 border-l-2 submenu-link"
-                                        href="#"
-                                        data-index="5.1"
-                                        onClick={handleActiveTab}
-                                    >
-                                        Paiements recus
-                                    </a>
-                                    <a
-                                        className="pl-5 ml-10 border-l-2 submenu-link"
-                                        href="#"
-                                        data-index="5.2"
-                                        onClick={handleActiveTab}
-                                    >
-                                        Paiements non recus
-                                    </a>
+                                    </div>
                                 </div>
                             </li>
+                            </Link>
                             <li
                                 id="sidenav_carnet_d_adresses"
                                 className="nav-item "
                             >
-                                <a
+                                <div
                                     data-index="6"
                                     onClick={handleActiveTab}
                                     className="nav-link hover:text-[#3e5c8c] flex flex-row gap-5 justify-start items-end p-3"
-                                    href="#"
                                 >
                                     <span className="nav-icon">
                                         <svg
@@ -346,14 +238,13 @@ export default function Header() {
                                     <span className="nav-link-text text-sm">
                                         Carnet d'adresses
                                     </span>
-                                </a>
+                                </div>
                             </li>
                             <li id="sidenav_notes" className="nav-item">
-                                <a
+                                <div
                                     data-index="7"
                                     onClick={handleActiveTab}
                                     className="nav-link hover:text-[#3e5c8c] flex flex-row gap-5 justify-start items-end p-3"
-                                    href="#"
                                 >
                                     <span className="nav-icon">
                                         <svg
@@ -372,16 +263,15 @@ export default function Header() {
                                     <span className="nav-link-text text-sm">
                                         Notes
                                     </span>
-                                </a>
+                                </div>
                             </li>
                         </ul>
                     </div>
                     <div id="sidebar_footer">
                         <ul className="mb-10">
                             <li className="nav-item">
-                                <a
+                                <div
                                     className="nav-link hover:text-[#3e5c8c] flex flex-row gap-5 justify-start items-end p-3"
-                                    href="#"
                                 >
                                     <span className="nav-icon">
                                         <svg
@@ -405,13 +295,12 @@ export default function Header() {
                                     <span className="nav-link-text text-sm">
                                         Settings
                                     </span>
-                                </a>
+                                </div>
                             </li>
 
                             <li className="nav-item">
-                                <a
+                                <div
                                     className="nav-link hover:text-[#3e5c8c] flex flex-row gap-5 justify-start items-end p-3"
-                                    href="#"
                                 >
                                     <span className="nav-icon">
                                         <svg
@@ -430,7 +319,7 @@ export default function Header() {
                                     <span className="nav-link-text text-sm">
                                         Besoin d'aide?
                                     </span>
-                                </a>
+                                </div>
                             </li>
                         </ul>
                     </div>
@@ -485,11 +374,10 @@ export default function Header() {
                         </svg>
                     </div>
                     <div className="notifications relative ml-auto ">
-                        <a
+                        <div
                             className=" text-black opacity-60 hover:opacity-100"
                             id="notifications-dropdown-toggle"
                             data-bs-toggle="dropdown"
-                            href="#.com"
                             role="button"
                             aria-expanded="false"
                             title="Notifications"
@@ -508,14 +396,13 @@ export default function Header() {
                                     d="M8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z"
                                 ></path>
                             </svg>
-                        </a>
+                        </div>
                         <span className="absolute opacity-100 z-10 icon-badge  -top-1.5 -right-1.5 border-2 text-xs px-1 rounded-full bg-[#ec776c] text-white border-white ">
                             3
                         </span>
                     </div>
                     <div className="ml-5 mr-16">
-                        <a
-                            href="settings.html"
+                        <div
                             title="Settings"
                             className="text-black opacity-60 hover:opacity-100"
                         >
@@ -536,7 +423,7 @@ export default function Header() {
                                     d="M8 5.754a2.246 2.246 0 1 0 0 4.492 2.246 2.246 0 0 0 0-4.492zM4.754 8a3.246 3.246 0 1 1 6.492 0 3.246 3.246 0 0 1-6.492 0z"
                                 ></path>
                             </svg>
-                        </a>
+                        </div>
                     </div>
                     <div className="relative">
                         <div id="divSignin" className="absolute -bottom-5  right-3"></div>
