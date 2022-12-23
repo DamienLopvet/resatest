@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/resatest/static/css/main.0c95405d.css",
-    "main.js": "/resatest/static/js/main.0acb16a7.js",
+    "main.js": "/resatest/static/js/main.c451bf35.js",
     "static/media/homeBackground.jpg": "/resatest/static/media/homeBackground.a100d865553894420b91.jpg",
     "static/media/identity.svg": "/resatest/static/media/identity.1fbc13fb300aaf8bc56000bd1e84b84e.svg",
     "static/media/calendarIcon.svg": "/resatest/static/media/calendarIcon.2ccc59d3ceea7fd14c0dfd4d3304402b.svg",
@@ -17,10 +17,10 @@
     "static/media/+.svg": "/resatest/static/media/+.c2c583e8fb198d2393b18b8d1032ad8a.svg",
     "static/media/modification.svg": "/resatest/static/media/modification.4cdbdb2a88df5b5fe3179c5d2e3fd2b6.svg",
     "main.0c95405d.css.map": "/resatest/static/css/main.0c95405d.css.map",
-    "main.0acb16a7.js.map": "/resatest/static/js/main.0acb16a7.js.map"
+    "main.c451bf35.js.map": "/resatest/static/js/main.c451bf35.js.map"
   },
   "entrypoints": [
     "static/css/main.0c95405d.css",
-    "static/js/main.0acb16a7.js"
+    "static/js/main.c451bf35.js"
   ]
 }
