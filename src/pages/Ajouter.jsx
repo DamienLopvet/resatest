@@ -278,13 +278,13 @@ export default function Ajouter() {
                 setLoading(false);
             } else {
                 setResponse("La réservation a bien été enregistée");
-                
+                clearForm();
             }
         } catch (error) {
             console.log(error);
         }
         setLoading(false);
-        clearForm();
+        
     }
 
     return (
