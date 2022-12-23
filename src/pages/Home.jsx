@@ -5,9 +5,11 @@ import GetEvents from "../data/GetEvents";
 import NouvelleReservationButton from "../utiles/NouvelleReservationButton";
 import NonPayes from "../utiles/NonPayes";
 import Hotes from "../utiles/Hotes";
+import homeBg from "../images/backgrounds/homeBackground.jpg"
+
 
 export default function Home() {
-   const [eventList, setEventList] = useState([])
+    const [eventList, setEventList] = useState([])
    
    useEffect(() => {
         GetEvents('all').then((e)=> setEventList(e))
@@ -15,16 +17,21 @@ export default function Home() {
    
     return (
         <>
-            <section className="xl:ml-[20rem] mt-20">
-                <h1 className="text-3xl font-semibold ml-5 mb-3">Bienvenue</h1>
-                {/* <h2>{GoogleAuth}</h2>*/}
-                <div className="flex gap-4 flex-row flex-wrap ml-5">
-                    <div className="basis-[100%] " >
-                        <NouvelleReservationButton />
+            <section
+            style={{'backgroundImage': `url(${homeBg}`}}
+            className="bg-no-repeat bg-cover h-[100%]">
+
+                <div className="xl:ml-[20rem]">
+                    <h1 className="pt-10 text-3xl font-semibold ml-5 mb-3">Bienvenue</h1>
+                    {/* <h2>{GoogleAuth}</h2>*/}
+                    <div className="flex gap-4 flex-row flex-wrap mx-5 xs:justify-center sm:justify-start">
+                        <div className="basis-[100%]" >
+                            <NouvelleReservationButton />
+                        </div>
+                        <NombreReservation eventList={eventList} />
+                        <NonPayes eventList={eventList} />
+                        <Hotes eventList={eventList} />
                     </div>
-                    <NombreReservation eventList={eventList} />
-                    <NonPayes eventList={eventList} />
-                    <Hotes eventList={eventList} />
                 </div>
             </section>
         </>

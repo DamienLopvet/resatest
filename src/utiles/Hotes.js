@@ -21,7 +21,7 @@ export default function Hotes({ eventList }) {
     }, [eventList]);
 
     return (
-        <div className="min-w-[250px] w-60 bg-white text-center pt-3">
+        <div className="min-w-[250px] w-60 bg-white text-center pt-3 opacity-80">
             <h3 className="font-bold text-xl text-slate-600 capitalize">
                 Hôtes
             </h3>

@@ -63,11 +63,11 @@ export default function Header() {
                 </span>
                 <div
                     id="sidebar"
-                    className="top-0 z-30 overflow-auto transition duration-300 xl:!translate-x-0  xs:-translate-x-80 flex  xs:w-[var(--sidebar-w)] xl:!w-[var(--xl-sidebar-w)] bg-white fixed h-screen flex-col justify-between border-r-2 border-slate-400 shadow-xl"
+                    className="top-0 z-30 overflow-auto transition duration-300 xl:!translate-x-0  xs:-translate-x-80 flex  xs:w-[var(--sidebar-w)] xl:!w-[var(--xl-sidebar-w)] bg-white fixed h-screen flex-col justify-betweenshadow-xl"
                 >
                     <div id="sidebar_main " className="">
                         <h2 className="text-3xl font-bold mb-10 mt-5 ml-2">
-                            Le pont du Lit
+                            Le Pont du Lit
                         </h2>
                         <ul
                             className="app-menu list-unstyled accordion"

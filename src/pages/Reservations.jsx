@@ -58,7 +58,28 @@ export default function Reservations() {
     
     
     useEffect(() => {
+        let sortButtons = document.querySelectorAll('.sort-button')
         
+            if(sortState === ('unpaid' || "partially paid" || 'paid')){
+                sortButtons[2].style.borderTop = '4px solid transparent'
+                sortButtons[1].style.borderTop = '4px solid transparent'
+                sortButtons[0].style.borderTop ='4px solid #3b82f6'
+
+            }
+            else if(sortState === ('recent first' || "recent last")){
+                sortButtons[0].style.borderTop = '4px solid transparent'
+                sortButtons[1].style.borderTop = '4px solid transparent'
+                sortButtons[2].style.borderTop ='4px solid #3b82f6'
+
+            }
+            else if(sortState === ('name first' || "name last")){
+                sortButtons[0].style.borderTop = '4px solid transparent'
+                sortButtons[2].style.borderTop = '4px solid transparent'
+                sortButtons[1].style.borderTop ='4px solid #3b82f6'
+
+            }
+        
+
         const unpaid = eventList.filter((e) => ParsedClientInfo(e.description).paymentInfo === "Non_payé");
         const partiallyPaid = eventList.filter((e) => ParsedClientInfo(e.description).paymentInfo === "Paiement_partiel");
         const paid = eventList.filter((e) => ParsedClientInfo(e.description).paymentInfo === "Paiement_complet");
@@ -68,26 +89,26 @@ export default function Reservations() {
             case "unpaid":
                 setEventList([...unpaid, ...partiallyPaid, ...paid]);
                 break;
-                case "partially paid":
-                    setEventList([...partiallyPaid, ...paid, ...unpaid]);
-                    break;
-                case "paid":
-                    setEventList([...paid, ...unpaid, ...partiallyPaid]);
-                    break;
-                case "recent first":
-                    setEventList([...eventList].sort((a,b) => (a.idx - b.idx)));
-                    break;
-                case "recent last":
-                    setEventList([...eventList].sort((a,b) => (b.idx - a.idx)));
-                    break;    
-                case "name first":
-                    setEventList([...eventList].sort((a,b) => ParsedClientInfo(a.description).Nom.toLowerCase() > ParsedClientInfo(b.description).Nom.toLowerCase() ? 1 : -1 ));
-                    break;  
-                case "name last":
-                    setEventList([...eventList].sort((a,b) => ParsedClientInfo(b.description).Nom.toLowerCase() > ParsedClientInfo(a.description).Nom.toLowerCase() ? 1 : -1));
-                    break;  
-                        default:
+            case "partially paid":
+                setEventList([...partiallyPaid, ...paid, ...unpaid]);
                 break;
+            case "paid":
+                setEventList([...paid, ...unpaid, ...partiallyPaid]);
+                break;
+            case "recent first":
+                setEventList([...eventList].sort((a,b) => (a.idx - b.idx)));
+                break;
+            case "recent last":
+                setEventList([...eventList].sort((a,b) => (b.idx - a.idx)));
+                break;    
+            case "name first":
+                setEventList([...eventList].sort((a,b) => ParsedClientInfo(a.description).Nom.toLowerCase() > ParsedClientInfo(b.description).Nom.toLowerCase() ? 1 : -1 ));
+                break;  
+            case "name last":
+                setEventList([...eventList].sort((a,b) => ParsedClientInfo(b.description).Nom.toLowerCase() > ParsedClientInfo(a.description).Nom.toLowerCase() ? 1 : -1));
+                break;  
+                    default:
+            break;
         }
     }, [sortState]);
     
@@ -159,21 +180,21 @@ export default function Reservations() {
 
     return (
         <>
-            <div className="xl:ml-[var(--xl-sidebar-w)] lg:ml-1 mt-32 w-auto">
+            <div className="xl:ml-[var(--xl-sidebar-w)] lg:ml-1 mt-20 w-auto">
                 <div className="mb-5 flex xs:justify-center md:!justify-between px-3">
                     <div className="relative flex flex-row gap-2">
-                        <button className="px-0 w-10 text-xs" onClick={sortEventByPaymentState}>
+                        <button className="sort-button px-0 w-10 text-xs border-t-4 border-transparent rounded transition-all duration-500" onClick={sortEventByPaymentState}>
                             <img src={transactionFilter} height="30" width="30" alt="transaction icon" className="mx-auto"/>
                         
                         </button>
-                        <button className="px-0 w-10 text-xs" onClick={sortEventByPeople}>
-                            <img src={peopleIcon} height="30" width="30" alt="transaction icon" className="mx-auto"/>
+                        <button className="sort-button px-0 w-10 text-xs border-t-4 border-transparent rounded transition-all duration-500" onClick={sortEventByPeople}>
+                            <img src={identityIcon} height="30" width="30" alt="transaction icon" className="mx-auto"/>
                         
                         </button>
-                        <button className="w-10 px-0" onClick={sortEventByDates}>
-                            <img src={calendarIcon} height="30" width="30" alt="transaction icon" />
+                        <button className="sort-button w-10 px-0 border-t-4 border-transparent rounded transition-all duration-500" onClick={sortEventByDates}>
+                            <img src={calendarIcon} height="28" width="28" alt="transaction icon" className="mx-auto"/>
                         </button>
-                <span className="absolute left-0 -bottom-5 px-2 w-fit whitespace-nowrap text-xs bg-white">{sortState}</span>
+                <span className="absolute left-0 -bottom-5 px-2 w-fit whitespace-nowrap text-xs bg-white rounded-t-lg">{sortState}</span>
                     </div>
 
                     <NouvelleReservationButton />

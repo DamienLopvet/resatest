@@ -9,6 +9,14 @@
     body {
         background-color: #f1f1f1;
     }
+    html, body, #root, #root .App > div:nth-child(2){
+    height:100%
+    }
+    #root .App > div:nth-child(2){
+        position: relative;
+    top: 50px;
+    }
+    
 }
 @layer components {
     .rooms-after {
@@ -20,13 +28,7 @@
         after:top-1
         after:left-3
         after:font-extrabold
-        after:text-slate-400
-        checked:after:text-red-800
-        checked:after:text-5xl
-        checked:after:-top-1
-        checked:after:left-2
-        checked:after:opacity-90
-
+        after:text-slate-500
         transition-all
         duration-300
     }

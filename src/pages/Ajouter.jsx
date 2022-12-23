@@ -399,10 +399,10 @@ export default function Ajouter() {
                         </legend>
                         <label
                             htmlFor="Chambre1"
-                            className="border border-slate-400 w-12 h-12 rounded relative "
+                            className="border border-slate-400 w-12 h-12 rounded relative after:content-['1'] rooms-after overflow-hidden"
                         >
                             <input
-                                className="rooms-after absolute top-0 bottom-0 right-0 left-0 after:content-['1'] checked:opacity-50"
+                                className="w-14 h-14 outline-none border-none absolute -top-1 -left-1 checked:opacity-50 accent-emerald-400"
                                 type="checkbox"
                                 id="Chambre1"
                                 name="Chambres"
@@ -413,10 +413,10 @@ export default function Ajouter() {
                         </label>
                         <label
                             htmlFor="Chambre2"
-                            className="border border-slate-400 w-12 h-12 rounded relative "
+                            className="rooms-after border border-slate-400 w-12 h-12 rounded relative after:content-['2'] overflow-hidden "
                         >
                             <input
-                                className="rooms-after absolute top-0 bottom-0 right-0 left-0 after:content-['2'] checked:opacity-50 "
+                                className="w-14 h-14 outline-none border-none absolute -top-1 -left-1 checked:opacity-50 accent-emerald-400 "
                                 type="checkbox"
                                 id="Chambre2"
                                 name="Chambre2"
@@ -427,10 +427,10 @@ export default function Ajouter() {
                         </label>
                         <label
                             htmlFor="Chambre3"
-                            className="border border-slate-400 w-12 h-12 rounded relative "
+                            className="rooms-after border border-slate-400 w-12 h-12 rounded relative after:content-['3'] overflow-hidden "
                         >
                             <input
-                                className="rooms-after absolute top-0 bottom-0 right-0 left-0 after:content-['3'] checked:opacity-50"
+                                className="w-14 h-14 outline-none border-none absolute -top-1 -left-1 checked:opacity-50 accent-emerald-400"
                                 type="checkbox"
                                 id="Chambre3"
                                 name="Chambre3"
@@ -441,10 +441,10 @@ export default function Ajouter() {
                         </label>
                         <label
                             htmlFor="Chambre4"
-                            className="border border-slate-400 w-12 h-12 rounded relative "
+                            className="rooms-after border border-slate-400 w-12 h-12 rounded relative after:content-['4'] overflow-hidden "
                         >
                             <input
-                                className="rooms-after absolute top-0 bottom-0 right-0 left-0 after:content-['4'] checked:opacity-50"
+                                className="w-14 h-14 outline-none border-none absolute -top-1 -left-1 checked:opacity-50 accent-emerald-400"
                                 type="checkbox"
                                 id="Chambre4"
                                 name="Chambre4"
@@ -455,10 +455,10 @@ export default function Ajouter() {
                         </label>
                         <label
                             htmlFor="Chambre5"
-                            className="border border-slate-400 w-12 h-12 rounded relative "
+                            className="rooms-after border border-slate-400 w-12 h-12 rounded relative after:content-['5'] overflow-hidden "
                         >
                             <input
-                                className="rooms-after absolute top-0 bottom-0 right-0 left-0 after:content-['5'] checked:opacity-50"
+                                className="w-14 h-14 outline-none border-none absolute -top-1 -left-1 checked:opacity-50 accent-emerald-400"
                                 type="checkbox"
                                 id="Chambre5"
                                 name="Chambre5"
@@ -469,10 +469,10 @@ export default function Ajouter() {
                         </label>
                         <label
                             htmlFor="Chambre6"
-                            className="border border-slate-400 w-12 h-12 rounded relative "
+                            className="rooms-after border border-slate-400 w-12 h-12 rounded relative after:content-['6'] overflow-hidden"
                         >
                             <input
-                                className="rooms-after absolute top-0 bottom-0 right-0 left-0 after:content-['6'] checked:opacity-50"
+                                className="w-14 h-14 outline-none border-none absolute -top-1 -left-1 checked:opacity-50 accent-emerald-400"
                                 type="checkbox"
                                 id="Chambre6"
                                 name="Chambre6"
@@ -483,10 +483,10 @@ export default function Ajouter() {
                         </label>
                         <label
                             htmlFor="Chambre7"
-                            className="border border-slate-400 w-12 h-12 rounded relative "
+                            className="rooms-after border border-slate-400 w-12 h-12 rounded relative after:content-['7'] overflow-hidden"
                         >
                             <input
-                                className="rooms-after absolute top-0 bottom-0 right-0 left-0 after:content-['7'] checked:opacity-50"
+                                className="w-14 h-14 outline-none border-none absolute -top-1 -left-1 checked:opacity-50 accent-emerald-400"
                                 type="checkbox"
                                 id="Chambre7"
                                 name="Chambre7"
@@ -497,10 +497,10 @@ export default function Ajouter() {
                         </label>
                         <label
                             htmlFor="Chambre8"
-                            className="border border-slate-400 w-12 h-12 rounded relative "
+                            className="rooms-after border border-slate-400 w-12 h-12 rounded relative after:content-['8'] overflow-hidden "
                         >
                             <input
-                                className="rooms-after absolute top-0 bottom-0 right-0 left-0 after:content-['8'] checked:opacity-50"
+                                className="w-14 h-14 outline-none border-none absolute -top-1 -left-1 checked:opacity-50 accent-emerald-400"
                                 type="checkbox"
                                 id="Chambre8"
                                 name="Chambre8"

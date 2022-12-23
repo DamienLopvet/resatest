@@ -15,7 +15,7 @@ export default function App() {
     
   
     return (
-        <div className="App">
+        <div className="App h-[100%]">
             {error && <p className="response">{error}</p>}
            
             <Router>

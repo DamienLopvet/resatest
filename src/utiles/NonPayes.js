@@ -12,8 +12,8 @@ export default function NonPayes({ eventList }) {
         setNonPaid(() => filteredEvents);
     }, [eventList]);
     return (
-        <div className="min-w-[250px] w-60 bg-white text-center pt-3">
-            <h3 className="font-bold text-xl text-slate-600 capitalize">
+        <div className="min-w-[250px] w-60 bg-white text-center opacity-80">
+            <h3 className="font-bold mt-3 text-xl text-slate-600 capitalize">
                 Non Payés
             </h3>
             {nonPaid.length > 0 ? (

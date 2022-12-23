@@ -36,7 +36,7 @@ export default function NombreReservation({ eventList }) {
         <>
             <div
                 id="nombre_reservation_card"
-                className="min-w-[250px] w-60 bg-white text-center pt-3"
+                className="min-w-[250px] w-60 bg-white text-center pt-3 opacity-80"
             >
                 <div className="flex justify-around align-bottom">
                     <button
