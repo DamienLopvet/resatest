@@ -187,7 +187,7 @@ export default function Ajouter() {
         let EmailField = document.getElementById("Email");
         EmailField.removeAttribute("required");
 
-        //HHANDLE PAYMENT CHECK BOX
+        //HANDLE PAYMENT CHECK BOX
         let noPaidCheckBox = document.querySelector('[value = "Non_payé"]');
         let paymentCheckboxes = document.querySelectorAll(
             "[name='paymentInfo']"
@@ -197,7 +197,7 @@ export default function Ajouter() {
             else box.checked = true;
         });
         //HANDLE ROOMS CHECKBOXES
-        let rooms = document.querySelectorAll(".rooms-after");
+        let rooms = document.querySelectorAll(".rooms-after > input");
         rooms.forEach((room) => (room.checked = false));
 
         setStarting(new Date());
