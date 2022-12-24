@@ -5,7 +5,6 @@ import GetEvents from "../data/GetEvents";
 import NouvelleReservationButton from "../utiles/NouvelleReservationButton";
 import NonPayes from "../utiles/NonPayes";
 import Hotes from "../utiles/Hotes";
-import homeBg from "../images/backgrounds/homeBackground.jpg"
 
 
 export default function Home() {
@@ -17,9 +16,7 @@ export default function Home() {
    
     return (
         <>
-            <section
-            style={{'backgroundImage': `url(${homeBg}`}}
-            className="bg-no-repeat bg-cover h-[100%]">
+            <section>
 
                 <div className="xl:ml-[20rem]">
                     <h1 className="pt-10 text-3xl font-semibold ml-5 mb-3">Bienvenue</h1>

@@ -16,7 +16,7 @@ export default function NouvelleReservationButton() {
   }
     return (
       <div 
-      className="w-36 h-14 cursor-pointer flex flex-row items-center justify-around border border-slate-400 shadow-md bg-blue-500 rounded" 
+      className="w-36 h-14 xs:max-md:ml-2 cursor-pointer flex flex-row items-center justify-around border border-slate-400 shadow-md bg-blue-500 rounded" 
       onClick={handleClick}
       >
           <img id='plus_icon' src={plus} alt="nouvelle reservation"  className='w-8'/>

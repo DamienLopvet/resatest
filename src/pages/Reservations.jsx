@@ -200,7 +200,7 @@ export default function Reservations() {
                     <NouvelleReservationButton />
 
                 </div>
-                <ul>
+                <ul className="opacity-80">
                     <li className=" leading-4 py-1 flex-row md:!flex justify-between gap-3 bg-white px-5 xs:hidden items-center">
                         <p className="font-bold xs:hidden md:!block  basis-[11%]">Nom Prénom</p>
 

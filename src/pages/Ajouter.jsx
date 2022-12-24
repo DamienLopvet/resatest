@@ -294,7 +294,7 @@ export default function Ajouter() {
                     onSubmit={handleSubmit}
                     className="flex flex-row flex-wrap gap-3 justify-around px-3"
                 >
-                    <fieldset className="dates flex flex-col bg-white mb-3 p-3 gap-5 justify-center  w-[200px]">
+                    <fieldset className=" opacity-80 dates flex flex-col bg-white mb-3 p-3 gap-5 justify-center  w-[200px]">
                         <legend className="-translate-y-3 -translate-x-3 font-bold">
                             Dates
                         </legend>
@@ -336,7 +336,7 @@ export default function Ajouter() {
                         </LocalizationProvider>
                     </fieldset>
 
-                    <fieldset className="refClient flex flex-col bg-white mb-3 p-3 gap-5 justify-center w-[200px]">
+                    <fieldset className=" opacity-80 refClient flex flex-col bg-white mb-3 p-3 gap-5 justify-center w-[200px]">
                         <legend className="-translate-y-3 -translate-x-3 font-bold">
                             References client
                         </legend>
@@ -393,7 +393,7 @@ export default function Ajouter() {
                             />
                         </label>
                     </fieldset>
-                    <fieldset className="chambre flex flex-row flex-wrap bg-white mb-3 p-3 gap-5 justify-center w-[200px]">
+                    <fieldset className=" opacity-80 chambre flex flex-row flex-wrap bg-white mb-3 p-3 gap-5 justify-center w-[200px]">
                         <legend className="-translate-y-3 -translate-x-3 font-bold">
                             {Chambres.length > 1 ? "Chambres " : "Chambre "}
                         </legend>
@@ -510,7 +510,7 @@ export default function Ajouter() {
                             <div id="Room8" className="rooms"></div>
                         </label>
                     </fieldset>
-                    <div className="flex flex-col gap-5 justify-start">
+                    <div className=" opacity-80 flex flex-col gap-5 justify-start">
                         <fieldset className="nombre flex flex-col bg-white mb-3 p-3 gap-5 justify-center w-[200px]">
                             <legend className="-translate-y-3 -translate-x-3 font-bold">
                                 Nombre de personne
