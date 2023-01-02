@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import { BrowserRouter as Router, Link, Route, Routes, useNavigate } from "react-router-dom";
 import LoadUser from "./data/LoadUser";
 import "./styles/header.css";
+import Search from "./utiles/Search";
 
-export default function Header() {
+export default function Header({events}) {
     const [isActiveTab, setIsActiveTab] = useState("1");
+    const [searchBar, setSearchBar] = useState(false)
     const loadUser = LoadUser();
     const navigate = useNavigate();
-    
+    console.log('la search bar est sur ' +searchBar);
 
     function handleActiveTab(e) {
         let tabTodisable = document.querySelector(
@@ -45,14 +47,33 @@ export default function Header() {
             document.addEventListener("keydown", handleSidebar);
         }
     }
-   
+    function handleSearchBar(e) {
+       let actualComponent = document.querySelector("#actualComponent");
+       let searchIcon = document.querySelector("#search_icon");
+       if( e.keyCode === 27 || searchIcon.hasAttribute('enabled') ) {
+            setSearchBar(() => false)
+            searchIcon.toggleAttribute("enabled")
+            actualComponent.classList.toggle("blur-sm")
+          document.removeEventListener("keydown", handleSearchBar);
+            
+      }else{
+
+        setSearchBar(() => true)
+        searchIcon.toggleAttribute("enabled")
+        actualComponent.classList.toggle("blur-sm")
+        document.addEventListener("keydown", handleSearchBar);
+       }
+
+
+    }
+ 
 
     return (
         <>
             <div className="">
                 <div
                     id="curtain"
-                    className="h-[96vh] w-screen bg-slate-600 absolute z-20 opacity-30 hidden top-0"
+                    className="h-[100vh] w-screen bg-slate-600 absolute z-20 opacity-30 hidden top-0"
                 ></div>
                 <span
                     id="curtain_close_button"
@@ -63,7 +84,11 @@ export default function Header() {
                 </span>
                 <div
                     id="sidebar"
-                    className="top-0 z-30 overflow-auto transition duration-300 xl:!translate-x-0  xs:-translate-x-80 flex  xs:w-[var(--sidebar-w)] xl:!w-[var(--xl-sidebar-w)] bg-white fixed h-screen flex-col justify-betweenshadow-xl"
+                    className="top-0 z-30 overflow-auto transition duration-300 bg-white fixed h-screen flex-col justify-between shadow-xl
+                    xl:!translate-x-0 
+                    xl:!w-[var(--xl-sidebar-w)] 
+                    xs:-translate-x-80 flex  
+                    xs:w-[var(--sidebar-w)]   "
                 >
                     <div id="sidebar_main " className="">
                         <h2 className="text-3xl font-bold mb-10 mt-5 ml-2">
@@ -326,7 +351,7 @@ export default function Header() {
                 </div>
                 <div
                     id="top-navbar"
-                    className="z-10 py-2 bg-white flex justify-between gap-[10px] items-center sm:col-span-5 xl:ml-[20rem] shadow fixed top-0 right-0 left-0"
+                    className="z-10 py-2 bg-white flex justify-end gap-[20px] items-center sm:col-span-5 xl:ml-[20rem] shadow fixed top-0 right-0 left-0"
                 >
                     <div id="burger_menu"
                         className="mr-auto ml-3 cursor-pointer xl:hidden"
@@ -348,16 +373,22 @@ export default function Header() {
                                 d="M4 7h22M4 15h22M4 23h22"
                             ></path>
                         </svg>
+                        
+                       
                     </div>
-                    <div id="search-bar" className="relative w-3/4 group">
-                        <input
+                    <div id="search_bar" className="group"
+                    onClick={handleSearchBar}
+                    >
+                        {/* <input
+                            onChange={handleChangeSearch}
                             type="text"
                             className="lg:ml-6 w-full py-2 px-3 mr-3 outline-none bg-white focus:border-2 text-sm focus:border-blue-500 placeholder-slate-600 border-slate-300 border"
                             placeholder="rechercher par noms, prénoms, dates..."
-                        />
+                        /> */}
                         <svg
-                            width="15"
-                            className="absolute top-3 right-3 opacity-60 group-hover:opacity-100 "
+                            id="search_icon"                        
+                            width="20"
+                            className="opacity-60 group-hover:opacity-100 "
                             aria-hidden="true"
                             focusable="false"
                             data-prefix="fas"
@@ -373,7 +404,11 @@ export default function Header() {
                             ></path>
                         </svg>
                     </div>
-                    <div className="notifications relative ml-auto ">
+                    {searchBar &&
+                    <Search events={events}/>
+                    }
+                    
+                    <div className="notifications relative">
                         <div
                             className=" text-black opacity-60 hover:opacity-100"
                             id="notifications-dropdown-toggle"
@@ -401,7 +436,7 @@ export default function Header() {
                             3
                         </span>
                     </div>
-                    <div className="ml-5 mr-16">
+                    <div className="mr-16">
                         <div
                             title="Settings"
                             className="text-black opacity-60 hover:opacity-100"

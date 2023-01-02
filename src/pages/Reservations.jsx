@@ -20,7 +20,7 @@ import roomIcon from "../images/icons/room.svg";
 import emailNotificationIcon from "../images/icons/emailNotificationIcon.svg";
 import transactionFilter from "../images/icons/transaction-filter.svg";
 
-export default function Reservations() {
+export default function Reservations({searchResult}) {
     const sortOptions = ["unpaid", "partially paid", "paid", "recent first","recent last", "name first", "name last"];
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
@@ -31,6 +31,8 @@ export default function Reservations() {
     
     
     useEffect(() => {
+        if(searchResult) setEventList(searchResult)
+        else{
         const sortEvents = searchParams.get("sort");
         GetEvents("all").then((el)=>{
             var eventList_ = el.map((e, idx) => ({...e, idx: idx}));
@@ -53,8 +55,8 @@ export default function Reservations() {
                 setEventList(eventList_);
             }
             console.log(eventList_);
-        });
-    }, []);
+        });}
+    }, [searchResult]);
     
     
     useEffect(() => {

@@ -289,7 +289,7 @@ export default function Ajouter() {
 
     return (
         <>
-            <div className="xl:ml-[var(--xl-sidebar-w)] lg:ml-1 mt-32 w-auto">
+            <div className="xl:ml-[var(--xl-sidebar-w)] lg:ml-1 mt-14 w-auto">
                 <form
                     onSubmit={handleSubmit}
                     className="flex flex-row flex-wrap gap-3 justify-around px-3"
