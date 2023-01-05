@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/resatest/static/css/main.5ee5203a.css",
-    "main.js": "/resatest/static/js/main.8488be20.js",
+    "main.css": "/resatest/static/css/main.7bc5ecc2.css",
+    "main.js": "/resatest/static/js/main.82b3bce3.js",
     "static/media/homeBackground.jpg": "/resatest/static/media/homeBackground.a100d865553894420b91.jpg",
     "static/media/identity.svg": "/resatest/static/media/identity.1fbc13fb300aaf8bc56000bd1e84b84e.svg",
     "static/media/calendarIcon.svg": "/resatest/static/media/calendarIcon.2ccc59d3ceea7fd14c0dfd4d3304402b.svg",
@@ -16,11 +16,11 @@
     "index.html": "/resatest/index.html",
     "static/media/+.svg": "/resatest/static/media/+.c2c583e8fb198d2393b18b8d1032ad8a.svg",
     "static/media/modification.svg": "/resatest/static/media/modification.4cdbdb2a88df5b5fe3179c5d2e3fd2b6.svg",
-    "main.5ee5203a.css.map": "/resatest/static/css/main.5ee5203a.css.map",
-    "main.8488be20.js.map": "/resatest/static/js/main.8488be20.js.map"
+    "main.7bc5ecc2.css.map": "/resatest/static/css/main.7bc5ecc2.css.map",
+    "main.82b3bce3.js.map": "/resatest/static/js/main.82b3bce3.js.map"
   },
   "entrypoints": [
-    "static/css/main.5ee5203a.css",
-    "static/js/main.8488be20.js"
+    "static/css/main.7bc5ecc2.css",
+    "static/js/main.82b3bce3.js"
   ]
 }
