@@ -182,7 +182,7 @@ export default function Reservations({searchResult}) {
 
     return (
         <>
-            <div className="xl:ml-[var(--xl-sidebar-w)] lg:ml-1 mt-20 w-auto">
+            <div className="xl:ml-[var(--xl-sidebar-w)] lg:ml-1 w-auto">
                 <div className="mb-5 flex xs:justify-center md:!justify-between px-3">
                     <div className="relative flex flex-row gap-2">
                         <button className="sort-button px-0 w-10 text-xs border-t-4 border-transparent rounded transition-all duration-500" onClick={sortEventByPaymentState}>

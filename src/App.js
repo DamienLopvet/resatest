@@ -23,8 +23,8 @@ export default function App() {
             {error && <p className="response">{error}</p>}
            
             <Router>
-            <Header events = {events}/>
-                <div id="actualComponent">
+             <Header events = {events}/>
+                <div id="actualComponent" className="pt-16">
                    <Routes>
                         <Route
                             path="/resatest/nouvelle-reservation"

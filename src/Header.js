@@ -1,20 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Link, Route, Routes, useNavigate } from "react-router-dom";
 import LoadUser from "./data/LoadUser";
 import "./styles/header.css";
 import Search from "./utiles/Search";
 
-export default function Header({events}) {
+export default function Header({ events }) {
     const [isActiveTab, setIsActiveTab] = useState("1");
-    const [searchBar, setSearchBar] = useState(false)
+    const [searchBar, setSearchBar] = useState(false);
     const loadUser = LoadUser();
     const navigate = useNavigate();
-    console.log('la search bar est sur ' +searchBar);
 
     function handleActiveTab(e) {
-        let tabTodisable = document.querySelector(
-            `[data-index="${isActiveTab}"]`
-        );
+        let tabTodisable = document.querySelector(`[data-index="${isActiveTab}"]`);
         let tabToActivate = e.currentTarget;
         tabTodisable.classList.remove("active");
         setIsActiveTab(tabToActivate.dataset.index);
@@ -25,13 +22,7 @@ export default function Header({events}) {
         let sidebar = document.getElementById("sidebar");
         let curtain = document.getElementById("curtain");
         let closeButton = document.getElementById("curtain_close_button");
-        if (
-            e.target?.id === "curtain" ||
-            e.target?.id === "curtain_close_button" ||
-            e.keyCode === 27 ||
-            e.keyCode === 8 ||
-            e === "hideSidebar"
-        ) {
+        if (e.target?.id === "curtain" || e.target?.id === "curtain_close_button" || e.keyCode === 27 || e.keyCode === 8 || e === "hideSidebar") {
             sidebar.style.transform = "translateX(-20rem)";
             curtain.style.display = "none";
             closeButton.style.display = "none";
@@ -47,34 +38,48 @@ export default function Header({events}) {
             document.addEventListener("keydown", handleSidebar);
         }
     }
-    function handleSearchBar(e) {
-       let actualComponent = document.querySelector("#actualComponent");
-       let searchIcon = document.querySelector("#search_icon");
-       if( e.keyCode === 27 || searchIcon.hasAttribute('enabled') ) {
-            setSearchBar(() => false)
-            searchIcon.toggleAttribute("enabled")
-            actualComponent.classList.toggle("blur-sm")
-          document.removeEventListener("keydown", handleSearchBar);
-            
-      }else{
 
-        setSearchBar(() => true)
-        searchIcon.toggleAttribute("enabled")
-        actualComponent.classList.toggle("blur-sm")
+    useEffect(() => {
         document.addEventListener("keydown", handleSearchBar);
-       }
+    }, []);
 
+    function handleSearchBar(e) {
+        let actualComponent = document.querySelector("#actualComponent");
+        let searchBarContainer = document.querySelector("#searchBar_container");
+        let searchBarCurtain = document.querySelector("#searchBar_curtain");
+        let header = document.querySelector("header");
 
+        if (searchBarContainer.hasAttribute("enabled")) {
+            if (
+                e.keyCode === 27 ||
+                e.target.hasAttribute("enabled") ||
+                e.target.id === "searchBar_curtain" ||
+                ((e.ctrlKey || e.metaKey) && e.code === "KeyK")
+            ) {
+                e.preventDefault();
+                setSearchBar(() => false);
+                searchBarContainer.toggleAttribute("enabled");
+                actualComponent.classList.toggle("blur-sm");
+                header.classList.toggle("blur-sm");
+                searchBarContainer.classList.add("hidden");
+                searchBarCurtain.removeEventListener("click", handleSearchBar);
+            }
+        } else if (((e.ctrlKey || e.metaKey) && e.code === "KeyK") || e.target.id === "search_bar") {
+            e.preventDefault();
+            setSearchBar(() => true);
+            searchBarContainer.toggleAttribute("enabled");
+            header.classList.toggle("blur-sm");
+            actualComponent.classList.toggle("blur-sm");
+            searchBarContainer.classList.remove("hidden");
+            document.addEventListener("keydown", handleSearchBar);
+            searchBarCurtain.addEventListener("click", handleSearchBar);
+        } else return;
     }
- 
 
     return (
         <>
-            <div className="">
-                <div
-                    id="curtain"
-                    className="h-[100vh] w-screen bg-slate-600 absolute z-20 opacity-30 hidden top-0"
-                ></div>
+            <header>
+                <div id="curtain" className="h-[100vh] w-screen bg-slate-600 absolute z-20 opacity-30 hidden top-0"></div>
                 <span
                     id="curtain_close_button"
                     aria-label="close"
@@ -84,165 +89,124 @@ export default function Header({events}) {
                 </span>
                 <div
                     id="sidebar"
-                    className="top-0 z-30 overflow-auto transition duration-300 bg-white fixed h-screen flex-col justify-between shadow-xl
+                    className="top-0 overflow-auto transition duration-300 bg-white fixed h-screen flex-col justify-between shadow-xl
                     xl:!translate-x-0 
                     xl:!w-[var(--xl-sidebar-w)] 
                     xs:-translate-x-80 flex  
                     xs:w-[var(--sidebar-w)]   "
                 >
                     <div id="sidebar_main " className="">
-                        <h2 className="text-3xl font-bold mb-10 mt-5 ml-2">
-                            Le Pont du Lit
-                        </h2>
-                        <ul
-                            className="app-menu list-unstyled accordion"
-                            id="menu-accordion"
-                        >
+                        <h2 className="text-3xl font-bold mb-10 mt-5 ml-2">Le Pont du Lit</h2>
+                        <ul className="app-menu list-unstyled accordion" id="menu-accordion">
                             <Link to="/resatest/">
-
-                            <li
-                                id="sidenav_vue_d_ensemble"
-                                className="nav-item"
-                            >
-                                <div
-                                    data-index="1"
-                                    onClick={handleActiveTab}
-                                    className="nav-link nav-link hover:text-[#3e5c8c] flex flex-row gap-5 justify-start items-end p-3 active"
-                                >
-                                    <span className="nav-icon">
-                                        <svg
-                                            width="1.5rem"
-                                            height="1.5rem"
-                                            viewBox="0 0 16 16"
-                                            className="bi bi-house-door"
-                                            fill="currentColor"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <path
-                                                fillRule="evenodd"
-                                                d="M7.646 1.146a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 .146.354v7a.5.5 0 0 1-.5.5H9.5a.5.5 0 0 1-.5-.5v-4H7v4a.5.5 0 0 1-.5.5H2a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .146-.354l6-6zM2.5 7.707V14H6v-4a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v4h3.5V7.707L8 2.207l-5.5 5.5z"
-                                            ></path>
-                                            <path
-                                                fillRule="evenodd"
-                                                d="M13 2.5V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"
-                                            ></path>
-                                        </svg>
-                                    </span>
-                                    <span className="text-sm">
-                                            Vue d'ensemble
-                                    </span>
-                                </div>
-                            </li>
-                                        </Link>
-                        <Link to="/resatest/reservations">
-
-                            <li id="sidenav_reservation" className="nav-item" >
-                                <div
-                                    data-index="2"
-                                    onClick={handleActiveTab}
-                                    className="nav-link hover:text-[#3e5c8c] flex flex-row gap-5 justify-start items-end p-3"
-                                >
-                                    <span className="nav-icon">
-                                        <svg
-                                            width="1.5rem"
-                                            height="1.5rem"
-                                            viewBox="0 0 16 16"
-                                            fill="currentColor"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <path
-                                                fillRule="evenodd"
-                                                d="M14.5 3h-13a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"
-                                            ></path>
-                                            <path
-                                                fillRule="evenodd"
-                                                d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8zm0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5z"
-                                            ></path>
-                                            <circle
-                                                cx="3.5"
-                                                cy="5.5"
-                                                r=".5"
-                                            ></circle>
-                                            <circle
-                                                cx="3.5"
-                                                cy="8"
-                                                r=".5"
-                                            ></circle>
-                                            <circle
-                                                cx="3.5"
-                                                cy="10.5"
-                                                r=".5"
-                                            ></circle>
-                                        </svg>
-                                    </span>
-                                    <span className="nav-link-text text-sm">
-                                        Reservations
-                                    </span>
-                                </div>
-                            </li>
-                        </Link>
-                                        <Link to="/resatest/calendrier">
-                            <li id="sidenav_calendrier" className="nav-item">
-                                <div
-                                    data-index="3"
-                                    onClick={handleActiveTab}
-                                    className="nav-link hover:text-[#3e5c8c] flex flex-row gap-5 justify-start items-end p-3"
-                                >
-                                    <span className="nav-icon">
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="1.5rem"
-                                            height="1.5rem"
-                                            fill="currentColor"
-                                            className="bi bi-calendar"
-                                            viewBox="0 0 16 16"
-                                        >
-                                            <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"></path>
-                                        </svg>
-                                    </span>
-                                    <span className="nav-link-text text-sm">
-                                        Calendrier
-                                    </span>
-                                </div>
-                            </li>
+                                <li id="sidenav_vue_d_ensemble" className="nav-item">
+                                    <div
+                                        data-index="1"
+                                        onClick={handleActiveTab}
+                                        className="nav-link nav-link hover:text-[#3e5c8c] flex flex-row gap-5 justify-start items-end p-3 active"
+                                    >
+                                        <span className="nav-icon">
+                                            <svg
+                                                width="1.5rem"
+                                                height="1.5rem"
+                                                viewBox="0 0 16 16"
+                                                className="bi bi-house-door"
+                                                fill="currentColor"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                            >
+                                                <path
+                                                    fillRule="evenodd"
+                                                    d="M7.646 1.146a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 .146.354v7a.5.5 0 0 1-.5.5H9.5a.5.5 0 0 1-.5-.5v-4H7v4a.5.5 0 0 1-.5.5H2a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .146-.354l6-6zM2.5 7.707V14H6v-4a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v4h3.5V7.707L8 2.207l-5.5 5.5z"
+                                                ></path>
+                                                <path fillRule="evenodd" d="M13 2.5V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"></path>
+                                            </svg>
+                                        </span>
+                                        <span className="text-sm">Vue d'ensemble</span>
+                                    </div>
+                                </li>
+                            </Link>
+                            <Link to="/resatest/reservations">
+                                <li id="sidenav_reservation" className="nav-item">
+                                    <div
+                                        data-index="2"
+                                        onClick={handleActiveTab}
+                                        className="nav-link hover:text-[#3e5c8c] flex flex-row gap-5 justify-start items-end p-3"
+                                    >
+                                        <span className="nav-icon">
+                                            <svg
+                                                width="1.5rem"
+                                                height="1.5rem"
+                                                viewBox="0 0 16 16"
+                                                fill="currentColor"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                            >
+                                                <path
+                                                    fillRule="evenodd"
+                                                    d="M14.5 3h-13a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"
+                                                ></path>
+                                                <path
+                                                    fillRule="evenodd"
+                                                    d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8zm0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5z"
+                                                ></path>
+                                                <circle cx="3.5" cy="5.5" r=".5"></circle>
+                                                <circle cx="3.5" cy="8" r=".5"></circle>
+                                                <circle cx="3.5" cy="10.5" r=".5"></circle>
+                                            </svg>
+                                        </span>
+                                        <span className="nav-link-text text-sm">Reservations</span>
+                                    </div>
+                                </li>
+                            </Link>
+                            <Link to="/resatest/calendrier">
+                                <li id="sidenav_calendrier" className="nav-item">
+                                    <div
+                                        data-index="3"
+                                        onClick={handleActiveTab}
+                                        className="nav-link hover:text-[#3e5c8c] flex flex-row gap-5 justify-start items-end p-3"
+                                    >
+                                        <span className="nav-icon">
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="1.5rem"
+                                                height="1.5rem"
+                                                fill="currentColor"
+                                                className="bi bi-calendar"
+                                                viewBox="0 0 16 16"
+                                            >
+                                                <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"></path>
+                                            </svg>
+                                        </span>
+                                        <span className="nav-link-text text-sm">Calendrier</span>
+                                    </div>
+                                </li>
                             </Link>
                             <Link to="/resatest/transactions">
-                            <li
-                                id="sidenav_transactions"
-                                className="nav-item   hover:text-[#3e5c8c] h-[45px] duration-500 overflow-hidden"
-                            >
-                                <div
-                                    className="sidenav-item-title flex flex-row gap-5 justify-start items-end p-3"
-                                    data-index="5"
-                                    onClick={handleActiveTab}
-                                >
-                                    <span className="nav-icon">
-                                        <svg
-                                            width="1.5rem"
-                                            height="1.5rem"
-                                            viewBox="0 0 16 16"
-                                            className="bi bi-columns-gap"
-                                            fill="currentColor"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <path
-                                                fillRule="evenodd"
-                                                d="M6 1H1v3h5V1zM1 0a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1H1zm14 12h-5v3h5v-3zm-5-1a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1h-5zM6 8H1v7h5V8zM1 7a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1H1zm14-6h-5v7h5V1zm-5-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1h-5z"
-                                            ></path>
-                                        </svg>
-                                    </span>
+                                <li id="sidenav_transactions" className="nav-item   hover:text-[#3e5c8c] h-[45px] duration-500 overflow-hidden">
                                     <div
-                                        className="submenu-link text-sm"
+                                        className="sidenav-item-title flex flex-row gap-5 justify-start items-end p-3"
+                                        data-index="5"
+                                        onClick={handleActiveTab}
                                     >
-                                        Transactions
+                                        <span className="nav-icon">
+                                            <svg
+                                                width="1.5rem"
+                                                height="1.5rem"
+                                                viewBox="0 0 16 16"
+                                                className="bi bi-columns-gap"
+                                                fill="currentColor"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                            >
+                                                <path
+                                                    fillRule="evenodd"
+                                                    d="M6 1H1v3h5V1zM1 0a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1H1zm14 12h-5v3h5v-3zm-5-1a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1h-5zM6 8H1v7h5V8zM1 7a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1H1zm14-6h-5v7h5V1zm-5-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1h-5z"
+                                                ></path>
+                                            </svg>
+                                        </span>
+                                        <div className="submenu-link text-sm">Transactions</div>
                                     </div>
-                                </div>
-                            </li>
+                                </li>
                             </Link>
-                            <li
-                                id="sidenav_carnet_d_adresses"
-                                className="nav-item "
-                            >
+                            <li id="sidenav_carnet_d_adresses" className="nav-item ">
                                 <div
                                     data-index="6"
                                     onClick={handleActiveTab}
@@ -260,9 +224,7 @@ export default function Header({events}) {
                                             <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811V2.828zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492V2.687zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"></path>
                                         </svg>
                                     </span>
-                                    <span className="nav-link-text text-sm">
-                                        Carnet d'adresses
-                                    </span>
+                                    <span className="nav-link-text text-sm">Carnet d'adresses</span>
                                 </div>
                             </li>
                             <li id="sidenav_notes" className="nav-item">
@@ -285,9 +247,7 @@ export default function Header({events}) {
                                             ></path>
                                         </svg>
                                     </span>
-                                    <span className="nav-link-text text-sm">
-                                        Notes
-                                    </span>
+                                    <span className="nav-link-text text-sm">Notes</span>
                                 </div>
                             </li>
                         </ul>
@@ -295,9 +255,7 @@ export default function Header({events}) {
                     <div id="sidebar_footer">
                         <ul className="mb-10">
                             <li className="nav-item">
-                                <div
-                                    className="nav-link hover:text-[#3e5c8c] flex flex-row gap-5 justify-start items-end p-3"
-                                >
+                                <div className="nav-link hover:text-[#3e5c8c] flex flex-row gap-5 justify-start items-end p-3">
                                     <span className="nav-icon">
                                         <svg
                                             width="1.5rem"
@@ -317,16 +275,12 @@ export default function Header({events}) {
                                             ></path>
                                         </svg>
                                     </span>
-                                    <span className="nav-link-text text-sm">
-                                        Settings
-                                    </span>
+                                    <span className="nav-link-text text-sm">Settings</span>
                                 </div>
                             </li>
 
                             <li className="nav-item">
-                                <div
-                                    className="nav-link hover:text-[#3e5c8c] flex flex-row gap-5 justify-start items-end p-3"
-                                >
+                                <div className="nav-link hover:text-[#3e5c8c] flex flex-row gap-5 justify-start items-end p-3">
                                     <span className="nav-icon">
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
@@ -341,29 +295,18 @@ export default function Header({events}) {
                                             <path d="M7.001 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0z"></path>
                                         </svg>
                                     </span>
-                                    <span className="nav-link-text text-sm">
-                                        Besoin d'aide?
-                                    </span>
+                                    <span className="nav-link-text text-sm">Besoin d'aide?</span>
                                 </div>
                             </li>
                         </ul>
                     </div>
                 </div>
                 <div
-                    id="top-navbar"
+                    id="top_navbar"
                     className="z-10 py-2 bg-white flex justify-end gap-[20px] items-center sm:col-span-5 xl:ml-[20rem] shadow fixed top-0 right-0 left-0"
                 >
-                    <div id="burger_menu"
-                        className="mr-auto ml-3 cursor-pointer xl:hidden"
-                        onClick={handleSidebar}
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="30"
-                            height="30"
-                            viewBox="0 0 30 30"
-                            role="img"
-                        >
+                    <div id="burger_menu" className="mr-auto ml-3 cursor-pointer xl:hidden" onClick={handleSidebar}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" role="img">
                             <title>Menu</title>
                             <path
                                 stroke="currentColor"
@@ -373,22 +316,16 @@ export default function Header({events}) {
                                 d="M4 7h22M4 15h22M4 23h22"
                             ></path>
                         </svg>
-                        
-                       
                     </div>
-                    <div id="search_bar" className="group"
-                    onClick={handleSearchBar}
+                    <div
+                        id="search_bar"
+                        className="group flex flex-row border rounded-lg px-2 py-1 cursor-pointer hover:border-slate-300"
+                        onClick={handleSearchBar}
                     >
-                        {/* <input
-                            onChange={handleChangeSearch}
-                            type="text"
-                            className="lg:ml-6 w-full py-2 px-3 mr-3 outline-none bg-white focus:border-2 text-sm focus:border-blue-500 placeholder-slate-600 border-slate-300 border"
-                            placeholder="rechercher par noms, prénoms, dates..."
-                        /> */}
                         <svg
-                            id="search_icon"                        
+                            id="search_icon"
                             width="20"
-                            className="opacity-60 group-hover:opacity-100 "
+                            className="opacity-60 mx-1 pointer-events-none"
                             aria-hidden="true"
                             focusable="false"
                             data-prefix="fas"
@@ -403,11 +340,10 @@ export default function Header({events}) {
                                 d="M500.3 443.7l-119.7-119.7c27.22-40.41 40.65-90.9 33.46-144.7C401.8 87.79 326.8 13.32 235.2 1.723C99.01-15.51-15.51 99.01 1.724 235.2c11.6 91.64 86.08 166.7 177.6 178.9c53.8 7.189 104.3-6.236 144.7-33.46l119.7 119.7c15.62 15.62 40.95 15.62 56.57 0C515.9 484.7 515.9 459.3 500.3 443.7zM79.1 208c0-70.58 57.42-128 128-128s128 57.42 128 128c0 70.58-57.42 128-128 128S79.1 278.6 79.1 208z"
                             ></path>
                         </svg>
+                        <span className="px-4 pointer-events-none select-none">Quick search...</span>
+                        <span className=" pointer-events-none select-none">Ctrl K</span>
                     </div>
-                    {searchBar &&
-                    <Search events={events}/>
-                    }
-                    
+
                     <div className="notifications relative">
                         <div
                             className=" text-black opacity-60 hover:opacity-100"
@@ -417,14 +353,7 @@ export default function Header({events}) {
                             aria-expanded="false"
                             title="Notifications"
                         >
-                            <svg
-                                width="1.7em"
-                                height="1.7em"
-                                viewBox="0 0 16 16"
-                                className=""
-                                fill="currentColor"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
+                            <svg width="1.7em" height="1.7em" viewBox="0 0 16 16" className="" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2z"></path>
                                 <path
                                     fillRule="evenodd"
@@ -432,23 +361,13 @@ export default function Header({events}) {
                                 ></path>
                             </svg>
                         </div>
-                        <span className="absolute opacity-100 z-10 icon-badge  -top-1.5 -right-1.5 border-2 text-xs px-1 rounded-full bg-[#ec776c] text-white border-white ">
+                        <span className="absolute select-none opacity-100 z-10 icon-badge  -top-1.5 -right-1.5 border-2 text-xs px-1 rounded-full bg-[#ec776c] text-white border-white ">
                             3
                         </span>
                     </div>
                     <div className="mr-16">
-                        <div
-                            title="Settings"
-                            className="text-black opacity-60 hover:opacity-100"
-                        >
-                            <svg
-                                width="1.7em"
-                                height="1.7em"
-                                viewBox="0 0 16 16"
-                                className=""
-                                fill="currentColor"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
+                        <div title="Settings" className="text-black opacity-60 hover:opacity-100">
+                            <svg width="1.7em" height="1.7em" viewBox="0 0 16 16" className="" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     fillRule="evenodd"
                                     d="M8.837 1.626c-.246-.835-1.428-.835-1.674 0l-.094.319A1.873 1.873 0 0 1 4.377 3.06l-.292-.16c-.764-.415-1.6.42-1.184 1.185l.159.292a1.873 1.873 0 0 1-1.115 2.692l-.319.094c-.835.246-.835 1.428 0 1.674l.319.094a1.873 1.873 0 0 1 1.115 2.693l-.16.291c-.415.764.42 1.6 1.185 1.184l.292-.159a1.873 1.873 0 0 1 2.692 1.116l.094.318c.246.835 1.428.835 1.674 0l.094-.319a1.873 1.873 0 0 1 2.693-1.115l.291.16c.764.415 1.6-.42 1.184-1.185l-.159-.291a1.873 1.873 0 0 1 1.116-2.693l.318-.094c.835-.246.835-1.428 0-1.674l-.319-.094a1.873 1.873 0 0 1-1.115-2.692l.16-.292c.415-.764-.42-1.6-1.185-1.184l-.291.159A1.873 1.873 0 0 1 8.93 1.945l-.094-.319zm-2.633-.283c.527-1.79 3.065-1.79 3.592 0l.094.319a.873.873 0 0 0 1.255.52l.292-.16c1.64-.892 3.434.901 2.54 2.541l-.159.292a.873.873 0 0 0 .52 1.255l.319.094c1.79.527 1.79 3.065 0 3.592l-.319.094a.873.873 0 0 0-.52 1.255l.16.292c.893 1.64-.902 3.434-2.541 2.54l-.292-.159a.873.873 0 0 0-1.255.52l-.094.319c-.527 1.79-3.065 1.79-3.592 0l-.094-.319a.873.873 0 0 0-1.255-.52l-.292.16c-1.64.893-3.433-.902-2.54-2.541l.159-.292a.873.873 0 0 0-.52-1.255l-.319-.094c-1.79-.527-1.79-3.065 0-3.592l.319-.094a.873.873 0 0 0 .52-1.255l-.16-.292c-.892-1.64.902-3.433 2.541-2.54l.292.159a.873.873 0 0 0 1.255-.52l.094-.319z"
@@ -460,7 +379,7 @@ export default function Header({events}) {
                             </svg>
                         </div>
                     </div>
-                    <div className="relative">
+                    <div className="relative select-none">
                         <div id="divSignin" className="absolute -bottom-5  right-3"></div>
 
                         {loadUser.userThumbnail && (
@@ -475,6 +394,10 @@ export default function Header({events}) {
                         )}
                     </div>
                 </div>
+            </header>
+            <div >
+                {" "}
+                <Search events={events} />
             </div>
         </>
     );
