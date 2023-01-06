@@ -44,13 +44,15 @@ export default function Header({ events }) {
     }, []);
 
     function handleSearchBar(e) {
+        console.log(e)
         let actualComponent = document.querySelector("#actualComponent");
         let searchBarContainer = document.querySelector("#searchBar_container");
         let searchBarCurtain = document.querySelector("#searchBar_curtain");
         let header = document.querySelector("header");
-
+        let searchInput = document.querySelector("#search_input")
+        let closeButton = document.querySelector("#search_close_button");
         if (searchBarContainer.hasAttribute("enabled")) {
-            if (
+            if (e.target.id === "search_close_button" ||
                 e.keyCode === 27 ||
                 e.target.hasAttribute("enabled") ||
                 e.target.id === "searchBar_curtain" ||
@@ -63,6 +65,9 @@ export default function Header({ events }) {
                 header.classList.toggle("blur-sm");
                 searchBarContainer.classList.add("hidden");
                 searchBarCurtain.removeEventListener("click", handleSearchBar);
+                closeButton.removeEventListener("click", handleSearchBar);
+                searchInput.value ="";
+
             }
         } else if (((e.ctrlKey || e.metaKey) && e.code === "KeyK") || e.target.id === "search_bar") {
             e.preventDefault();
@@ -71,8 +76,10 @@ export default function Header({ events }) {
             header.classList.toggle("blur-sm");
             actualComponent.classList.toggle("blur-sm");
             searchBarContainer.classList.remove("hidden");
-            document.addEventListener("keydown", handleSearchBar);
             searchBarCurtain.addEventListener("click", handleSearchBar);
+            searchInput.focus()
+            closeButton.addEventListener("click", handleSearchBar);
+
         } else return;
     }
 
@@ -319,13 +326,13 @@ export default function Header({ events }) {
                     </div>
                     <div
                         id="search_bar"
-                        className="group flex flex-row border rounded-lg px-2 py-1 cursor-pointer hover:border-slate-300"
+                        className="group flex flex-row border rounded-lg px-2 py-1 cursor-pointer hover:border-slate-300 xs:max-sm:border-none xs:max-sm:px-0"
                         onClick={handleSearchBar}
                     >
                         <svg
                             id="search_icon"
                             width="20"
-                            className="opacity-60 mx-1 pointer-events-none"
+                            className="opacity-60 mx-1 pointer-events-none xs:max-sm:mx-0"
                             aria-hidden="true"
                             focusable="false"
                             data-prefix="fas"
@@ -340,8 +347,8 @@ export default function Header({ events }) {
                                 d="M500.3 443.7l-119.7-119.7c27.22-40.41 40.65-90.9 33.46-144.7C401.8 87.79 326.8 13.32 235.2 1.723C99.01-15.51-15.51 99.01 1.724 235.2c11.6 91.64 86.08 166.7 177.6 178.9c53.8 7.189 104.3-6.236 144.7-33.46l119.7 119.7c15.62 15.62 40.95 15.62 56.57 0C515.9 484.7 515.9 459.3 500.3 443.7zM79.1 208c0-70.58 57.42-128 128-128s128 57.42 128 128c0 70.58-57.42 128-128 128S79.1 278.6 79.1 208z"
                             ></path>
                         </svg>
-                        <span className="px-4 pointer-events-none select-none">Quick search...</span>
-                        <span className=" pointer-events-none select-none">Ctrl K</span>
+                        <span className="px-4 pointer-events-none select-none xs:max-sm:hidden">Recherche rapide...</span>
+                        <span className=" pointer-events-none select-none xs:max-sm:hidden">Ctrl K</span>
                     </div>
 
                     <div className="notifications relative">
@@ -395,9 +402,10 @@ export default function Header({ events }) {
                     </div>
                 </div>
             </header>
-            <div >
+            <div>
                 {" "}
                 <Search events={events} />
+                
             </div>
         </>
     );
