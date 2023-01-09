@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import GetEvents from "../data/GetEvents";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { UserContext } from "../UserContext.js" 
+import NonConnected from "../utiles/NonConnected";
 
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
@@ -21,6 +23,7 @@ import emailNotificationIcon from "../images/icons/emailNotificationIcon.svg";
 import transactionFilter from "../images/icons/transaction-filter.svg";
 
 export default function Reservations({searchResult}) {
+    const {user} = useContext(UserContext);
     const sortOptions = ["unpaid", "partially paid", "paid", "recent first","recent last", "name first", "name last"];
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
@@ -34,9 +37,8 @@ export default function Reservations({searchResult}) {
         if(searchResult) setEventList(searchResult)
         else{
         const sortEvents = searchParams.get("sort");
-        GetEvents("all").then((el)=>{
+        GetEvents("all", user).then((el)=>{
             var eventList_ = el.map((e, idx) => ({...e, idx: idx}));
-
             const unpaid = eventList_.filter((e) => ParsedClientInfo(e.description).paymentInfo === "Non_payé");
             const partiallyPaid = eventList_.filter((e) => ParsedClientInfo(e.description).paymentInfo === "Paiement_partiel");
             const paid = eventList_.filter((e) => ParsedClientInfo(e.description).paymentInfo === "Paiement_complet");
@@ -54,9 +56,8 @@ export default function Reservations({searchResult}) {
             else {
                 setEventList(eventList_);
             }
-            console.log(eventList_);
         });}
-    }, [searchResult]);
+    }, [searchResult, user]);
     
     
     useEffect(() => {
@@ -125,7 +126,6 @@ export default function Reservations({searchResult}) {
     
     function sortEventByPaymentState() {
         let i = sortOptions.findIndex(e => (e === sortState));
-        console.log(i);
         if (i >= sortOptions.length - 4) {
             setSortState(()=> {return sortOptions[0]});
         }
@@ -410,6 +410,7 @@ export default function Reservations({searchResult}) {
                         </li>
                     ))}
                 </ul>
+                {!user.isLogged && <NonConnected/>}
             </div>
         </>
     );

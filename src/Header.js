@@ -1,15 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { UserContext } from "./UserContext.js" 
 import { BrowserRouter as Router, Link, Route, Routes, useNavigate } from "react-router-dom";
 import LoadUser from "./data/LoadUser";
 import "./styles/header.css";
 import Search from "./utiles/Search";
 
 export default function Header({ events }) {
+    const {user} = useContext(UserContext);
+    var userThumbnail = user.thumbnail
+    //if(user.isLogged) {userThumbnail = user.info.getBasicProfile().getImageUrl()}
     const [isActiveTab, setIsActiveTab] = useState("1");
     const [searchBar, setSearchBar] = useState(false);
-    const loadUser = LoadUser();
+    const loadUser = LoadUser()
     const navigate = useNavigate();
 
+    
+    useEffect(() => {
+        loadUser.handleClientLoad()
+
+      }, [user.isLogged])
+      
     function handleActiveTab(e) {
         let tabTodisable = document.querySelector(`[data-index="${isActiveTab}"]`);
         let tabToActivate = e.currentTarget;
@@ -44,7 +54,6 @@ export default function Header({ events }) {
     }, []);
 
     function handleSearchBar(e) {
-        console.log(e)
         let actualComponent = document.querySelector("#actualComponent");
         let searchBarContainer = document.querySelector("#searchBar_container");
         let searchBarCurtain = document.querySelector("#searchBar_curtain");
@@ -389,9 +398,9 @@ export default function Header({ events }) {
                     <div className="relative select-none">
                         <div id="divSignin" className="absolute -bottom-5  right-3"></div>
 
-                        {loadUser.userThumbnail && (
+                        {user.isLogged && (
                             <img
-                                src={loadUser.userThumbnail}
+                                src={userThumbnail}
                                 alt="user thumbnail"
                                 width="40"
                                 height="40"

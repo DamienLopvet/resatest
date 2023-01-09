@@ -1,64 +1,57 @@
 import { gapi } from "gapi-script";
-import React from "react";
-import { useEffect } from "react";
-import { useState } from "react";
-
-
+import React, { useContext } from "react";
+import { UserContext } from "../UserContext.js" 
 const clientId = process.env.REACT_APP_CLIENT_ID;
 
 export default function LoadUser() {
-    const [error, setError] = useState("");
-    const [userThumbnail, setUserThumbnail] = useState("");
-    const [GoogleUser, setGoogleUser] = useState({});
-    const [GoogleAuth, setGoogleAuth] = useState({});
+   const { user, setUser } = useContext(UserContext) 
+    var GoogleUser ={};
+    var GoogleAuth ={};
     var GoogleAuthInstance;
     var userIsLoggedIn = false;
     
     function logOut() {
         if (window.confirm("Se déconnecter ?")) {
-            GoogleUser.disconnect();
-           setUserThumbnail(()=> "")
-           console.log(userThumbnail);
+            gapi.auth2.getAuthInstance().currentUser.get().disconnect();
+           document.location.reload();
+           setUser("")
         }
     }
 
-    useEffect(() => {
-        function handleClientLoad() {
-            gapi.load("client:auth2", initClient);
-        }
-
-            function initClient(){
-                gapi.client
-                .init({
-                    clientId: clientId,
-                    discoveryDocs: [
-                        "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
-                    ],
-                    scope: "https://www.googleapis.com/auth/calendar",
-                })
-                .then(() => {
-                    GoogleAuthInstance = gapi.auth2.getAuthInstance();
-                    userIsLoggedIn = gapi.auth2
-                        .getAuthInstance()
-                        .isSignedIn.get();
-                    if (userIsLoggedIn) {
-                        console.log("user is logged");
-                        let User = GoogleAuthInstance.currentUser.get();
-                        if (User) setGoogleUser(User);
-                        let imageUrl = User.getBasicProfile().getImageUrl();
-                        setUserThumbnail(() => imageUrl);
-                        setGoogleAuth(() => GoogleAuthInstance);
-                    } else {
-                        console.log("user is not logged");
-                        
-                        gapi.signin2.render("divSignin", {
-                            width: 40,
-                            height: 40,
-                            onsuccess: handleClientLoad
+   
+    function handleClientLoad() {
+          
+                gapi.load("client:auth2", () => {
+                    gapi.client
+                        .init({
+                            clientId: clientId,
+                            discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"],
+                            scope: "https://www.googleapis.com/auth/calendar",
+                        })
+                        .then((e) => {
+                            let user_ = {}
+                            GoogleAuthInstance = gapi.auth2.getAuthInstance();
+                            userIsLoggedIn = GoogleAuthInstance.isSignedIn.get();
+                            user_.isLogged = userIsLoggedIn;
+                            if (userIsLoggedIn) {
+                                let User = GoogleAuthInstance.currentUser.get();
+                                if (User) GoogleUser = User;
+                                user_.thumbnail = User.getBasicProfile().getImageUrl()
+                                setUser(user_);
+                                //console.log(userThumbnail);
+                                GoogleAuth= GoogleAuthInstance;
+                                console.log(user_);
+                            } else {
+                               setUser("");
+                                gapi.signin2.render("divSignin", {
+                                    width: 40,
+                                    height: 40,
+                                    onsuccess: handleClientLoad,
+                                });
+                            }
                         });
-                    }
-                });}
-       handleClientLoad()
-    }, [userThumbnail]);
-    return {userThumbnail, GoogleUser, logOut}
+                })
+        
+        }
+    return {logOut, handleClientLoad}
 }

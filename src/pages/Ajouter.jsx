@@ -278,6 +278,9 @@ export default function Ajouter() {
                 setLoading(false);
             } else {
                 setResponse("La réservation a bien été enregistée");
+                setTimeout(() => {
+                    setResponse("");
+                }, "3000");
                 clearForm();
             }
         } catch (error) {

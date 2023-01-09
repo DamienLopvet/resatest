@@ -1,18 +1,21 @@
-import React, { useState,useEffect } from "react";
+import React, { useState,useEffect, useContext } from "react";
 import "../styles/main.css";
 import NombreReservation from "../utiles/NombreReservation";
 import GetEvents from "../data/GetEvents";
 import NouvelleReservationButton from "../utiles/NouvelleReservationButton";
 import NonPayes from "../utiles/NonPayes";
 import Hotes from "../utiles/Hotes";
+import { UserContext } from "../UserContext.js" 
+import NonConnected from "../utiles/NonConnected";
 
 
 export default function Home() {
+    const {user} = useContext(UserContext);
     const [eventList, setEventList] = useState([])
-   
+  
    useEffect(() => {
-        GetEvents('all').then((e)=> setEventList(e))
-    }, []);
+        GetEvents('all', user).then((e)=> setEventList(e))
+    }, [user]);
    
     return (
         <>
@@ -30,6 +33,7 @@ export default function Home() {
                         <Hotes eventList={eventList} />
                     </div>
                 </div>
+                {!user.isLogged && <NonConnected/>}
             </section>
         </>
     );
