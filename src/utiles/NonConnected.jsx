@@ -3,7 +3,7 @@ import React from 'react'
 export default function NonConnected() {
   return (
     <p className="
-    absolute 
+    fixed 
     bottom-10 -right-24 -translate-x-2/4 
     w-[300px] xs:max-lg:w-[180px] xs:max-lg:text-xs
     rounded-md p-3

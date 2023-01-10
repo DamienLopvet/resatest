@@ -1,9 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
+import { UserContext } from "../UserContext" 
 
 //icons
 import DeleteButton from '../images/icons/Delete-button.svg'
+import NonConnected from '../utiles/NonConnected';
 
 export default function Notes() {
+const {user} = useContext(UserContext);
+
 const [undoBox, setUndoBox] = useState(false)
 const notes = ["Lorem ipsum dolor sit amet", "consectetur adipisicing elit", "Quaerat impedit fugit quasi omnis maxime ut voluptas sed", "dolores saepe nobis perspiciatis repellat esse", "at cumque. Nisi ut deserunt recusandae facilis." ]
 var timeout
@@ -36,13 +40,13 @@ function handleDone(index){
 
   return (
     <div className='xl:ml-[var(--xl-sidebar-w)] lg:ml-1 w-auto'>
-        <ul className='w-2/4 ' >
+        <ul className='w-2/4 bg-white min-w-fit' >
     {notes.map((note, index)=>(
-        <li key={index} id={"li_note_"+ index } className="flex flex-row justify-start gap-2 bg-white">
-          <div contenteditable="true" id={"text_note_"+index} >{note}</div>
-        <div className='ml-auto flex flex-row gap-2'>
+        <li key={index} id={"li_note_"+ index } className="flex flex-row justify-start gap-2 border-b p-1">
+          <div contenteditable="true" id={"text_note_"+index} className="mx-2 max-w-[300px]">{note}</div>
+        <div className='ml-auto flex flex-row gap-2 mr-2'>
           <button onClick={()=>handleDone(index) }> done</button>
-          <img src={DeleteButton} role="button" alt="delete" height="20" width="20" onClick={() =>handleDelete("set", index )} />
+          <img src={DeleteButton} role="button" alt="delete" height="15" width="15" onClick={() =>handleDelete("set", index )} />
         </div>
         </li>
 
@@ -54,6 +58,7 @@ function handleDone(index){
             <button className='border-slate-400 bg-red-300 w-12 rounded m-2 '
              onClick={() =>handleDelete("clear")}>undo</button> 
             </div>
+             {!user.isLogged && <NonConnected/>}
     </div>
   )
 }
