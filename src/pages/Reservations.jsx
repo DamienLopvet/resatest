@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import GetEvents from "../data/GetEvents";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { UserContext } from "../UserContext.js" 
+import { UserContext } from "../UserContext" 
 import NonConnected from "../utiles/NonConnected";
 
 import { format } from "date-fns";

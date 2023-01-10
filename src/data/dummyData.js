@@ -1,6 +1,18 @@
+import { format } from "date-fns";
 
-let dateNow = new Date();
-dateNow.toISOString();
+let dateNow = new Date()
+
+
+
+const dates =[]
+for (let i = 0; i < 7; i++) {
+dates[i] = {start:null, end:null}
+dates[i].start = new Date(dateNow.setDate(dateNow.getDate()+i)).toISOString()
+dates[i].end = new Date(dateNow.setDate(dateNow.getDate()+i + 2 )).toISOString()
+    
+}
+
+
 const dummyEvents=[
     {
         "kind": "calendar#event",
@@ -11,7 +23,7 @@ const dummyEvents=[
         "created": "2022-12-22T15:06:19.000Z",
         "updated": "2022-12-22T15:06:29.327Z",
         "summary": "12 personnes, Chambres :2,4,6",
-        "description": "{\"start\":{\"dateTime\":\"2022-12-25T16:05:23+01:00\",\"timeZone\":\"Europe/Paris\"},\"end\":{\"dateTime\":\"2022-12-30T16:05:23+01:00\",\"timeZone\":\"Europe/Paris\"},\"NombrePersonne\":\"12\",\"paymentInfo\":\"Non_payé\",\"Nom\":\"beurrier\",\"Prenom\":\"Salomon\",\"Tel\":\"9685236589\",\"Email\":\"big@apple.no\",\"sendInvitationToClient\":false}",
+        "description": `{\"start\":{\"dateTime\":\"${dates[0].start}\",\"timeZone\":\"Europe/Paris\"},\"end\":{\"dateTime\":\"${dates[0].end}\",\"timeZone\":\"Europe/Paris\"},\"NombrePersonne\":\"12\",\"paymentInfo\":\"Non_payé\",\"Nom\":\"beurrier\",\"Prenom\":\"Salomon\",\"Tel\":\"9685236589\",\"Email\":\"big@apple.no\",\"sendInvitationToClient\":false}`,
         "creator": {
             "email": "lamadesresa@gmail.com",
             "self": true
@@ -21,11 +33,11 @@ const dummyEvents=[
             "self": true
         },
         "start": {
-            "dateTime": "2022-12-25T16:05:23+01:00",
+            "dateTime": dates[0].start ,
             "timeZone": "Europe/Paris"
         },
         "end": {
-            "dateTime": "2022-12-30T16:05:23+01:00",
+            "dateTime": dates[0].end,
             "timeZone": "Europe/Paris"
         },
         "iCalUID": "b9cqdi2l0gi3a93qsonuuijo7o@google.com",
@@ -45,7 +57,7 @@ const dummyEvents=[
         "created": "2022-12-23T13:09:40.000Z",
         "updated": "2022-12-23T13:09:40.517Z",
         "summary": "9 personnes, Chambres :5,7",
-        "description": "{\"start\":{\"dateTime\":\"2022-12-28T13:09:13.000Z\",\"timeZone\":\"Europe/Paris\"},\"end\":{\"dateTime\":\"2022-12-30T13:09:13.000Z\",\"timeZone\":\"Europe/Paris\"},\"NombrePersonne\":\"9\",\"paymentInfo\":\"Paiement_partiel\",\"Nom\":\"Reiner\",\"Prenom\":\"Jose\",\"Tel\":\"+3376328353465\",\"Email\":\"\",\"sendInvitationToClient\":false}",
+        "description": `{\"start\":{\"dateTime\":\"${dates[1].start}\",\"timeZone\":\"Europe/Paris\"},\"end\":{\"dateTime\":\"${dates[1].start}\",\"timeZone\":\"Europe/Paris\"},\"NombrePersonne\":\"9\",\"paymentInfo\":\"Paiement_partiel\",\"Nom\":\"Reiner\",\"Prenom\":\"Jose\",\"Tel\":\"+3376328353465\",\"Email\":\"\",\"sendInvitationToClient\":false}`,
         "creator": {
             "email": "lamadesresa@gmail.com",
             "self": true
@@ -55,11 +67,11 @@ const dummyEvents=[
             "self": true
         },
         "start": {
-            "dateTime": "2022-12-28T14:09:13+01:00",
+            "dateTime": dates[1].start,
             "timeZone": "Europe/Paris"
         },
         "end": {
-            "dateTime": "2022-12-30T14:09:13+01:00",
+            "dateTime": dates[1].end,
             "timeZone": "Europe/Paris"
         },
         "iCalUID": "a4saq3dql5or2nughftspl7gjg@google.com",
@@ -79,7 +91,7 @@ const dummyEvents=[
         "created": "2022-12-22T14:16:20.000Z",
         "updated": "2022-12-22T14:16:20.876Z",
         "summary": "8 personnes, Chambres :1,3",
-        "description": "{\"start\":{\"dateTime\":\"2022-12-30T14:15:52.000Z\",\"timeZone\":\"Europe/Paris\"},\"end\":{\"dateTime\":\"2022-12-31T14:15:52.000Z\",\"timeZone\":\"Europe/Paris\"},\"NombrePersonne\":\"8\",\"paymentInfo\":\"Paiement_partiel\",\"Nom\":\"Abele\",\"Prenom\":\"Semoune\",\"Tel\":\"046983 43524\",\"Email\":\"sqdgsq@sdg.f\",\"sendInvitationToClient\":false}",
+        "description": `{\"start\":{\"dateTime\":\"${dates[2].start}\",\"timeZone\":\"Europe/Paris\"},\"end\":{\"dateTime\":\"${dates[2].end}\",\"timeZone\":\"Europe/Paris\"},\"NombrePersonne\":\"8\",\"paymentInfo\":\"Paiement_partiel\",\"Nom\":\"Abele\",\"Prenom\":\"Semoune\",\"Tel\":\"046983 43524\",\"Email\":\"sqdgsq@sdg.f\",\"sendInvitationToClient\":false}`,
         "creator": {
             "email": "lamadesresa@gmail.com",
             "self": true
@@ -89,11 +101,11 @@ const dummyEvents=[
             "self": true
         },
         "start": {
-            "dateTime": "2022-12-30T15:15:52+01:00",
+            "dateTime": dates[2].start,
             "timeZone": "Europe/Paris"
         },
         "end": {
-            "dateTime": "2022-12-31T15:15:52+01:00",
+            "dateTime": dates[2].end,
             "timeZone": "Europe/Paris"
         },
         "iCalUID": "nbk4v4u89u08akcpa5ljhufmd8@google.com",
@@ -113,7 +125,7 @@ const dummyEvents=[
         "created": "2023-01-08T06:38:30.000Z",
         "updated": "2023-01-08T06:38:30.875Z",
         "summary": "2 personnes, Chambres :1,2",
-        "description": "{\"start\":{\"dateTime\":\"2023-01-09T06:37:05.000Z\",\"timeZone\":\"Europe/Paris\"},\"end\":{\"dateTime\":\"2023-01-12T06:37:05.000Z\",\"timeZone\":\"Europe/Paris\"},\"NombrePersonne\":\"2\",\"paymentInfo\":\"Paiement_partiel\",\"Nom\":\"Abel\",\"Prenom\":\"Jerome\",\"Tel\":\"09389405998\",\"Email\":\"abel.jerome@free.fr\",\"sendInvitationToClient\":false}",
+        "description": `{\"start\":{\"dateTime\":\"${dates[3].start}\",\"timeZone\":\"Europe/Paris\"},\"end\":{\"dateTime\":\"2023-01${dates[3].end}Europe/Paris\"},\"NombrePersonne\":\"2\",\"paymentInfo\":\"Paiement_partiel\",\"Nom\":\"Abel\",\"Prenom\":\"Jerome\",\"Tel\":\"09389405998\",\"Email\":\"abel.jerome@free.fr\",\"sendInvitationToClient\":false}`,
         "creator": {
             "email": "lamadesresa@gmail.com",
             "self": true
@@ -123,11 +135,11 @@ const dummyEvents=[
             "self": true
         },
         "start": {
-            "dateTime": "2023-01-09T07:37:05+01:00",
+            "dateTime": dates[3].start,
             "timeZone": "Europe/Paris"
         },
         "end": {
-            "dateTime": "2023-01-12T07:37:05+01:00",
+            "dateTime": dates[3].end,
             "timeZone": "Europe/Paris"
         },
         "iCalUID": "59dn5f44oc5mjupk8767o8r5ac@google.com",
@@ -147,7 +159,7 @@ const dummyEvents=[
         "created": "2023-01-08T06:39:35.000Z",
         "updated": "2023-01-08T06:45:52.388Z",
         "summary": "3 personnes, Chambres :1,3,1,3",
-        "description": "{\"start\":{\"dateTime\":\"2023-01-12T07:38:32+01:00\",\"timeZone\":\"Europe/Paris\"},\"end\":{\"dateTime\":\"2023-01-15T07:38:32+01:00\",\"timeZone\":\"Europe/Paris\"},\"NombrePersonne\":\"3\",\"paymentInfo\":\"Non_payé\",\"Nom\":\"Carhart\",\"Prenom\":\"Joséphine\",\"Tel\":\"9384758694\",\"Email\":\"carhart.josefine@yahoo.com\",\"sendInvitationToClient\":false}",
+        "description": `{\"start\":{\"dateTime\":\"${dates[4].start}\",\"timeZone\":\"Europe/Paris\"},\"end\":{\"dateTime\":\"${dates[4].end}\",\"timeZone\":\"Europe/Paris\"},\"NombrePersonne\":\"3\",\"paymentInfo\":\"Non_payé\",\"Nom\":\"Carhart\",\"Prenom\":\"Joséphine\",\"Tel\":\"9384758694\",\"Email\":\"carhart.josefine@yahoo.com\",\"sendInvitationToClient\":false}`,
         "creator": {
             "email": "lamadesresa@gmail.com",
             "self": true
@@ -157,11 +169,11 @@ const dummyEvents=[
             "self": true
         },
         "start": {
-            "dateTime": "2023-01-12T07:38:32+01:00",
+            "dateTime": dates[4].start,
             "timeZone": "Europe/Paris"
         },
         "end": {
-            "dateTime": "2023-01-15T07:38:32+01:00",
+            "dateTime": dates[4].end,
             "timeZone": "Europe/Paris"
         },
         "iCalUID": "t7hh8bjl0ke95ndq3t379n7l9g@google.com",
@@ -181,7 +193,7 @@ const dummyEvents=[
         "created": "2023-01-08T06:41:51.000Z",
         "updated": "2023-01-08T06:41:51.015Z",
         "summary": "10 personnes, Chambres :1,3,5,7",
-        "description": "{\"start\":{\"dateTime\":\"2023-01-18T06:40:50.000Z\",\"timeZone\":\"Europe/Paris\"},\"end\":{\"dateTime\":\"2023-01-22T06:40:50.000Z\",\"timeZone\":\"Europe/Paris\"},\"NombrePersonne\":\"10\",\"paymentInfo\":\"Paiement_complet\",\"Nom\":\"Duninghan\",\"Prenom\":\"Billy\",\"Tel\":\"23948575869\",\"Email\":\"billyduninghan@gmail.fr\",\"sendInvitationToClient\":false}",
+        "description": `{\"start\":{\"dateTime\":\"${dates[5].start}\",\"timeZone\":\"Europe/Paris\"},\"end\":{\"dateTime\":\"${dates[5].end}\",\"timeZone\":\"Europe/Paris\"},\"NombrePersonne\":\"10\",\"paymentInfo\":\"Paiement_complet\",\"Nom\":\"Duninghan\",\"Prenom\":\"Billy\",\"Tel\":\"23948575869\",\"Email\":\"billyduninghan@gmail.fr\",\"sendInvitationToClient\":false}`,
         "creator": {
             "email": "lamadesresa@gmail.com",
             "self": true
@@ -191,11 +203,11 @@ const dummyEvents=[
             "self": true
         },
         "start": {
-            "dateTime": "2023-01-18T07:40:50+01:00",
+            "dateTime": dates[5].start,
             "timeZone": "Europe/Paris"
         },
         "end": {
-            "dateTime": "2023-01-22T07:40:50+01:00",
+            "dateTime": dates[5].end,
             "timeZone": "Europe/Paris"
         },
         "iCalUID": "p26m5nvrpkvvoc6hgjsaubrll4@google.com",
@@ -215,7 +227,7 @@ const dummyEvents=[
         "created": "2023-01-08T06:45:42.000Z",
         "updated": "2023-01-08T06:45:42.253Z",
         "summary": "8 personnes, Chambres :4,2",
-        "description": "{\"start\":{\"dateTime\":\"2023-01-28T06:44:58.000Z\",\"timeZone\":\"Europe/Paris\"},\"end\":{\"dateTime\":\"2023-01-30T06:44:58.000Z\",\"timeZone\":\"Europe/Paris\"},\"NombrePersonne\":\"8\",\"paymentInfo\":\"Non_payé\",\"Nom\":\"Fiji\",\"Prenom\":\"Guy\",\"Tel\":\"0694869486\",\"Email\":\"figiguy@aloa.com\",\"sendInvitationToClient\":false}",
+        "description": `{\"start\":{\"dateTime\":\"${dates[6].start}\",\"timeZone\":\"Europe/Paris\"},\"end\":{\"dateTime\":\"${dates[6].end}\",\"timeZone\":\"Europe/Paris\"},\"NombrePersonne\":\"8\",\"paymentInfo\":\"Non_payé\",\"Nom\":\"Fiji\",\"Prenom\":\"Guy\",\"Tel\":\"0694869486\",\"Email\":\"figiguy@aloa.com\",\"sendInvitationToClient\":false}`,
         "creator": {
             "email": "lamadesresa@gmail.com",
             "self": true
@@ -225,11 +237,11 @@ const dummyEvents=[
             "self": true
         },
         "start": {
-            "dateTime": "2023-01-28T07:44:58+01:00",
+            "dateTime": dates[6].start,
             "timeZone": "Europe/Paris"
         },
         "end": {
-            "dateTime": "2023-01-30T07:44:58+01:00",
+            "dateTime": dates[6].end,
             "timeZone": "Europe/Paris"
         },
         "iCalUID": "94h77gj8j5q0kotjao05i718pk@google.com",
