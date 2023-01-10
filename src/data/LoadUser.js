@@ -36,6 +36,7 @@ export default function LoadUser() {
                             if (userIsLoggedIn) {
                                 let User = GoogleAuthInstance.currentUser.get();
                                 if (User) GoogleUser = User;
+                                console.log(User);
                                 user_.thumbnail = User.getBasicProfile().getImageUrl()
                                 setUser(user_);
                                 //console.log(userThumbnail);

@@ -196,7 +196,7 @@ export default function Reservations({searchResult}) {
                         <button className="sort-button w-10 px-0 border-t-4 border-transparent rounded transition-all duration-500" onClick={sortEventByDates}>
                             <img src={calendarIcon} height="28" width="28" alt="transaction icon" className="mx-auto"/>
                         </button>
-                <span className="absolute left-0 -bottom-5 px-2 w-fit whitespace-nowrap text-xs bg-white rounded-t-lg">{sortState}</span>
+                    <span className="absolute left-0 -bottom-5 px-2 w-fit whitespace-nowrap text-xs bg-white rounded-t-lg">{sortState}</span>
                     </div>
 
                     <NouvelleReservationButton />
@@ -385,15 +385,17 @@ export default function Reservations({searchResult}) {
                                     />
                                 </div>
                                 <div id="delet_event">
-                                    <img
-                                        src={googlecalendarIcon}
-                                        alt="calendar icon"
-                                        title="Voir Dans le calendrier"
-                                        id={event.id}
-                                        width="13"
-                                        height="13"
-                                        className=" md:translate-y-3 cursor-pointer py-0 h-7 xs:w-16 md:!w-9 hover:opacity-90"
-                                    />
+                                    <a href={event.htmlLink} target="_blank">
+                                        <img
+                                            src={googlecalendarIcon}
+                                            alt="calendar icon"
+                                            title="Voir Dans le calendrier"
+                                            id={event.id}
+                                            width="13"
+                                            height="13"
+                                            className=" md:translate-y-3 cursor-pointer py-0 h-7 xs:w-16 md:!w-9 hover:opacity-90"
+                                        />
+                                    </a>
                                 </div>
                                 <div id="event_in_calendar">
                                     <img

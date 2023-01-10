@@ -105,7 +105,7 @@ export default function Header({ events }) {
                 </span>
                 <div
                     id="sidebar"
-                    className="top-0 overflow-auto transition duration-300 bg-white fixed h-screen flex-col justify-between shadow-xl
+                    className="top-0 z-30 overflow-auto transition duration-300 bg-white fixed h-screen flex-col justify-between shadow-xl
                     xl:!translate-x-0 
                     xl:!w-[var(--xl-sidebar-w)] 
                     xs:-translate-x-80 flex  
@@ -196,38 +196,14 @@ export default function Header({ events }) {
                                     </div>
                                 </li>
                             </Link>
-                            <Link to="/resatest/transactions">
-                                <li id="sidenav_transactions" className="nav-item   hover:text-[#3e5c8c] h-[45px] duration-500 overflow-hidden">
-                                    <div
-                                        className="sidenav-item-title flex flex-row gap-5 justify-start items-end p-3"
-                                        data-index="5"
-                                        onClick={handleActiveTab}
-                                    >
-                                        <span className="nav-icon">
-                                            <svg
-                                                width="1.5rem"
-                                                height="1.5rem"
-                                                viewBox="0 0 16 16"
-                                                className="bi bi-columns-gap"
-                                                fill="currentColor"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                            >
-                                                <path
-                                                    fillRule="evenodd"
-                                                    d="M6 1H1v3h5V1zM1 0a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1H1zm14 12h-5v3h5v-3zm-5-1a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1h-5zM6 8H1v7h5V8zM1 7a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1H1zm14-6h-5v7h5V1zm-5-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1h-5z"
-                                                ></path>
-                                            </svg>
-                                        </span>
-                                        <div className="submenu-link text-sm">Transactions</div>
-                                    </div>
-                                </li>
-                            </Link>
+                            <Link to="/resatest/carnet-d-adresses">
+                                
                             <li id="sidenav_carnet_d_adresses" className="nav-item ">
                                 <div
                                     data-index="6"
                                     onClick={handleActiveTab}
                                     className="nav-link hover:text-[#3e5c8c] flex flex-row gap-5 justify-start items-end p-3"
-                                >
+                                    >
                                     <span className="nav-icon">
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
@@ -236,19 +212,21 @@ export default function Header({ events }) {
                                             fill="currentColor"
                                             className="bi bi-book"
                                             viewBox="0 0 16 16"
-                                        >
+                                            >
                                             <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811V2.828zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492V2.687zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"></path>
                                         </svg>
                                     </span>
                                     <span className="nav-link-text text-sm">Carnet d'adresses</span>
                                 </div>
                             </li>
+                            </Link>
+                            <Link to="/resatest/notes">
                             <li id="sidenav_notes" className="nav-item">
                                 <div
                                     data-index="7"
                                     onClick={handleActiveTab}
                                     className="nav-link hover:text-[#3e5c8c] flex flex-row gap-5 justify-start items-end p-3"
-                                >
+                                    >
                                     <span className="nav-icon">
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
@@ -256,16 +234,17 @@ export default function Header({ events }) {
                                             height="1.5rem"
                                             fill="currentColor"
                                             viewBox="0 0 16 16"
-                                        >
+                                            >
                                             <path
                                                 fillRule="evenodd"
                                                 d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H2ZM1 4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4Zm7.5.5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7ZM2 5.5a.5.5 0 0 1 .5-.5H6a.5.5 0 0 1 0 1H2.5a.5.5 0 0 1-.5-.5Zm0 2a.5.5 0 0 1 .5-.5H6a.5.5 0 0 1 0 1H2.5a.5.5 0 0 1-.5-.5Zm0 2a.5.5 0 0 1 .5-.5H6a.5.5 0 0 1 0 1H2.5a.5.5 0 0 1-.5-.5ZM10.5 5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3ZM13 8h-2V6h2v2Z"
-                                            ></path>
+                                                ></path>
                                         </svg>
                                     </span>
                                     <span className="nav-link-text text-sm">Notes</span>
                                 </div>
                             </li>
+                            </Link>
                         </ul>
                     </div>
                     <div id="sidebar_footer">

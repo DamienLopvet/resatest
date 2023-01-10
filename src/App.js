@@ -6,8 +6,10 @@ import Home from "./pages/Home";
 import Reservations from "./pages/Reservations";
 import Header from "./Header";
 import Calendrier from "./pages/Calendrier";
-import Transactions from "./pages/Transactions";
 import GetEvents from "./data/GetEvents";
+import CarnetAdress from "./pages/CarnetAdress";
+import Notes from "./pages/Notes";
+
 
 
 export default function App() {
@@ -62,9 +64,15 @@ export default function App() {
                                 element={<Reservations />}
                             />
                              <Route
-                                path="/resatest/transactions"
+                                path="/resatest/carnet-d-adresses"
                                 element={
-                                    <Transactions />
+                                    <CarnetAdress />
+                                }
+                            />
+                            <Route
+                                path="/resatest/Notes"
+                                element={
+                                    <Notes />
                                 }
                             />
                         </Routes>
