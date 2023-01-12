@@ -356,8 +356,8 @@ export default function Header({ events }) {
                                 ></path>
                             </svg>
                         </div>
-                        <span className="absolute select-none opacity-100 z-10 icon-badge  -top-1.5 -right-1.5 border-2 text-xs px-1 rounded-full bg-[#ec776c] text-white border-white ">
-                            3
+                        <span id="number_of_notifications" className="absolute select-none opacity-100 z-10 icon-badge  -top-1.5 -right-1.5 border-2 text-xs px-1 rounded-full bg-[#ec776c] text-white border-white ">
+                            0
                         </span>
                     </div>
                     <div className="mr-16">

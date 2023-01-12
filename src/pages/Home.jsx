@@ -7,6 +7,7 @@ import NonPayes from "../utiles/NonPayes";
 import Hotes from "../utiles/Hotes";
 import { UserContext } from "../UserContext.js" 
 import NonConnected from "../utiles/NonConnected";
+import NumberOfReservationToCome from "../utiles/NumberOfReservationToCome";
 
 
 export default function Home() {
@@ -25,8 +26,10 @@ export default function Home() {
                     <h1 className="pt-10 text-3xl font-semibold ml-5 mb-3">Bienvenue</h1>
                     {/* <h2>{GoogleAuth}</h2>*/}
                     <div className="flex gap-4 flex-row flex-wrap mx-5 xs:justify-center sm:justify-start">
-                        <div className="basis-[100%]" >
+                        <div className="basis-[100%] flex justify-start gap-1
+                        " >
                             <NouvelleReservationButton />
+                            <NumberOfReservationToCome />
                         </div>
                         <NombreReservation eventList={eventList} />
                         <NonPayes eventList={eventList} />
