@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/resatest/static/css/main.82f1f0b5.css",
-    "main.js": "/resatest/static/js/main.166b6093.js",
+    "main.css": "/resatest/static/css/main.50fa726d.css",
+    "main.js": "/resatest/static/js/main.a80ac399.js",
     "static/media/mockCalendrier.png": "/resatest/static/media/mockCalendrier.1f65b16b7a1e7f797ee4.png",
     "static/media/homeBackground.jpg": "/resatest/static/media/homeBackground.a100d865553894420b91.jpg",
     "static/media/identity.svg": "/resatest/static/media/identity.1fbc13fb300aaf8bc56000bd1e84b84e.svg",
@@ -16,13 +16,13 @@
     "static/media/mail.svg": "/resatest/static/media/mail.4b04c40a070c82171eb3c06d2c91c580.svg",
     "static/media/room.svg": "/resatest/static/media/room.f86c0204dd2dd9f39b9a0dd23d5dfcb2.svg",
     "index.html": "/resatest/index.html",
-    "static/media/+.svg": "/resatest/static/media/+.c2c583e8fb198d2393b18b8d1032ad8a.svg",
+    "static/media/+.svg": "/resatest/static/media/+.4bc946076cc91e7691ad4f2b3eaafea5.svg",
     "static/media/modification.svg": "/resatest/static/media/modification.4cdbdb2a88df5b5fe3179c5d2e3fd2b6.svg",
-    "main.82f1f0b5.css.map": "/resatest/static/css/main.82f1f0b5.css.map",
-    "main.166b6093.js.map": "/resatest/static/js/main.166b6093.js.map"
+    "main.50fa726d.css.map": "/resatest/static/css/main.50fa726d.css.map",
+    "main.a80ac399.js.map": "/resatest/static/js/main.a80ac399.js.map"
   },
   "entrypoints": [
-    "static/css/main.82f1f0b5.css",
-    "static/js/main.166b6093.js"
+    "static/css/main.50fa726d.css",
+    "static/js/main.a80ac399.js"
   ]
 }
