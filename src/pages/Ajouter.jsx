@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { UserContext } from "../UserContext" 
 import TextField from "@mui/material/TextField";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -9,8 +10,10 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import getSingleEvent from "../data/getSingleEvent";
 import updateEvent from "../data/updateEvent";
 import NouvelleReservatinBoutton from "../utiles/NouvelleReservationButton"
+import NonConnected from "../utiles/NonConnected";
 
 export default function Ajouter() {
+    const {user} = useContext(UserContext);
     const navigate = useNavigate()
     const [loading, setLoading] = useState(false);
     const [submitValue, setSubmitValue] = useState("ENVOYER");
@@ -665,6 +668,8 @@ export default function Ajouter() {
                 <br />
                 <br />
             </div>
+            {!user.isLogged && <NonConnected/>}
+
         </>
     );
 }

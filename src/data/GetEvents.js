@@ -3,7 +3,6 @@ import mockData from "./dummyData.js";
 const clientId = process.env.REACT_APP_CLIENT_ID;
 
 export default function GetEvents(minTime, user) {
-    console.log(user);
     //TODO : set minTime and MAx time to display event by month in 'nombreReseravtion'
     // minTime must be set from the first day of a month at midnight, same for maxTime
     //set the appropriate value in NombreReservation...

@@ -29,7 +29,7 @@ export default function Home() {
                         <div className="basis-[100%] flex justify-start gap-1
                         " >
                             <NouvelleReservationButton />
-                            <NumberOfReservationToCome />
+                            <NumberOfReservationToCome eventList={eventList} />
                         </div>
                         <NombreReservation eventList={eventList} />
                         <NonPayes eventList={eventList} />

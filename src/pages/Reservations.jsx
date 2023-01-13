@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import GetEvents from "../data/GetEvents";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { UserContext } from "../UserContext" 
@@ -28,17 +28,25 @@ export default function Reservations({searchResult}) {
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
     const [sortState, setSortState] = useState("recent first");
+    const [allEvents, setAllEvents] = useState([]);
+    const [eventFromNow, setEventFromNow] = useState([]);
     const [eventList, setEventList] = useState([]);
+    const fromNow = useRef(false)
+    const [title, setTitle] = useState('TOUS LES EVENEMENTS')
     
     
-    
-    
+    //HANDLE SEARCH FROM SEARCH  BAR
     useEffect(() => {
         if(searchResult) setEventList(searchResult)
         else{
         const sortEvents = searchParams.get("sort");
         GetEvents("all", user).then((el)=>{
             var eventList_ = el.map((e, idx) => ({...e, idx: idx}));
+            setAllEvents(eventList_)
+            let date =  Date.now()
+            let events_ = eventList_.filter( (el) => new Date(el.start.dateTime).getTime() >= date);
+            setEventFromNow([...events_]);
+
             const unpaid = eventList_.filter((e) => ParsedClientInfo(e.description).paymentInfo === "Non_payé");
             const partiallyPaid = eventList_.filter((e) => ParsedClientInfo(e.description).paymentInfo === "Paiement_partiel");
             const paid = eventList_.filter((e) => ParsedClientInfo(e.description).paymentInfo === "Paiement_complet");
@@ -59,7 +67,7 @@ export default function Reservations({searchResult}) {
         });}
     }, [searchResult, user]);
     
-    
+    // HANDLE FILTERS
     useEffect(() => {
         let sortButtons = document.querySelectorAll('.sort-button')
         
@@ -115,8 +123,24 @@ export default function Reservations({searchResult}) {
         }
     }, [sortState]);
     
+    //HANDLE EVENT FROM NOW OR ALL
+    function showEventsToComeOrAll() {
+      let buttonTitle = document.getElementById('event_start_date')
+      if(fromNow.current === false) {
+            setEventList(eventFromNow)
+            fromNow.current = true;
+            buttonTitle.innerText = 'Tous les evenements'
+            setTitle('EVENEMENTS A VENIR')
+         }else{
+            setEventList(allEvents);
+            fromNow.current = false;
+            buttonTitle.innerText = 'Seulement à venir'
+            setTitle('TOUS LES EVENEMENTS')
+
+         }
+    }
     
-    
+    // HANLDE FILTERS
     function sortEventByDates() {
         sortState === sortOptions[3] ? setSortState(sortOptions[4]) : setSortState(sortOptions[3])
     }
@@ -137,13 +161,15 @@ export default function Reservations({searchResult}) {
     function handleUpdateEvent(e) {
         navigate("/resatest/nouvelle-reservation?id=" + e.target.id);
     }
+
+
     function handleDeleteEvent(id) {
        
             DeleteEvent(id);
             setEventList((prev) => prev.filter((el) => el.id !== id));
       
     }
-
+    
     function ParsedClientInfo(info) {
         try {
             let parsedInfo = JSON.parse(info);
@@ -153,6 +179,8 @@ export default function Reservations({searchResult}) {
             return err;
         }
     }
+
+
     function formatDate(el) {
         try {
             let date = format(new Date(el), "dd MMM yy '-' H'h'", {
@@ -163,6 +191,8 @@ export default function Reservations({searchResult}) {
             return error;
         }
     }
+
+    //HANDLE PAYMENT STATE     
     function setBackGroundColor(e) {
         let paymentState = ParsedClientInfo(e.description).paymentInfo;
         switch (paymentState) {
@@ -182,9 +212,10 @@ export default function Reservations({searchResult}) {
 
     return (
         <>
+        <h1 className=" mb-3 text-3xl font-bold text-center">{title}</h1>
             <div className="xl:ml-[var(--xl-sidebar-w)] lg:ml-1 w-auto">
                 <div className="mb-5 flex xs:justify-center md:!justify-between px-3">
-                    <div className="relative flex flex-row gap-2">
+                    <div className="relative flex flex-row flex-wrap gap-3">
                         <button className="sort-button px-0 w-10 text-xs border-t-4 border-transparent rounded transition-all duration-500" onClick={sortEventByPaymentState}>
                             <img src={transactionFilter} height="30" width="30" alt="transaction icon" className="mx-auto"/>
                         
@@ -196,7 +227,8 @@ export default function Reservations({searchResult}) {
                         <button className="sort-button w-10 px-0 border-t-4 border-transparent rounded transition-all duration-500" onClick={sortEventByDates}>
                             <img src={calendarIcon} height="28" width="28" alt="transaction icon" className="mx-auto"/>
                         </button>
-                    <span className="absolute left-0 -bottom-5 px-2 w-fit whitespace-nowrap text-xs bg-white rounded-t-lg">{sortState}</span>
+                        <button id='event_start_date' className="xs:max-sm:mb-2 leading-3 bg-white opacity-80 px-1 h-10 self-center rounded-md shadow hover:shadow-xl"  onClick={showEventsToComeOrAll}>Seulement à venir</button>
+                    <span className="absolute xs:max-md:left-10 left-0 -bottom-5 px-2 w-fit whitespace-nowrap text-xs bg-white rounded-t-lg">{sortState}</span>
                     </div>
 
                     <NouvelleReservationButton />
