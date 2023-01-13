@@ -21,7 +21,12 @@
     top: 50px;
     }
     
-    
+    @media only screen and (max-width: 640px) {
+  body {
+    background-size: 820px 830px;
+  }
+}
+
 }
 @layer components {
     .rooms-after {

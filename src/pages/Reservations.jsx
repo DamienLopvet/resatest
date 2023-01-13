@@ -134,7 +134,7 @@ export default function Reservations({searchResult}) {
          }else{
             setEventList(allEvents);
             fromNow.current = false;
-            buttonTitle.innerText = 'Seulement à venir'
+            buttonTitle.innerText = 'Evenements à venir'
             setTitle('TOUS LES EVENEMENTS')
 
          }
@@ -212,8 +212,8 @@ export default function Reservations({searchResult}) {
 
     return (
         <>
-        <h1 className=" mb-3 text-3xl font-bold text-center">{title}</h1>
             <div className="xl:ml-[var(--xl-sidebar-w)] lg:ml-1 w-auto">
+        <h1 className="xs:max-md:text-center mb-10 text-2xl font-bold ml-5">{title}</h1>
                 <div className="mb-5 flex xs:justify-center md:!justify-between px-3">
                     <div className="relative flex flex-row flex-wrap gap-3">
                         <button className="sort-button px-0 w-10 text-xs border-t-4 border-transparent rounded transition-all duration-500" onClick={sortEventByPaymentState}>
@@ -227,15 +227,15 @@ export default function Reservations({searchResult}) {
                         <button className="sort-button w-10 px-0 border-t-4 border-transparent rounded transition-all duration-500" onClick={sortEventByDates}>
                             <img src={calendarIcon} height="28" width="28" alt="transaction icon" className="mx-auto"/>
                         </button>
-                        <button id='event_start_date' className="xs:max-sm:mb-2 leading-3 bg-white opacity-80 px-1 h-10 self-center rounded-md shadow hover:shadow-xl"  onClick={showEventsToComeOrAll}>Seulement à venir</button>
+                        <button id='event_start_date' className="xs:max-sm:mb-2 leading-3 bg-white opacity-80 px-1 h-10 self-center rounded-md shadow hover:shadow-xl"  onClick={showEventsToComeOrAll}>Evenements à venir</button>
                     <span className="absolute xs:max-md:left-10 left-0 -bottom-5 px-2 w-fit whitespace-nowrap text-xs bg-white rounded-t-lg">{sortState}</span>
                     </div>
 
                     <NouvelleReservationButton />
 
                 </div>
-                <ul className="opacity-80">
-                    <li className=" leading-4 py-1 flex-row md:!flex justify-between gap-3 bg-white px-5 xs:hidden items-center">
+                <ul className="opacity-80 mx-3 rounded">
+                    <li className="rounded-tr leading-4 py-1 flex-row md:!flex justify-between gap-3 bg-white px-5 xs:hidden items-center">
                         <p className="font-bold xs:hidden md:!block  basis-[11%]">Nom Prénom</p>
 
                         <p className="font-bold  xs:hidden md:!block  basis-[11%]">Date</p>
@@ -274,6 +274,7 @@ export default function Reservations({searchResult}) {
                         xs:py-3
                         xs:max-w-sm
                         xs:gap-3
+                        last:!rounded-b
                         "
                         >
                             <div id="client_info" className="flex gap-2 basis-[11%]">

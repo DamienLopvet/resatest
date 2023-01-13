@@ -21,6 +21,7 @@ export default function Notes() {
         
     }, []);
     
+    
     useEffect(()=>{
         let notesNodes = document.querySelectorAll('#li_note div:first-child')
         let count =0
@@ -95,14 +96,14 @@ export default function Notes() {
         setNotes([...notes_])
     }
     function addNote() {
-      setNotes(()=>[...notes, {terminated:false, content:'Nouvelle note'}]) 
+      setNotes(()=>[{terminated:false, content:'Nouvelle note'},...notes]) 
       
     }
 
     return (
         <div className="xl:ml-[var(--xl-sidebar-w)] lg:ml-1 w-auto">
             <button onClick={addNote} className="bg-slate-100 m-3 p-2 rounded hover:border-slate-400 border shadow-xl">Ajouter une note</button>
-            <ul className="w-2/4 bg-white min-w-fit ">
+            <ul className=" bg-white min-w-fit mx-3 rounded">
                 {notes.map((note, index) => (
                     <li key={index} id={"li_note"} className="flex flex-row justify-start gap-2 border-b p-1">
                         <div 
@@ -113,15 +114,17 @@ export default function Notes() {
                         </div>
 
                         <div className="ml-auto flex flex-row gap-2 mr-2 ">
-                            <button
-                                className="text-xs border h-5 p-1 leading-[0.2] rounded hover:shadow self-center"
-                            onClick={(e) => editNote(index, e)}>modifier</button>
-                            <button
-                                onClick={() => handleDone(index)}
-                                className="text-xs border h-5 p-1 leading-[0.2] rounded hover:shadow self-center"
-                            >
-                                terminé
-                            </button>
+                                <div className="w-22 flex flex-col justify-center gap-1" >
+                                    <button
+                                        className="text-xs border h-5 p-1 leading-[0.2] rounded hover:shadow self-center"
+                                    onClick={(e) => editNote(index, e)}>modifier</button>
+                                    <button
+                                        onClick={() => handleDone(index)}
+                                        className="text-xs border h-5 p-1 leading-[0.2] rounded hover:shadow self-center"
+                                    >
+                                        terminé
+                                    </button>
+                                </div>
                             <img
                                 className="hover:drop-shadow"
                                 src={DeleteButton}

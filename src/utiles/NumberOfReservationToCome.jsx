@@ -14,6 +14,6 @@ export default function NumberOfReservationToCome( {eventList} ) {
     <div
     className="bg-white w-[142px] opacity-80 h-14 flex justify-around rounded"
     ><p className="text-bold text-xs self-center leading-3">Nombre de <br/> réservations <br/> à venir</p>
-        <span className="text-6xl font-bold text-blue-500 self-center pb-1">{events.length}</span></div>
+        <span className="text-4xl font-bold text-blue-500 self-center pb-1">{events.length}</span></div>
   )
 }

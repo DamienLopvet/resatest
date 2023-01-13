@@ -14,16 +14,16 @@ export default function Header({ events }) {
     const loadUser = LoadUser()
     const navigate = useNavigate();
     const[notes, setNotes] = useState([])
-    const [numberOfNotes, setNumberOfNotes] = useState('');
     
     
     useEffect(() => {
         let notes_ = JSON.parse(localStorage.getItem("notes"))
+        console.log(notes_);
         if(notes_){
             let  numberOfNotes_ = notes_.length
             setNotes(notes_)
-            setNumberOfNotes(numberOfNotes_)
-        }else setNumberOfNotes(1)
+            document.getElementById('number_of_notifications').innerText = numberOfNotes_       
+         }
     }, [])
     
 
@@ -368,7 +368,7 @@ export default function Header({ events }) {
                             </svg>
                         </div>
                         <span id="number_of_notifications" className="absolute select-none opacity-100 z-10 icon-badge  -top-1.5 -right-1.5 border-2 text-xs px-1 rounded-full bg-[#ec776c] text-white border-white ">
-                             { numberOfNotes }
+                            0
                         </span>
                     </div>
                     <div className="mr-16">
