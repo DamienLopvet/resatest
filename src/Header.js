@@ -13,10 +13,17 @@ export default function Header({ events }) {
     const [searchBar, setSearchBar] = useState(false);
     const loadUser = LoadUser()
     const navigate = useNavigate();
+    const[notes, setNotes] = useState([])
     const [numberOfNotes, setNumberOfNotes] = useState('');
+    
+    
     useEffect(() => {
-      let  numberOfNotes_ = JSON.parse(localStorage.getItem("notes")).length
-     setNumberOfNotes(numberOfNotes_)
+        let notes_ = JSON.parse(localStorage.getItem("notes"))
+        if(notes_){
+            let  numberOfNotes_ = notes_.length
+            setNotes(notes_)
+            setNumberOfNotes(numberOfNotes_)
+        }else setNumberOfNotes(1)
     }, [])
     
 
@@ -396,7 +403,7 @@ export default function Header({ events }) {
             </header>
             <div>
                 {" "}
-                <Search events={events} />
+                <Search events={events} notes={notes}/>
                 
             </div>
         </>
