@@ -22,16 +22,16 @@ export default function Notes() {
     }, []);
     
     useEffect(()=>{
-        let notes = document.querySelectorAll('#li_note div:first-child')
+        let notesNodes = document.querySelectorAll('#li_note div:first-child')
         let count =0
-        notes.forEach((note, idx)=>{
+        notesNodes.forEach((note, idx)=>{
             if(!note.classList.contains('line-through')){
              count ++
              }
              
         })
             document.getElementById('number_of_notifications').innerText = count
-
+        localStorage.setItem('notes', JSON.stringify(notes))
     },[notes])
 
     

@@ -13,11 +13,15 @@ export default function Header({ events }) {
     const [searchBar, setSearchBar] = useState(false);
     const loadUser = LoadUser()
     const navigate = useNavigate();
-
+    const [numberOfNotes, setNumberOfNotes] = useState('');
+    useEffect(() => {
+      let  numberOfNotes_ = JSON.parse(localStorage.getItem("notes")).length
+     setNumberOfNotes(numberOfNotes_)
+    }, [])
     
+
     useEffect(() => {
         loadUser.handleClientLoad()
-
       }, [user.isLogged])
       
     function handleActiveTab(e) {
@@ -357,7 +361,7 @@ export default function Header({ events }) {
                             </svg>
                         </div>
                         <span id="number_of_notifications" className="absolute select-none opacity-100 z-10 icon-badge  -top-1.5 -right-1.5 border-2 text-xs px-1 rounded-full bg-[#ec776c] text-white border-white ">
-                            0
+                             { numberOfNotes }
                         </span>
                     </div>
                     <div className="mr-16">
