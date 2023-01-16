@@ -5,7 +5,8 @@ import LoadUser from "./data/LoadUser";
 import "./styles/header.css";
 import Search from "./utiles/Search";
 
-export default function Header({ events }) {
+export default function Header({ events, notes }) {
+    const [notesLength, setNotesLength] = useState(0)
     const {user} = useContext(UserContext);
     var userThumbnail = user.thumbnail
     //if(user.isLogged) {userThumbnail = user.info.getBasicProfile().getImageUrl()}
@@ -13,18 +14,16 @@ export default function Header({ events }) {
     const [searchBar, setSearchBar] = useState(false);
     const loadUser = LoadUser()
     const navigate = useNavigate();
-    const[notes, setNotes] = useState([])
+
+
     
-    
+
     useEffect(() => {
-        let notes_ = JSON.parse(localStorage.getItem("notes"))
-        console.log(notes_);
-        if(notes_){
-            let  numberOfNotes_ = notes_.length
-            setNotes(notes_)
-            document.getElementById('number_of_notifications').innerText = numberOfNotes_       
-         }
-    }, [])
+      let notesLength_ = notes?.filter(note => note.terminated === false).length;
+        setNotesLength(notesLength_)
+    }, [notes])
+    
+    
     
 
     useEffect(() => {
@@ -368,7 +367,7 @@ export default function Header({ events }) {
                             </svg>
                         </div>
                         <span id="number_of_notifications" className="absolute select-none opacity-100 z-10 icon-badge  -top-1.5 -right-1.5 border-2 text-xs px-1 rounded-full bg-[#ec776c] text-white border-white ">
-                            0
+                           { notesLength || 0 }
                         </span>
                     </div>
                     <div className="mr-16">

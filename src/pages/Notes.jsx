@@ -5,42 +5,26 @@ import { UserContext } from "../UserContext";
 import DeleteButton from "../images/icons/Delete-button.svg";
 import NonConnected from "../utiles/NonConnected";
 
-export default function Notes() {
+export default function Notes({notes, setNotes} ) {
     const { user } = useContext(UserContext);
-    const [notes, setNotes] = useState([]);
     const [storeNote, setStoreNote] = useState({})
     const timeout = useRef(null);
-    useEffect(() => {
-        setNotes([
-            {terminated: false, content:"0Lorem ipsum dolor sit amet"},
-            {terminated: false, content:"1consectetur adipisicing elit"},
-            {terminated: false, content:"2Quaerat impedit fugit quasi omnis maxime ut voluptas sed"},
-            {terminated: false, content:"3dolores saepe nobis perspiciatis repellat esse"},
-            {terminated: false, content:"4at cumque. Nisi ut deserunt recusandae facilis."},
-        ]);
-        
-    }, []);
-    
-    
-    useEffect(()=>{
-        let notesNodes = document.querySelectorAll('#li_note div:first-child')
-        let count =0
-        notesNodes.forEach((note, idx)=>{
-            if(!note.classList.contains('line-through')){
-             count ++
-             }
-             
-        })
-            document.getElementById('number_of_notifications').innerText = count
-        localStorage.setItem('notes', JSON.stringify(notes))
-    },[notes])
 
+    useEffect(() => {
+       if((!notes?.length || !notes) && user.isLogged === false){
+       
+            setNotes([{"terminated":true,"content":"Ancienne note terminée"},{"terminated":false,"content":"Nouvelle note"}])
+            
+           }
+         
+    }, [])
     
+   
 
     function handleDelete(arg, index) {
         const undoBox = document.querySelector("#confirm_or_undo");
         if (arg === "setTimeout") {
-            let noteToStore = document.querySelector("#text_note_" + index).innerText
+            let noteToStore = document.querySelector("#text_note_" + index).value;
             setStoreNote({index:index, toReplace : 0 , note: {terminated: false , content :noteToStore}})
             undoBox.style.transform = "translate(0)";
             let notes_ = [...notes];
@@ -67,57 +51,47 @@ export default function Notes() {
        let notes_ = notes
        notes_.map((e, idx) => {
         if(idx === index)e.terminated = !e.terminated;
+        return e;
        })
        console.log(notes_);
        setNotes([...notes_]);
     }
 
-    function editNote(idx, e) {
-        let TextToHandle = document.querySelector("#text_note_" + idx);
-        if (e.target.innerText === "modifier") {
-            e.target.innerText = "enregister";
-            TextToHandle.setAttribute("contentEditable", true);
-            if(TextToHandle.innerText === 'Nouvelle note')TextToHandle.innerText = ''
-            TextToHandle.focus();
-            TextToHandle.addEventListener("input", handleNoteChanges);
-        }else{
-            e.target.innerText = "modifier"
-            TextToHandle.setAttribute("contentEditable", false);
-            TextToHandle.removeEventListener("input", handleNoteChanges)
-        }
-    }
+ 
     function handleNoteChanges(e) {
-        let newNote ={terminated:false, content: e.target.innerText};
+        let newNote ={terminated:false, content: e.target.value};
         let idx = parseInt(e.target.id.split("_")[2])
         console.log(newNote);
-        console.log(idx);
+        console.log(e.data);
         let notes_ = notes
-        notes_.splice(idx,1, newNote)
+        notes_.splice(idx, 1, newNote)
         setNotes([...notes_])
     }
     function addNote() {
-      setNotes(()=>[{terminated:false, content:'Nouvelle note'},...notes]) 
+      setNotes(()=>[{terminated:false, content:'Ecrivez votre note ici'},...notes]) 
       
+       
+        
+    
     }
 
     return (
         <div className="xl:ml-[var(--xl-sidebar-w)] lg:ml-1 w-auto">
             <button onClick={addNote} className="bg-slate-100 m-3 p-2 rounded hover:border-slate-400 border shadow-xl">Ajouter une note</button>
             <ul className=" bg-white min-w-fit mx-3 rounded">
-                {notes.map((note, index) => (
+                {notes && notes.map((note, index) => (
                     <li key={index} id={"li_note"} className="flex flex-row justify-start gap-2 border-b p-1">
-                        <div 
+                        <input
+                            onChange={handleNoteChanges}
+                            value={note.content}
                             id={"text_note_" + index}
                             className={(note.terminated ? "line-through " : "") + "outline-0 break-words placeholder:text-slate-600 cursor-pointer mx-2 xs:max-w-[200px] sm:max-w-[300px]"}
-                        >
-                            {note.content}
-                        </div>
+                        />
+                           
+                        
 
                         <div className="ml-auto flex flex-row gap-2 mr-2 ">
                                 <div className="w-22 flex flex-col justify-center gap-1" >
-                                    <button
-                                        className="text-xs border h-5 p-1 leading-[0.2] rounded hover:shadow self-center"
-                                    onClick={(e) => editNote(index, e)}>modifier</button>
                                     <button
                                         onClick={() => handleDone(index)}
                                         className="text-xs border h-5 p-1 leading-[0.2] rounded hover:shadow self-center"
