@@ -24,7 +24,7 @@ export default function NonPayes({ eventList }) {
                 <p className="text-9xl font-bold text-red-700">Ø </p>
             )}
             <p className="text-red-700 my-3">RESERVATION{nonPaid.length > 1 && 'S'}</p>
-            <button onClick={()=> navigate("/resatest/reservations?sort=unpaid")} className="rounded-none py-1 px-3 w-[85%] mb-3 bg-red-700 text-white">
+            <button onClick={()=> navigate("/resatest/reservations?sort=unpaid")} className="rounded-none py-1 px-3 w-[85%] mb-3 bg-red-700 hover:bg-red-600 text-white">
                 CONSULTER
             </button>
         </div>

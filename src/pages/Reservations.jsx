@@ -74,19 +74,19 @@ export default function Reservations({searchResult}) {
             if(sortState === ('unpaid' || "partially paid" || 'paid')){
                 sortButtons[2].style.borderTop = '4px solid transparent'
                 sortButtons[1].style.borderTop = '4px solid transparent'
-                sortButtons[0].style.borderTop ='4px solid #3b82f6'
+                sortButtons[0].style.borderTop ='4px solid white'
 
             }
             else if(sortState === ('recent first' || "recent last")){
                 sortButtons[0].style.borderTop = '4px solid transparent'
                 sortButtons[1].style.borderTop = '4px solid transparent'
-                sortButtons[2].style.borderTop ='4px solid #3b82f6'
+                sortButtons[2].style.borderTop ='4px solid white'
 
             }
             else if(sortState === ('name first' || "name last")){
                 sortButtons[0].style.borderTop = '4px solid transparent'
                 sortButtons[2].style.borderTop = '4px solid transparent'
-                sortButtons[1].style.borderTop ='4px solid #3b82f6'
+                sortButtons[1].style.borderTop ='4px solid white'
 
             }
         
@@ -216,18 +216,18 @@ export default function Reservations({searchResult}) {
         <h1 className="xs:max-md:text-center mb-10 text-2xl font-bold ml-5">{title}</h1>
                 <div className="mb-5 flex xs:justify-center md:!justify-between px-3">
                     <div className="relative flex flex-row flex-wrap gap-3">
-                        <button className="sort-button px-0 w-10 text-xs border-t-4 border-transparent rounded transition-all duration-500" onClick={sortEventByPaymentState}>
-                            <img src={transactionFilter} height="30" width="30" alt="transaction icon" className="mx-auto"/>
+                        <button className="sort-button px-0 w-10 text-xs border-t-4 border-transparent rounded transition-all duration-500 " onClick={sortEventByPaymentState}>
+                            <img src={transactionFilter} height="30" width="30" alt="transaction icon" className="mx-auto  hover:opacity-50"/>
                         
                         </button>
-                        <button className="sort-button px-0 w-10 text-xs border-t-4 border-transparent rounded transition-all duration-500" onClick={sortEventByPeople}>
-                            <img src={identityIcon} height="30" width="30" alt="transaction icon" className="mx-auto"/>
+                        <button className="sort-button px-0 w-10 text-xs border-t-4 border-transparent rounded transition-all duration-500 " onClick={sortEventByPeople}>
+                            <img src={identityIcon} height="30" width="30" alt="transaction icon" className="mx-auto  hover:opacity-50"/>
                         
                         </button>
-                        <button className="sort-button w-10 px-0 border-t-4 border-transparent rounded transition-all duration-500" onClick={sortEventByDates}>
-                            <img src={calendarIcon} height="28" width="28" alt="transaction icon" className="mx-auto"/>
+                        <button className="sort-button w-10 px-0 border-t-4 border-transparent rounded transition-all duration-500 " onClick={sortEventByDates}>
+                            <img src={calendarIcon} height="28" width="28" alt="transaction icon" className="mx-auto  hover:opacity-50"/>
                         </button>
-                        <button id='event_start_date' className="xs:max-sm:mb-2 leading-3 bg-white opacity-80 px-1 h-10 self-center rounded-md shadow hover:shadow-xl"  onClick={showEventsToComeOrAll}>Evenements à venir</button>
+                        <button id='event_start_date' className="xs:max-sm:mb-2 leading-3 bg-white opacity-80 px-1 h-10 self-center rounded-md shadow hover:opacity-90"  onClick={showEventsToComeOrAll}>Evenements à venir</button>
                     <span className="absolute xs:max-md:left-10 left-0 -bottom-5 px-2 w-fit whitespace-nowrap text-xs bg-white rounded-t-lg">{sortState}</span>
                     </div>
 

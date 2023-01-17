@@ -72,7 +72,7 @@ export default function NombreReservation({ eventList }) {
                     )}{" "}
                 </div>
                 <button
-                    className="rounded-none py-1 px-3 w-[85%] mb-3 bg-blue-500 text-white"
+                    className="rounded-none py-1 px-3 w-[85%] mb-3 bg-blue-500 text-white hover:bg-blue-400"
                     onClick={() => navigate("/resatest/reservations")}
                 >
                     VOIR PLUS
