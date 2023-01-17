@@ -10,15 +10,12 @@ export default function Notes({notes, setNotes} ) {
     const [storeNote, setStoreNote] = useState({})
     const timeout = useRef(null);
 
-    useEffect(() => {
-       if((!notes?.length || !notes) && user.isLogged === false){
-       
-            setNotes([{"terminated":true,"content":"Ancienne note terminée"},{"terminated":false,"content":"Nouvelle note"}])
-            
-           }
-         
-    }, [])
-    
+   useEffect(() => {
+     document.querySelectorAll('textarea').forEach(e=>{
+        e.style.height = 'auto';
+        e.style.height = e.scrollHeight + 'px';
+     })
+   }, [notes])
    
 
     function handleDelete(arg, index) {
@@ -68,8 +65,14 @@ export default function Notes({notes, setNotes} ) {
         setNotes([...notes_])
     }
     function addNote() {
-      setNotes(()=>[{terminated:false, content:'Ecrivez votre note ici'},...notes]) 
+      setNotes(()=>{return [ {terminated:false, content:''},...notes]}) 
+
+      setTimeout(() => {
+        document.getElementById('text_note_0').setAttribute('placeholder','Entrez votre texte ici')
       
+        document.getElementById('text_note_0').focus()
+          
+      }, 300);
        
         
     
@@ -81,11 +84,11 @@ export default function Notes({notes, setNotes} ) {
             <ul className=" bg-white min-w-fit mx-3 rounded">
                 {notes && notes.map((note, index) => (
                     <li key={index} id={"li_note"} className="flex flex-row justify-start gap-2 border-b p-1">
-                        <input
+                        <textarea
                             onChange={handleNoteChanges}
                             value={note.content}
                             id={"text_note_" + index}
-                            className={(note.terminated ? "line-through " : "") + "outline-0 break-words placeholder:text-slate-600 cursor-pointer mx-2 xs:max-w-[200px] sm:max-w-[300px]"}
+                            className={(note.terminated ? "line-through " : "") + "outline-0 break-words placeholder:text-slate-600 cursor-pointer mx-2 resize xs:max-sm:w-[60%] w-full"}
                         />
                            
                         
