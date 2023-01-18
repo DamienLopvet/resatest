@@ -50,7 +50,7 @@ export default function App() {
                             <Route path="/resatest/reservations" element={<Reservations />} />
                             <Route path="/resatest/carnet-d-adresses" element={<CarnetAdress />} />
                             <Route path="/resatest/Notes" element={<Notes notes={notes} setNotes={setNotes} />} />
-                            <Route path="*" component={Home} />
+                            <Route path="/resatest/*" element={<Home notes={notes}/>} />
                         </Routes>
                     </div>
                 </Router>
