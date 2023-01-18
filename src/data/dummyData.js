@@ -1,4 +1,3 @@
-import { format } from "date-fns";
 
 let dateNow = new Date()
 
@@ -91,7 +90,7 @@ const dummyEvents=[
         "created": "2022-12-22T14:16:20.000Z",
         "updated": "2022-12-22T14:16:20.876Z",
         "summary": "8 personnes, Chambres :1,3",
-        "description": `{\"start\":{\"dateTime\":\"${dates[2].start}\",\"timeZone\":\"Europe/Paris\"},\"end\":{\"dateTime\":\"${dates[2].end}\",\"timeZone\":\"Europe/Paris\"},\"NombrePersonne\":\"8\",\"paymentInfo\":\"Paiement_partiel\",\"Nom\":\"Abele\",\"Prenom\":\"Semoune\",\"Tel\":\"046983 43524\",\"Email\":\"sqdgsq@sdg.f\",\"sendInvitationToClient\":false}`,
+        "description": `{\"start\":{\"dateTime\":\"${dates[2].start}\",\"timeZone\":\"Europe/Paris\"},\"end\":{\"dateTime\":\"${dates[2].end}\",\"timeZone\":\"Europe/Paris\"},\"NombrePersonne\":\"8\",\"paymentInfo\":\"Paiement_partiel\",\"Nom\":\"Taboule\",\"Prenom\":\"Semoune\",\"Tel\":\"046983 43524\",\"Email\":\"sqdgsq@sdg.f\",\"sendInvitationToClient\":false}`,
         "creator": {
             "email": "lamadesresa@gmail.com",
             "self": true

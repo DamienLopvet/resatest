@@ -8,7 +8,7 @@ import Search from "./utiles/Search";
 export default function Header({ events, notes }) {
     const [notesLength, setNotesLength] = useState(0)
     const {user} = useContext(UserContext);
-    var userThumbnail = user.thumbnail
+const [userThumbnail, setUserThumbnail] = useState("");
     //if(user.isLogged) {userThumbnail = user.info.getBasicProfile().getImageUrl()}
     const [isActiveTab, setIsActiveTab] = useState("1");
     const [searchBar, setSearchBar] = useState(false);
@@ -28,8 +28,11 @@ export default function Header({ events, notes }) {
 
     useEffect(() => {
         loadUser.handleClientLoad()
+        setUserThumbnail(user.thumbnail)
       }, [user.isLogged])
-      
+      console.log(user);
+
+
     function handleActiveTab(e) {
         let tabTodisable = document.querySelector(`[data-index="${isActiveTab}"]`);
         let tabToActivate = e.currentTarget;
@@ -349,6 +352,7 @@ export default function Header({ events, notes }) {
                         <span className=" pointer-events-none select-none xs:max-sm:hidden">Ctrl K</span>
                     </div>
 
+                        <Link to="/resatest/notes">
                     <div className="notifications relative">
                         <div
                             className=" text-black opacity-60 hover:opacity-100"
@@ -366,10 +370,11 @@ export default function Header({ events, notes }) {
                                 ></path>
                             </svg>
                         </div>
-                        <span id="number_of_notifications" className="absolute select-none opacity-100 z-10 icon-badge  -top-1.5 -right-1.5 border-2 text-xs px-1 rounded-full bg-[#ec776c] text-white border-white ">
-                           { notesLength || 0 }
-                        </span>
+                            <span id="number_of_notifications" className="absolute select-none opacity-100 z-10 icon-badge  -top-1.5 -right-1.5 border-2 text-xs px-1 rounded-full bg-[#ec776c] text-white border-white ">
+                               { notesLength || 0 }
+                            </span>
                     </div>
+                        </Link>
                     <div className="mr-16">
                         <div title="Settings" className="text-black opacity-60 hover:opacity-100">
                             <svg width="1.7em" height="1.7em" viewBox="0 0 16 16" className="" fill="currentColor" xmlns="http://www.w3.org/2000/svg">

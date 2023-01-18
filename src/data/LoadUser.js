@@ -46,6 +46,7 @@ export default function LoadUser() {
                                     width: 40,
                                     height: 40,
                                     onsuccess: handleClientLoad,
+                                    cookiePolicy:'single-host-origin'
                                 });
                             }
                         });

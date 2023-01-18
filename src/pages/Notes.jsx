@@ -80,6 +80,8 @@ export default function Notes({notes, setNotes} ) {
 
     return (
         <section id="note_section" className="xl:ml-[var(--xl-sidebar-w)] lg:ml-1 w-auto">
+                <h1 className="xs:max-md:text-center mb-10 text-2xl font-bold ml-5">Notes</h1>
+
             <button id="note_add" onClick={addNote} className="bg-slate-100 m-3 p-2 rounded hover:border-slate-400 border shadow-xl">
                 Ajouter une note</button>
             <ul className="mx-3">
@@ -126,6 +128,9 @@ export default function Notes({notes, setNotes} ) {
                     undo
                 </button>
             </div>
+            {!notes.length && <div className="basis-[100%] pl-3">
+                            <p className="text-xl border p-3 rounded-xl mt-10 w-fit" > pas de notes enregistrées</p>
+                        </div>}
             {!user.isLogged && <NonConnected />}
         </section>
     );

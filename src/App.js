@@ -20,16 +20,16 @@ export default function App() {
     const [error, setError] = useState("");
     const [eventId, setEventId] = useState("");
     const [events, setEvents] = useState([]);
-    console.log(user);
+    
 
     useEffect(() => {
-        GetEvents("all").then((e) => setEvents(e));
+        GetEvents("all", user).then((e) => setEvents(e));
         let notes_ = parsedNotes();
         if (notes_?.length)
             setNotes(() => {
                 return [...notes_];
             });
-    }, []);
+    }, [user]);
 
     useEffect(() => {
         localStorage.setItem("notes", JSON.stringify(notes));
@@ -41,14 +41,14 @@ export default function App() {
             <UserContext.Provider value={{ user, setUser }}>
                 <Router>
                     <Header events={events} notes={notes} />
-                    <div id="actualComponent" className="pt-16">
+                    <div id="actualComponent" className="pt-16 pb-32">
                         <Routes>
                             <Route exact path="/resatest/" element={<Home notes={notes} />} />
                             <Route path="/resatest/nouvelle-reservation" element={<Ajouter eventId={eventId} setEventId={setEventId} />} />
 
                             <Route path="/resatest/calendrier" element={<Calendrier />} />
                             <Route path="/resatest/reservations" element={<Reservations />} />
-                            <Route path="/resatest/carnet-d-adresses" element={<CarnetAdress />} />
+                            <Route path="/resatest/carnet-d-adresses" element={<CarnetAdress events={events}/>} />
                             <Route path="/resatest/Notes" element={<Notes notes={notes} setNotes={setNotes} />} />
                             <Route path="/resatest/*" element={<Home notes={notes}/>} />
                         </Routes>

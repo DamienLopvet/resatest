@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
 import GetEvents from "../data/GetEvents";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { UserContext } from "../UserContext" 
+import { UserContext } from "../UserContext";
 import NonConnected from "../utiles/NonConnected";
 
 import { format } from "date-fns";
@@ -22,79 +22,74 @@ import roomIcon from "../images/icons/room.svg";
 import emailNotificationIcon from "../images/icons/emailNotificationIcon.svg";
 import transactionFilter from "../images/icons/transaction-filter.svg";
 
-export default function Reservations({searchResult}) {
-    const {user} = useContext(UserContext);
-    const sortOptions = ["unpaid", "partially paid", "paid", "recent first","recent last", "name first", "name last"];
+export default function Reservations({ searchResult }) {
+    const { user } = useContext(UserContext);
+    const sortOptions = ["unpaid", "partially paid", "paid", "recent first", "recent last", "name first", "name last"];
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
     const [sortState, setSortState] = useState("recent first");
     const [allEvents, setAllEvents] = useState([]);
     const [eventFromNow, setEventFromNow] = useState([]);
     const [eventList, setEventList] = useState([]);
-    const fromNow = useRef(false)
-    const [title, setTitle] = useState('TOUS LES EVENEMENTS')
-    
-    
+    const fromNow = useRef(false);
+    const [title, setTitle] = useState("TOUS LES EVENEMENTS");
+
     //HANDLE SEARCH FROM SEARCH  BAR
     useEffect(() => {
-        if(searchResult) setEventList(searchResult)
-        else{
-        const sortEvents = searchParams.get("sort");
-        GetEvents("all", user).then((el)=>{
-            var eventList_ = el.map((e, idx) => ({...e, idx: idx}));
-            setAllEvents(eventList_)
-            let date =  Date.now()
-            let events_ = eventList_.filter( (el) => new Date(el.start.dateTime).getTime() >= date);
-            setEventFromNow([...events_]);
+        if (searchResult) setEventList(searchResult);
+        else {
+            const sortEvents = searchParams.get("sort");
+            GetEvents("all", user).then((el) => {
+                var eventList_ = el.map((e, idx) => ({ ...e, idx: idx }));
+                setAllEvents(eventList_);
+                let date = Date.now();
+                let events_ = eventList_.filter((el) => new Date(el.start.dateTime).getTime() >= date);
+                setEventFromNow([...events_]);
 
-            const unpaid = eventList_.filter((e) => ParsedClientInfo(e.description).paymentInfo === "Non_payé");
-            const partiallyPaid = eventList_.filter((e) => ParsedClientInfo(e.description).paymentInfo === "Paiement_partiel");
-            const paid = eventList_.filter((e) => ParsedClientInfo(e.description).paymentInfo === "Paiement_complet");
-            if (sortEvents === 'unpaid') {
-                setEventList([...unpaid, ...partiallyPaid, ...paid]);
-                setSortState(sortEvents);
-                setSearchParams('')
-            }
-            else if (sortEvents === 'name first') {
-                setEventList([...eventList_].sort((a,b) => ParsedClientInfo(a.description).Nom.toLowerCase() > ParsedClientInfo(b.description).Nom.toLowerCase() ? 1 : -1 ));
+                const unpaid = eventList_.filter((e) => ParsedClientInfo(e.description).paymentInfo === "Non_payé");
+                const partiallyPaid = eventList_.filter((e) => ParsedClientInfo(e.description).paymentInfo === "Paiement_partiel");
+                const paid = eventList_.filter((e) => ParsedClientInfo(e.description).paymentInfo === "Paiement_complet");
+                if (sortEvents === "unpaid") {
+                    setEventList([...unpaid, ...partiallyPaid, ...paid]);
+                    setSortState(sortEvents);
+                    setSearchParams("");
+                } else if (sortEvents === "name first") {
+                    setEventList(
+                        [...eventList_].sort((a, b) =>
+                            ParsedClientInfo(a.description).Nom.toLowerCase() > ParsedClientInfo(b.description).Nom.toLowerCase() ? 1 : -1
+                        )
+                    );
 
-                setSortState('name first');
-                setSearchParams('')
-            }
-            else {
-                setEventList(eventList_);
-            }
-        });}
+                    setSortState("name first");
+                    setSearchParams("");
+                } else {
+                    setEventList(eventList_);
+                }
+            });
+        }
     }, [searchResult, user]);
-    
+
     // HANDLE FILTERS
     useEffect(() => {
-        let sortButtons = document.querySelectorAll('.sort-button')
-        
-            if(sortState === ('unpaid' || "partially paid" || 'paid')){
-                sortButtons[2].style.borderTop = '4px solid transparent'
-                sortButtons[1].style.borderTop = '4px solid transparent'
-                sortButtons[0].style.borderTop ='4px solid white'
+        let sortButtons = document.querySelectorAll(".sort-button");
 
-            }
-            else if(sortState === ('recent first' || "recent last")){
-                sortButtons[0].style.borderTop = '4px solid transparent'
-                sortButtons[1].style.borderTop = '4px solid transparent'
-                sortButtons[2].style.borderTop ='4px solid white'
-
-            }
-            else if(sortState === ('name first' || "name last")){
-                sortButtons[0].style.borderTop = '4px solid transparent'
-                sortButtons[2].style.borderTop = '4px solid transparent'
-                sortButtons[1].style.borderTop ='4px solid white'
-
-            }
-        
+        if (sortState === ("unpaid" || "partially paid" || "paid")) {
+            sortButtons[2].style.borderTop = "4px solid transparent";
+            sortButtons[1].style.borderTop = "4px solid transparent";
+            sortButtons[0].style.borderTop = "4px solid white";
+        } else if (sortState === ("recent first" || "recent last")) {
+            sortButtons[0].style.borderTop = "4px solid transparent";
+            sortButtons[1].style.borderTop = "4px solid transparent";
+            sortButtons[2].style.borderTop = "4px solid white";
+        } else if (sortState === ("name first" || "name last")) {
+            sortButtons[0].style.borderTop = "4px solid transparent";
+            sortButtons[2].style.borderTop = "4px solid transparent";
+            sortButtons[1].style.borderTop = "4px solid white";
+        }
 
         const unpaid = eventList.filter((e) => ParsedClientInfo(e.description).paymentInfo === "Non_payé");
         const partiallyPaid = eventList.filter((e) => ParsedClientInfo(e.description).paymentInfo === "Paiement_partiel");
         const paid = eventList.filter((e) => ParsedClientInfo(e.description).paymentInfo === "Paiement_complet");
-        
 
         switch (sortState) {
             case "unpaid":
@@ -107,54 +102,64 @@ export default function Reservations({searchResult}) {
                 setEventList([...paid, ...unpaid, ...partiallyPaid]);
                 break;
             case "recent first":
-                setEventList([...eventList].sort((a,b) => (a.idx - b.idx)));
+                setEventList([...eventList].sort((a, b) => a.idx - b.idx));
                 break;
             case "recent last":
-                setEventList([...eventList].sort((a,b) => (b.idx - a.idx)));
-                break;    
+                setEventList([...eventList].sort((a, b) => b.idx - a.idx));
+                break;
             case "name first":
-                setEventList([...eventList].sort((a,b) => ParsedClientInfo(a.description).Nom.toLowerCase() > ParsedClientInfo(b.description).Nom.toLowerCase() ? 1 : -1 ));
-                break;  
+                setEventList(
+                    [...eventList].sort((a, b) =>
+                        ParsedClientInfo(a.description).Nom.toLowerCase() > ParsedClientInfo(b.description).Nom.toLowerCase() ? 1 : -1
+                    )
+                );
+                break;
             case "name last":
-                setEventList([...eventList].sort((a,b) => ParsedClientInfo(b.description).Nom.toLowerCase() > ParsedClientInfo(a.description).Nom.toLowerCase() ? 1 : -1));
-                break;  
-                    default:
-            break;
+                setEventList(
+                    [...eventList].sort((a, b) =>
+                        ParsedClientInfo(b.description).Nom.toLowerCase() > ParsedClientInfo(a.description).Nom.toLowerCase() ? 1 : -1
+                    )
+                );
+                break;
+            default:
+                break;
         }
     }, [sortState]);
-    
+
     //HANDLE EVENT FROM NOW OR ALL
     function showEventsToComeOrAll() {
-      let buttonTitle = document.getElementById('event_start_date')
-      if(fromNow.current === false) {
-            setEventList(eventFromNow)
+        let buttonTitle = document.getElementById("event_start_date");
+        if (fromNow.current === false) {
+            setEventList(eventFromNow);
             fromNow.current = true;
-            buttonTitle.innerText = 'Tous les evenements'
-            setTitle('EVENEMENTS A VENIR')
-         }else{
+            buttonTitle.innerText = "Tous les evenements";
+            setTitle("EVENEMENTS A VENIR");
+        } else {
             setEventList(allEvents);
             fromNow.current = false;
-            buttonTitle.innerText = 'Evenements à venir'
-            setTitle('TOUS LES EVENEMENTS')
-
-         }
+            buttonTitle.innerText = "Evenements à venir";
+            setTitle("TOUS LES EVENEMENTS");
+        }
     }
-    
+
     // HANLDE FILTERS
     function sortEventByDates() {
-        sortState === sortOptions[3] ? setSortState(sortOptions[4]) : setSortState(sortOptions[3])
+        sortState === sortOptions[3] ? setSortState(sortOptions[4]) : setSortState(sortOptions[3]);
     }
     function sortEventByPeople() {
-        sortState === sortOptions[5] ? setSortState(sortOptions[6]) : setSortState(sortOptions[5])
+        sortState === sortOptions[5] ? setSortState(sortOptions[6]) : setSortState(sortOptions[5]);
     }
-    
+
     function sortEventByPaymentState() {
-        let i = sortOptions.findIndex(e => (e === sortState));
+        let i = sortOptions.findIndex((e) => e === sortState);
         if (i >= sortOptions.length - 4) {
-            setSortState(()=> {return sortOptions[0]});
-        }
-        else {
-            setSortState(()=> {return sortOptions[i+1]});
+            setSortState(() => {
+                return sortOptions[0];
+            });
+        } else {
+            setSortState(() => {
+                return sortOptions[i + 1];
+            });
         }
     }
 
@@ -162,14 +167,11 @@ export default function Reservations({searchResult}) {
         navigate("/resatest/nouvelle-reservation?id=" + e.target.id);
     }
 
-
     function handleDeleteEvent(id) {
-       
-            DeleteEvent(id);
-            setEventList((prev) => prev.filter((el) => el.id !== id));
-      
+        DeleteEvent(id);
+        setEventList((prev) => prev.filter((el) => el.id !== id));
     }
-    
+
     function ParsedClientInfo(info) {
         try {
             let parsedInfo = JSON.parse(info);
@@ -179,7 +181,6 @@ export default function Reservations({searchResult}) {
             return err;
         }
     }
-
 
     function formatDate(el) {
         try {
@@ -192,7 +193,7 @@ export default function Reservations({searchResult}) {
         }
     }
 
-    //HANDLE PAYMENT STATE     
+    //HANDLE PAYMENT STATE
     function setBackGroundColor(e) {
         let paymentState = ParsedClientInfo(e.description).paymentInfo;
         switch (paymentState) {
@@ -213,26 +214,40 @@ export default function Reservations({searchResult}) {
     return (
         <>
             <div className="xl:ml-[var(--xl-sidebar-w)] lg:ml-1 w-auto">
-        <h1 className="xs:max-md:text-center mb-10 text-2xl font-bold ml-5">{title}</h1>
+                <h1 className="xs:max-md:text-center mb-10 text-2xl font-bold ml-5">{title}</h1>
                 <div className="mb-5 flex xs:justify-center md:!justify-between px-3">
                     <div className="relative flex flex-row flex-wrap gap-3">
-                        <button className="sort-button px-0 w-10 text-xs border-t-4 border-transparent rounded transition-all duration-500 " onClick={sortEventByPaymentState}>
-                            <img src={transactionFilter} height="30" width="30" alt="transaction icon" className="mx-auto  hover:opacity-50"/>
-                        
+                        <button
+                            className="sort-button px-0 w-10 text-xs border-t-4 border-transparent rounded transition-all duration-500 "
+                            onClick={sortEventByPaymentState}
+                        >
+                            <img src={transactionFilter} height="30" width="30" alt="transaction icon" className="mx-auto  hover:opacity-50" />
                         </button>
-                        <button className="sort-button px-0 w-10 text-xs border-t-4 border-transparent rounded transition-all duration-500 " onClick={sortEventByPeople}>
-                            <img src={identityIcon} height="30" width="30" alt="transaction icon" className="mx-auto  hover:opacity-50"/>
-                        
+                        <button
+                            className="sort-button px-0 w-10 text-xs border-t-4 border-transparent rounded transition-all duration-500 "
+                            onClick={sortEventByPeople}
+                        >
+                            <img src={identityIcon} height="30" width="30" alt="transaction icon" className="mx-auto  hover:opacity-50" />
                         </button>
-                        <button className="sort-button w-10 px-0 border-t-4 border-transparent rounded transition-all duration-500 " onClick={sortEventByDates}>
-                            <img src={calendarIcon} height="28" width="28" alt="transaction icon" className="mx-auto  hover:opacity-50"/>
+                        <button
+                            className="sort-button w-10 px-0 border-t-4 border-transparent rounded transition-all duration-500 "
+                            onClick={sortEventByDates}
+                        >
+                            <img src={calendarIcon} height="28" width="28" alt="transaction icon" className="mx-auto  hover:opacity-50" />
                         </button>
-                        <button id='event_start_date' className="xs:max-sm:mb-2 leading-3 bg-white opacity-80 px-1 h-10 self-center rounded-md shadow hover:opacity-90"  onClick={showEventsToComeOrAll}>Evenements à venir</button>
-                    <span className="absolute xs:max-md:left-10 left-0 -bottom-5 px-2 w-fit whitespace-nowrap text-xs bg-white rounded-t-lg">{sortState}</span>
+                        <button
+                            id="event_start_date"
+                            className="xs:max-sm:mb-2 leading-3 bg-white opacity-80 px-1 h-10 self-center rounded-md shadow hover:opacity-90"
+                            onClick={showEventsToComeOrAll}
+                        >
+                            Evenements à venir
+                        </button>
+                        <span className="absolute xs:max-md:left-10 left-0 -bottom-5 px-2 w-fit whitespace-nowrap text-xs bg-white rounded-t-lg">
+                            {sortState}
+                        </span>
                     </div>
 
                     <NouvelleReservationButton />
-
                 </div>
                 <ul className="opacity-80 mx-3 rounded">
                     <li className="rounded-tr leading-4 py-1 flex-row md:!flex justify-between gap-3 bg-white px-5 xs:hidden items-center">
@@ -309,9 +324,7 @@ export default function Reservations({searchResult}) {
                                     <p className="overflow-ellipsis overflow-hidden whitespace-nowrap">
                                         {formatDate(event.start.dateTime).toString()}
                                     </p>
-                                    <p className="overflow-ellipsis overflow-hidden whitespace-nowrap">
-                                        {formatDate(event.end.dateTime).toString()}
-                                    </p>
+                                    <p className="overflow-ellipsis overflow-hidden whitespace-nowrap">{formatDate(event.end.dateTime).toString()}</p>
                                 </div>
                             </div>
                             <div id="chambre_info" className="flex-row gap-2  flex basis-[11%] items-center">
@@ -361,18 +374,13 @@ export default function Reservations({searchResult}) {
 
                                 <div>
                                     {ParsedClientInfo(event.description).Tel ? (
-                                        <a href="tel:{ParsedClientInfo(event.description).Tel}">
-                                            {ParsedClientInfo(event.description).Tel}
-                                        </a>
+                                        <a href="tel:{ParsedClientInfo(event.description).Tel}">{ParsedClientInfo(event.description).Tel}</a>
                                     ) : (
                                         <span className="line-through">Téléphone</span>
                                     )}
                                 </div>
                             </div>
-                            <div
-                                id="email_info"
-                                className="overflow-ellipsis overflow-hidden whitespace-nowrap flex flex-row gap-2  basis-[11%]"
-                            >
+                            <div id="email_info" className="overflow-ellipsis overflow-hidden whitespace-nowrap flex flex-row gap-2  basis-[11%]">
                                 <div>
                                     <img
                                         src={mailIcon}
@@ -389,9 +397,7 @@ export default function Reservations({searchResult}) {
                                         <img src={emailNotificationIcon} alt="email icon" width="17" height="12" />
                                     )}
                                     {ParsedClientInfo(event.description).Email ? (
-                                        <a href="mailto:{ParsedClientInfo(event.description).Email}">
-                                            {ParsedClientInfo(event.description).Email}
-                                        </a>
+                                        <a href="mailto:{ParsedClientInfo(event.description).Email}">{ParsedClientInfo(event.description).Email}</a>
                                     ) : (
                                         <span className="line-through">Email</span>
                                     )}
@@ -445,7 +451,7 @@ export default function Reservations({searchResult}) {
                         </li>
                     ))}
                 </ul>
-                {!user.isLogged && <NonConnected/>}
+                {!user.isLogged && <NonConnected />}
             </div>
         </>
     );

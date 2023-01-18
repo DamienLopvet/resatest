@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 @layer base {
+  *{
+    scrollbar-width: thin;
+    scrollbar-color: #558ce7 transparent
+   
+  }
     :root {
         --xl-sidebar-w: 20rem;
         --sidebar-w: 15rem;
@@ -24,13 +29,14 @@
     #home_section #note_section{
    max-width:780px
    }
-    #home_section #note_section button{
+    #home_section #note_section button,#home_section #note_section h1 {
     display: none;
     }
     #home_section #note_section{
     height: 200px;
     overflow-y: auto;
-    margin:0
+    margin:0;
+    
     }
     ::-webkit-scrollbar-thumb {
     background:#558ce7
@@ -38,12 +44,12 @@
    ::-webkit-scrollbar {
     width: 5px;
     }
-    #home_section #note_section ul{
+    /* #home_section #note_section ul{
       margin-inline: 0
        
-      }
+      } */
     #home_section #note_section li{
-    margin-block: 20px;
+    margin-bottom: 10px;
      
     }
     

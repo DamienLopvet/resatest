@@ -38,11 +38,13 @@ export default function Home({ notes }) {
                         <NombreReservation eventList={eventList} />
                         <NonPayes eventList={eventList} />
                         <Hotes eventList={eventList} />
-                        {notes.length ? <div id="notes_container" className="mt-10 basis-[100%] cursor-pointer"
+                        {notes.length ? <>
+                        <div id="notes_container" className="mt-10 basis-[100%] cursor-pointer"
                                             onClick={() => navigate("/resatest/Notes")}
                                             >
+                        <h1 className="xs:max-md:text-center xs:max-md:-translate-x-2 text-2xl font-bold ml-5 mb-5">Notes</h1>
                             <Notes notes={notes} />
-                        </div>:""}
+                        </div></>:""}
                         {!notes.length && <div className="basis-[100%]">
                             <p className="text-xl border p-3 rounded-xl mt-10 w-fit" > pas de notes enregistrées</p>
                         </div>}
