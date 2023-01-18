@@ -20,7 +20,38 @@
         position: relative;
     top: 50px;
     }
+
+    #home_section #note_section{
+   max-width:780px
+   }
+    #home_section #note_section button{
+    display: none;
+    }
+    #home_section #note_section{
+    height: 200px;
+    overflow-y: auto;
+    margin:0
+    }
+    ::-webkit-scrollbar-thumb {
+    background:#558ce7
+    }
+   ::-webkit-scrollbar {
+    width: 5px;
+    }
+    #home_section #note_section ul{
+      margin-inline: 0
+       
+      }
+    #home_section #note_section li{
+    margin-block: 20px;
+     
+    }
     
+    #home_section #note_section textarea{
+      width: 100%;
+      pointer-events:none;
+      }
+
     @media only screen and (max-width: 640px) {
   body {
     background-size: 1020px 1280px;

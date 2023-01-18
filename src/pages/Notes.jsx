@@ -79,16 +79,17 @@ export default function Notes({notes, setNotes} ) {
     }
 
     return (
-        <div className="xl:ml-[var(--xl-sidebar-w)] lg:ml-1 w-auto">
-            <button onClick={addNote} className="bg-slate-100 m-3 p-2 rounded hover:border-slate-400 border shadow-xl">Ajouter une note</button>
-            <ul className=" bg-white min-w-fit mx-3 rounded">
+        <section id="note_section" className="xl:ml-[var(--xl-sidebar-w)] lg:ml-1 w-auto">
+            <button id="note_add" onClick={addNote} className="bg-slate-100 m-3 p-2 rounded hover:border-slate-400 border shadow-xl">
+                Ajouter une note</button>
+            <ul className="mx-3">
                 {notes && notes.map((note, index) => (
-                    <li key={index} id={"li_note"} className="flex flex-row justify-start gap-2 border-b p-1">
+                    <li key={index} id={"li_note"} className="first:rounded-t last:rounded-b opacity-90 bg-white flex flex-row justify-start gap-2 border-b p-1">
                         <textarea
                             onChange={handleNoteChanges}
                             value={note.content}
                             id={"text_note_" + index}
-                            className={(note.terminated ? "line-through " : "") + "outline-0 break-words placeholder:text-slate-600 cursor-pointer mx-2 resize xs:max-sm:w-[60%] w-full"}
+                            className={(note.terminated ? "line-through " : "") + "outline-0 break-words placeholder:text-slate-600 cursor-pointer mx-2 resize xs:max-sm:w-[60%] w-[90%]"}
                         />
                            
                         
@@ -102,15 +103,16 @@ export default function Notes({notes, setNotes} ) {
                                         terminé
                                     </button>
                                 </div>
-                            <img
-                                className="hover:drop-shadow"
-                                src={DeleteButton}
-                                role="button"
-                                alt="delete"
-                                height="15"
-                                width="15"
-                                onClick={() => handleDelete("setTimeout", index)}
-                            />
+                            <button>
+                                <img
+                                    className="hover:drop-shadow w-4 "
+                                    src={DeleteButton}
+                                    role="button"
+                                    alt="delete"
+                                    height="15"
+                                    onClick={() => handleDelete("setTimeout", index)}
+                                />
+                            </button>
                         </div>
                     </li>
                 ))}
@@ -125,6 +127,6 @@ export default function Notes({notes, setNotes} ) {
                 </button>
             </div>
             {!user.isLogged && <NonConnected />}
-        </div>
+        </section>
     );
 }
